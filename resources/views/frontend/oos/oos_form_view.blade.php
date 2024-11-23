@@ -418,7 +418,8 @@
                 <button class="cctablinks" onclick="openCity(event, 'CCForm17')">Signature</button>
 
             </div>
-
+        </div>
+                
             <!-- General Information -->
     <form action="{{ route('oosupdate', $data->id) }}" method="post" enctype="multipart/form-data">
      @csrf
@@ -645,32 +646,7 @@
                         </div> --}}
 
                         <div class="sub-head pt-3">Preliminary Information</div>
-                        <!-- <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Short Description ">Product / Material Name</label>
-
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input ">
-                                <label for="Short Description ">Market</label>
-
-                                <input type="text" name="num">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Initiator Group">Customer</label>
-                                <input type="text">
-                                {{-- <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option></option>
-                                    <option></option>
-                                </select> --}}
-                            </div>
-                        </div> -->
-
+                       
                         <!-- ---------------------------grid-1 -------------------------------- -->
                         <div class="group-input">
                             <label for="audit-agenda-grid">

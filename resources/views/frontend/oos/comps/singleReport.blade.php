@@ -490,11 +490,11 @@
                         @if(($data->details_stabilities) && is_array($data->details_stabilities->data))
                         @foreach ($data->details_stabilities->data as $key => $datagridII)
                         <tr>
-                            <td class="w-15">{{ $datagridII ? $key + 1  : "Not Applicable" }}</td>
+                            {{-- <td class="w-15">{{ $datagridII ? $key + 1  : "Not Applicable" }}</td>
                             <td class="w-15">{{ $datagridII['stability_study_arnumber'] ?  $datagridII['stability_study_arnumber']: "Not Applicable"}}</td>
                             <td class="w-15">{{ $datagridII['stability_study_condition_temprature_rh'] ?  $datagridII['stability_study_condition_temprature_rh']: "Not Applicable"}}</td>
                             <td class="w-15">{{ $datagridII['stability_study_Interval'] ?  $datagridII['stability_study_Interval']: "Not Applicable"}}</td>
-                            <td class="w-15">{{ $datagridII['stability_study_orientation'] ?  $datagridII['stability_study_orientation']: "Not Applicable"}}</td>
+                            <td class="w-15">{{ $datagridII['stability_study_orientation'] ?  $datagridII['stability_study_orientation']: "Not Applicable"}}</td> --}}
                         </tr>
                         @endforeach
                         @else
@@ -522,11 +522,11 @@
                         @if(($data->details_stabilities) && is_array($data->details_stabilities->data))
                         @foreach ($data->details_stabilities->data as $key => $datagridII)
                         <tr>
-                            <td class="w-15">{{ $datagridII ? $key + 1  : "Not Applicable" }}</td>
+                            {{-- <td class="w-15">{{ $datagridII ? $key + 1  : "Not Applicable" }}</td>
                             <td class="w-15">{{ $datagridII['stability_study_pack_details'] ?  $datagridII['stability_study_pack_details']: "Not Applicable"}}</td>
                             <td class="w-15">{{ $datagridII['stability_study_specification_no'] ?  $datagridII['stability_study_specification_no']: "Not Applicable"}}</td>
                             <td class="w-15">{{ $datagridII['stability_study_sample_description'] ?  $datagridII['stability_study_sample_description']: "Not Applicable"}}</td>
-                             </tr>
+                             </tr> --}}
                         @endforeach
                         @else
                         <tr>
@@ -557,7 +557,7 @@
                         @if(($data->oos_details) && is_array($data->oos_details->data))
                         @foreach ($data->oos_details->data as $key => $datagridIII)
                         <tr>
-                            <td class="w-15">{{ $datagridIII ? $key + 1  : "Not Applicable" }}</td>
+                            {{-- <td class="w-15">{{ $datagridIII ? $key + 1  : "Not Applicable" }}</td>
                             <td class="w-15">{{ $datagridIII['oos_arnumber'] ?  $datagridIII['oos_arnumber']: "Not Applicable"}}</td>
                             <td class="w-15">{{ $datagridIII['oos_test_name'] ?  $datagridIII['oos_test_name']: "Not Applicable"}}</td>
                             <td class="w-15">{{ $datagridIII['oos_results_obtained'] ?  $datagridIII['oos_results_obtained']: "Not Applicable"}}</td>
@@ -572,7 +572,7 @@
                             <td class="w-15">{{ $datagridIII['oos_submit_on'] ?  Helpers::getdateFormat($datagridIII['oos_submit_on'] ?? ''): "Not Applicable" }}
                             </td>
                             <td class="w-15">{{ $datagridIII['oos_submit_by'] ?  Helpers::getInitiatorName($datagridIII['oos_submit_by'] ?? ''): "Not Applicable" }}
-                            </td>
+                            </td> --}}
                         </tr>
                         @endforeach
                         @else
@@ -604,7 +604,7 @@
                             <th style="width: 8%"> Analyzed on</th>
                             <th style="width: 8%"> Observed on </th>
                         </tr>
-                        @if ($products_details && is_array($products_details->data))
+                        {{-- @if ($products_details && is_array($products_details->data))
                                 @foreach ($products_details->data as $key => $products_detail)
                                     <tr>
                             <td class="w-15">{{ $products_detail ? $key + 1  : "Not Applicable" }}</td>
@@ -627,7 +627,7 @@
                             <td>Not Applicable</td>
                             <td>Not Applicable</td>
                         </tr>
-                        @endif
+                        @endif --}}
                     </table>
                 </div>
             </div>
@@ -887,8 +887,8 @@
                 </table>
                 </div>
                 <div class = "inner-block">
-                    <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Results Of Retest/Re-Measurement</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->Description_Deviation ){{ $data->Description_Deviation }} @else Not Applicable @endif</span>
+                    {{-- <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Results Of Retest/Re-Measurement</label>
+                    <span style="font-size:0.8rem; margin-left:10px">@if($data->Description_Deviation ){{ $data->Description_Deviation }} @else Not Applicable @endif</span> --}}
                 </div>
 
 
@@ -1454,7 +1454,7 @@
                 </div>
               </div>
 
-            @include('frontend.OOS.comps.allchecklistSingleReport')
+            {{-- @include('frontend.OOS.comps.allchecklistSingleReport') --}}
 
             <div class="block">
                 <div class="block-head"> Phase II A Investigation </div>
@@ -1899,12 +1899,12 @@
                                                 <th class="w-80">File </th>
                                             </tr>
                                             @if ($data->addendum_attachment_uaa)
-                                            @foreach ($data->addendum_attachment_uaa as $key => $file)
+                                            {{-- @foreach ($data->addendum_attachment_uaa as $key => $file)
                                                 <tr>
                                                     <td class="w-20">{{ $key + 1 }}</td>
                                                     <td class="w-80"><a href="{{ asset('upload/' . $file) }}" target="_blank"><b>{{ $file }}</b></a> </td>
                                                 </tr>
-                                            @endforeach
+                                            @endforeach --}}
                                             @else
                                                 <tr>
                                                     <td class="w-20">1</td>
@@ -1949,12 +1949,12 @@
                                             <th class="w-80">File </th>
                                         </tr>
                                         @if ($data->disposition_attachment_bd)
-                                        @foreach ($data->disposition_attachment_bd as $key => $file)
+                                        {{-- @foreach ($data->disposition_attachment_bd as $key => $file)
                                             <tr>
                                                 <td class="w-20">{{ $key + 1 }}</td>
                                                 <td class="w-80"><a href="{{ asset('upload/' . $file) }}" target="_blank"><b>{{ $file }}</b></a> </td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach --}}
                                         @else
                                             <tr>
                                                 <td class="w-20">1</td>
@@ -2132,12 +2132,12 @@
                                                         <th class="w-80">File </th>
                                                     </tr>
                                                     @if ($data->conclusion_attachment_ocr)
-                                                    @foreach ($data->conclusion_attachment_ocr as $key => $file)
+                                                    {{-- @foreach ($data->conclusion_attachment_ocr as $key => $file)
                                                         <tr>
                                                             <td class="w-20">{{ $key + 1 }}</td>
                                                             <td class="w-80"><a href="{{ asset('upload/' . $file) }}" target="_blank"><b>{{ $file }}</b></a> </td>
                                                         </tr>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                     @else
                                                         <tr>
                                                             <td class="w-20">1</td>

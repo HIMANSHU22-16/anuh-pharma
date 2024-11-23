@@ -500,7 +500,7 @@
                             @enderror
                         </div>
                         <!-- <p id="docnameError" style="color:red">**Short Description is required</p> -->
-                        {{-- <div class="col-lg-6">
+                {{-- <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Short Description"> Severity Level</label>
                                 <select>
@@ -638,34 +638,10 @@
                                     value="">
 
                             </div>
-                        </div> --}}
+                </div> --}}
 
                         <div class="sub-head pt-3">Preliminary Information</div>
-                        <!-- <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Short Description ">Product / Material Name</label>
-
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input ">
-                                <label for="Short Description ">Market</label>
-
-                                <input type="text" name="num">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Initiator Group">Customer</label>
-                                <input type="text">
-                                {{-- <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option></option>
-                                    <option></option>
-                                </select> --}}
-                            </div>
-                        </div> -->
+ 
 
                         <!-- ---------------------------grid-1 -------------------------------- -->
                         <div class="group-input">
@@ -714,110 +690,12 @@
                                             <td><input type="text" name="info_product_material[0][info_test]" value=""></td>
                                             <td><input type="text" name="info_product_material[0][info_results_obtained]" value=""></td>
                                             <td><input type="text" name="info_product_material[0][info_specification_limit]" value=""></td>
-
-
                                             <td><button type="text" class="removeRowBtn">Remove</button></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
-                       
-
-
-                        <!-- -------------------------------grid-2  ----------------------------------   -->
-                        <!-- <div class="group-input">
-                            <label for="audit-agenda-grid">
-                                Details of Stability Study
-                                <button type="button" name="audit-agenda-grid" id="Details_Stability">+</button>
-                                <span class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#document-details-field-instruction-modal"
-                                    style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
-                                    (Launch Instruction)
-                                </span>
-                            </label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="Details_Stability_details" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 4%">Row#</th>
-                                            <th style="width: 8%">AR Number</th>
-                                            <th style="width: 12%">Condition: Temperature & RH</th>
-                                            <th style="width: 12%">Interval</th>
-                                            <th style="width: 16%">Orientation</th>
-                                            <th style="width: 16%">Pack Details (if any)</th>
-                                            <th style="width: 16%">Specification No.</th>
-                                            <th style="width: 16%">Sample Description</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td><input disabled type="text" name="serial[]" value="1"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-
-
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div> -->
-
-
-                        <!--
-        ------------------------------------------grid-3----------------------------------- -->
-
-                        <!-- <div class="group-input">
-                            <label for="audit-agenda-grid">
-                                OOS Details
-                                <button type="button" name="audit-agenda-grid" id="OOS_Details">+</button>
-                                <span class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#document-details-field-instruction-modal"
-                                    style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
-                                    (Launch Instruction)
-                                </span>
-                            </label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="OOS_Details_details" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 4%">Row#</th>
-                                            <th style="width: 8%">AR Number.</th>
-                                            <th style="width: 8%">Test Name of OOS</th>
-                                            <th style="width: 12%">Results Obtained</th>
-                                            <th style="width: 16%">Specification Limit</th>
-                                            <th style="width: 16%">Details of Obvious Error</th>
-                                            <th style="width: 16%">File Attachment</th>
-                                            {{-- <th style="width: 16%">Submit By</th>
-                                            <th style="width: 16%">Submit On</th> --}}
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td><input disabled type="text" name="serial[]" value="1"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="text[]"></td>
-                                        <td><input type="file" name="file[]"></td>
-                                        {{-- <td><input type="text" name="text[]"></td>
-                                        <td><input type="date" name="time[]"></td> --}}
-
-
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div> -->
 
 
 
@@ -1115,7 +993,7 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
-                                <label for="Description Deviation">Correct the Obvious error/cause and document.</label>
+                                <label for="Description Deviation">Correct the Obvious error/cause and document</label>
                                 <textarea class="summernote" name="summary_of_prelim_investiga_plic" id="summernote-1"></textarea> 
                             </div>
                         </div>
@@ -1148,14 +1026,14 @@
                             <div class="group-input">
                                 <label for="Description Deviation">Evaluation By Head Quality</label>
                                 <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                                <input type="text" class="evaluation_by_head_quality" name="" id="">
+                                <input type="text" class="" name="evaluation_by_head_quality" id="">
                                     
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation.</label>
+                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation</label>
                                 <select multiple id="reference_record" name="outcome_phase_i_investigation" id="">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
@@ -1184,7 +1062,7 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
-                                <label for="Description Deviation">Results of Hypothesis:</label>
+                                <label for="Description Deviation">Results of Hypothesis</label>
                                 <!-- <div><small class="text-primary">Hypothesis may vary depending on nature and test of OOS</small></div> -->
                                 <textarea class="" name="results_hypothesis" id="">
                                     </textarea>
@@ -1204,7 +1082,7 @@
                             <div class="group-input">
                                 <label for="Lead Auditor">Hypothesis Root Cause</label>
                                 <!-- <div class="text-primary">Please Choose the relevent units</div> -->
-                                <select name="" id="hypothesis_root_cause" onchange="">
+                                <select name="hypothesis_root_cause" id="" onchange="">
                                     <option value="">Enter Your Selection Here</option>
                                     <option value="yes">Yes</option>
                                     <option value="no">No</option>
@@ -1222,7 +1100,7 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
-                                <label for="Description Deviation">Preventive action(if any)</label>
+                                <label for="Description Deviation">Preventive Action(if any)</label>
                                 <textarea class="summernote" name="preventive_action_phase1b" id="summernote-1">
                                     </textarea>
                             </div>
@@ -1239,7 +1117,7 @@
 
                         <div class="col-lg-6">
                             <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase I(B) Investigation.</label>
+                                <label for="Reference Recores">Outcome Of Phase I(B) Investigation</label>
                                 <select multiple id="reference_record1" name="outcome_phase_ib_investigation2[]">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
@@ -1332,97 +1210,7 @@
                             </div>
                         </div>
 
-                        <!-- <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase II Extended Laboratory Investigation.</label>
-                                <select multiple id="reference_record2" name="outcome_phase_ii_investigation2[]">
-                                    <option value="">--Select---</option>
-                                    <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
-                                    <option value="Phase II">Phase II (Manufacturing investigation)</option>
-                                </select>
-                            </div>
-                        </div> -->
-
-
-                        <!-- ---------------------------grid-1 ---Preliminary Lab Invst. Review----------------------------- -->
-                        <!-- <div class="group-input">
-                            <label for="audit-agenda-grid">
-                                Info. On Product/ Material
-                                <button type="button" name="audit-agenda-grid" id="oos_capa">+</button>
-                                <span class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#document-details-field-instruction-modal"
-                                    style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
-                                    (Launch Instruction)
-                                </span>
-                            </label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="oos_capa_details" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 4%">Row#</th>
-                                            <th style="width: 8%">OOS Number</th>
-                                            <th style="width: 8%"> OOS Reported Date</th>
-                                            <th style="width: 12%">Description of OOS</th>
-                                            <th style="width: 16%">Previous OOS Root Cause</th>
-                                            <th style="width: 16%"> CAPA</th>
-                                            <th style="width: 16% pt-3">Closure Date of CAPA</th>
-                                            <th style="width: 16%">CAPA Requirement</th>
-
-                                            <th style="width: 16%">Reference CAPA Number</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td><input disabled type="text" name="serial[]" value="1"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="date" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="date" name="Remarks[]"></td>
-                                        <td><select name="CAPARequirement[]">
-                                                <option>Yes</option>
-                                                <option>No</option>
-                                            </select></td>
-                                        <td><input type="text" name="Name[]"></td>
-
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div>
-
-
-
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Audit Start Date"> Phase II Inv. Required ?</label>
-                                <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Audit Attachments"> Supporting Attachments</label>
-                                <small class="text-primary">
-                                    Please Attach all relevant or supporting documents
-                                </small>
-                                <div class="file-attachment-field">
-                                    <div class="file-attachment-list" id="file_attach"></div>
-                                    <div class="add-btn">
-                                        <div>Add</div>
-                                        <input type="file" id="myfile" name="file_attach[]"
-                                            oninput="addMultipleFiles(this, 'file_attach')" multiple>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div> -->
-
+                    
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -1913,7 +1701,7 @@
 
                     <div class="col-md-12 mb-4">
                         <div class="group-input">
-                            <label for="Description Deviation">Average of all six test results :</label>
+                            <label for="Description Deviation">Average of all six test results</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
                             <textarea class="summernote" name="average_all_six_result" id="summernote-1">
                                     </textarea>
@@ -2022,9 +1810,6 @@
                         <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                 Exit </a> </button>
                     </div>
-
-
-
 
                 </div>
             </div>

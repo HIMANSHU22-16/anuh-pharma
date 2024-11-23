@@ -199,7 +199,7 @@
                                 View
                             </button>
                             <button class="button_theme1"><a class="text-white"
-                                    href="{{ route('oos.oos_view', $document->id) }}"> Back
+                                    href="{{ route('oos_view', $document->id) }}"> Back
                                 </a>
                             </button>
                             <button class="button_theme1"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white" >Exit </a> </button>
@@ -463,11 +463,6 @@
                 var user = $('#user').val();
                 var fromDate = $('#from_date').val();
                 var toDate = $('#to_date').val();
-
-
-
-
-
 
                 $.ajax({
                     url: " ",
