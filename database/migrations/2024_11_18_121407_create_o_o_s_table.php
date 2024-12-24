@@ -184,7 +184,11 @@ return new class extends Migration
             $table->text('type')->nullable();
             $table->text('parent_record')->nullable();
             $table->text('Description_Deviation')->nullable();
+            $table->longtext('hod_attachment2')->nullable();
+            $table->longtext('hod_attachment3')->nullable();
+            $table->longtext('hod_attachment4')->nullable();
 
+            $table->longtext('hod_attachment5')->nullable();
             $table->text('Discussion_points')->nullable();
             $table->text('Remark_qc_investigator')->nullable();
             $table->text('preliminary_investigation_response')->nullable();

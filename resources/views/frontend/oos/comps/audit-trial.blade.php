@@ -153,7 +153,7 @@
                     padding: 10px;
                     margin-bottom: 10px;
                     margin-top: 10px;
-                    background: #4274da;
+                    background: #eb7f00d9;
                 }
 
                 .heading-new {

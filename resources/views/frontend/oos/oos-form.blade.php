@@ -139,7 +139,7 @@
                         '"></td>' +
                         '<td><input type="text" name="details_stability[' + serialNumber + '][summary_of_previous_oos]" value=""></td>'+
                         '<td><input type="text" name="details_stability[' + serialNumber + '][capa_taken_for_oos]" value=""></td>' +
-                        '<td><button type="text" class="removeRowBtn">Remove</button></td>' +
+                        // '<td><button type="text" class="removeRowBtn">Remove</button></td>' +
 
                     '</tr>';
                     for (var i = 0; i < users.length; i++) {
@@ -697,6 +697,23 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment5"></div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment5[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment5')" multiple>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
 
 
                         <div class="button-block">
@@ -885,7 +902,7 @@
                         <div class="group-input">
                             <label for="audit-agenda-grid">
                                 Details Of Previous history Of Similar type (Same product, Same test) Of OOS Observed
-                                <button type="button" name="audit-agenda-grid" id="details_tability">+</button>
+                                <button type="button" name="audit-agenda-grid" id="details_stability">+</button>
                                 <span class="text-primary" data-bs-toggle="modal"
                                     data-bs-target="#document-details-field-instruction-modal"
                                     style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
@@ -924,6 +941,22 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Lab Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment2"></div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment2[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment2')" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                    
 
                         <div class="button-block">
@@ -1050,8 +1083,6 @@
                             <div class="group-input">
                                 <label for="Description Deviation">Hypothesis Analysis</label>
                                 <div><small class="text-primary">Hypothesis may vary depending on nature and test of OOS</small></div>
-                                {{-- <textarea class="" name="hypothesis_analysis" id="">
-                                    </textarea> --}}
                                 <select name="hypothesis_analysis">
                                     <option value="">Enter Your Selection Here</option>
                                     <option value="yes">Yes</option>
@@ -1092,6 +1123,78 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
+                                <label for="Description Deviation">Investigator</label>
+                                <textarea class="summernote" name="hypothesis_investigator" id="summernote-1">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">If applicable: Yes/No</label>
+                                <p style="font-size:0.9rem">
+                                    Approval of allocation for repeat analysis to other analyst since Analyst-1 
+                                    <select name="approval_1" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    is absent, hence repeat analysis to be performed by another analyst 
+                                    <select name="approval_2" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    as Analyst-1.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Phase-I (B) test results:</label>
+                                <input type="text" name="phase_1_result">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Test Result</label>
+                                <input type="text" name="phase_1_test_result">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Conclusion</label>
+                                <input type="text" name="phase_1_conclusion">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Investigator</label>
+                                <input type="text" name="phase_1_investigator">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
                                 <label for="Description Deviation">Impact assessment/Risk assessment (If applicable)</label>
                                 <textarea class="summernote" name="impact_assessment_risk" id="summernote-1">
                                     </textarea>
@@ -1123,6 +1226,23 @@
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
                                     <option value="Phase II">Phase II</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Phase 1(A) Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment3"></div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment3[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment3')" multiple>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1210,6 +1330,22 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">PHASE-II Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment4"></div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment4[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment4')" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>

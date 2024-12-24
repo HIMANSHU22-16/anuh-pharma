@@ -142,11 +142,11 @@
                         // '<td><button type="text" class="removeRowBtn">Remove</button></td>' +
 
                     '</tr>';
-                    for (var i = 0; i < users.length; i++) {
-                        html += '<option value="' + users[i].id + '">' + users[i].name + '</option>';
-                    }
+                    // for (var i = 0; i < users.length; i++) {
+                    //     html += '<option value="' + users[i].id + '">' + users[i].name + '</option>';
+                    // }
 
-                    html += '</select></td>' +
+                    // html += '</select></td>' +
 
                         '</tr>';
 
@@ -819,6 +819,38 @@
                             </div>
                         </div> -->
 
+                        <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment5">
+
+                                        @if ($data->hod_attachment5)
+                                        @foreach ($data->hod_attachment5 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment5[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment5')" {{ $data->stage == 18 ? '' : 'readonly' }} multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
                         <div class="button-block">
@@ -1066,7 +1098,7 @@
                                             <th style="width: 4%">Row#</th>
                                             <th style="width: 12%">Summary Of Previous OOS history</th>
                                             <th style="width: 12%">CAPA taken for OOS</th>
-                                            <th style="width: 12%">Action</th>
+                                            <!-- <th style="width: 12%">Action</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>         
@@ -1083,7 +1115,7 @@
                                                     name="details_stability[{{ $loop->index }}][capa_taken_for_oos]"
                                                     value="{{ $oogrid['capa_taken_for_oos'] }}"></td>
 
-                                            <td><button class="removeRowBtn">Remove</button>
+                                            <!-- <td><button class="removeRowBtn">Remove</button> -->
                                     @endforeach
                                     </tr>
                                     </tbody>
@@ -1237,6 +1269,40 @@
                             </div>
                         </div> --}}
 
+
+                        <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment2">
+
+                                        @if ($data->hod_attachment2)
+                                        @foreach ($data->hod_attachment2 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment2[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment2')"  multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -1317,18 +1383,6 @@
                                     </textarea>
                             </div>
                         </div>
-                        {{-- <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Audit Team">OOS Category-Root Cause Identified</label>
-                                <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option>Analyst Error</option>
-                                    <option>Instrument Error</option>
-                                    <option>Product/Material Related Error</option>
-                                    <option>Other Error</option>
-                                </select>
-                            </div>
-                        </div> --}}
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
@@ -1453,6 +1507,39 @@
                             </div>
                         </div>
 
+                        <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment3">
+
+                                        @if ($data->hod_attachment3)
+                                        @foreach ($data->hod_attachment3 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment3[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment3')" {{ $data->stage == 18 ? '' : 'readonly' }} multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -1524,7 +1611,7 @@
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
                                 <label for="Description Deviation">Preventive action(if any)</label>
-                                <textarea class="summernote" name="preventive_action_phase2" id="summernote-1">
+                                <textarea class="summernote" name="preventive_action_phase2" id="summernote-1">{{$data->preventive_action_phase2}}
                                     </textarea>
                             </div>
                         </div>
@@ -1636,6 +1723,39 @@
 
                             </div>
                         </div> -->
+
+                        <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment4">
+
+                                        @if ($data->hod_attachment4)
+                                        @foreach ($data->hod_attachment4 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment4[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment4')" {{ $data->stage == 18 ? '' : 'readonly' }} multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -2098,7 +2218,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Average of all six test results :</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="average_all_six_result[]" id="summernote-1">
+                            <textarea class="summernote" name="average_all_six_result" id="summernote-1">
                             {{$data->phase_iii_investigator}}
                                     </textarea>
                         </div>
@@ -2156,7 +2276,7 @@
                     <div class="col-md-12 mb-4">
                         <div class="group-input">
                             <label for="Description Deviation">Evaluation by Head Quality/Designee </label>
-                            <textarea class="summernote" name="phase_iii_evaluation[]" id="summernote-1">
+                            <textarea class="summernote" name="phase_iii_evaluation" id="summernote-1">
                                         {{$data->phase_iii_evaluation}}
                                     </textarea>   
                         </div>
@@ -2229,7 +2349,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Review Comment</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2247,7 +2367,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Additional Test Reference.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2267,7 +2387,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Task Reference</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2285,7 +2405,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2317,7 +2437,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Conclusion Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2351,12 +2471,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <td><input disabled type="text" name="serial[]" value="1"></td>
-                                    <td><input type="text" name="Number[]"></td>
-                                    <td><input type="number" name="Name[]"></td>
-                                    <td><input type="text" name="Remarks[]"></td>
-                                    <td><input type="text" name="Name[]"></td>
-                                    <td><input type="text" name="Remarks[]"></td>
+                                    <td><input disabled type="text" name="serial" value="1"></td>
+                                    <td><input type="text" name="Number"></td>
+                                    <td><input type="number" name="Name"></td>
+                                    <td><input type="text" name="Remarks"></td>
+                                    <td><input type="text" name="Name"></td>
+                                    <td><input type="text" name="Remarks"></td>
 
 
 
@@ -2398,7 +2518,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justification for Averaging Results</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2433,7 +2553,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">CAPA Ref No.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2444,7 +2564,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justify if CAPA not Required ?</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2463,7 +2583,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Plan Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2474,7 +2594,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justification for Delay</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2488,7 +2608,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2521,7 +2641,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Conclusion Review Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2555,11 +2675,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <td><input disabled type="text" name="serial[]" value="1"></td>
+                                    <!-- <td><input disabled type="text" name="serial[]" value="1"></td>
                                     <td><input type="text" name="Number[]"></td>
                                     <td><input type="text" name="Name[]"></td>
                                     <td><input type="text" name="Remarks[]"></td>
-                                    <td><input type="text" name="Number[]"></td>
+                                    <td><input type="text" name="Number[]"></td> -->
 
 
 
@@ -2575,7 +2695,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Action Taken on Affec.batch</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2599,7 +2719,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">CAPA Refer.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2632,7 +2752,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Task Reference</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2655,7 +2775,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Risk Assessment Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2667,7 +2787,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justify if No Risk Assessment</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2681,7 +2801,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2722,7 +2842,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">CQ Review comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviatio" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2741,7 +2861,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Reference of CAPA</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2766,7 +2886,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Ref Action Plan</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2783,7 +2903,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2863,7 +2983,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Other Action (Specify)</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2881,7 +3001,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Other Parameters Results</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2892,7 +3012,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Trend of Previous Batches</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2901,7 +3021,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Stability Data</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2909,7 +3029,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Process Validation Data</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2917,7 +3037,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Method Validation </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2925,7 +3045,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Any Market Complaints </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2935,7 +3055,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Statistical Evaluation </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2944,7 +3064,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Risk Analysis for Disposition </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2953,7 +3073,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Conclusion </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2974,7 +3094,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Phase-III Inves. Reference</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2986,7 +3106,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justify for Delay in Activity</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -3001,7 +3121,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3032,7 +3152,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Reason for Re-open</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -3047,7 +3167,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3082,7 +3202,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Reopen Approval Comments </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -3097,7 +3217,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3130,7 +3250,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Execution Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -3149,7 +3269,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Task Reference No.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3171,7 +3291,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Addi.Testing Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3192,7 +3312,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Investigation Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3214,7 +3334,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Hypo-Exp Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3232,7 +3352,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3266,7 +3386,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Addendum Review Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                     </textarea>
                         </div>
                     </div>
@@ -3281,7 +3401,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3317,7 +3437,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Verification Comments </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                     </textarea>
                         </div>
                     </div>
@@ -3332,7 +3452,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>

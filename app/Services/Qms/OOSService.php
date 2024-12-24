@@ -51,10 +51,10 @@ class OOSService
                 // 'required_attachment_uar',
                 // 'verification_attachment_uar',
                 // 'hod_attachment1',
-                // 'hod_attachment2',
-                // 'hod_attachment3',
-                // 'hod_attachment4',
-                // 'hod_attachment5',
+                'hod_attachment2',
+                'hod_attachment3',
+                'hod_attachment4',
+                'hod_attachment5',
                 // 'QA_Head_attachment1',
                 // 'QA_Head_attachment2',
                 // 'QA_Head_attachment3',
@@ -1155,23 +1155,23 @@ class OOSService
                     $history->save();
                 }
 
-                if (!empty($request->average_all_six_result)){
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $oos->id;
-                    $history->previous = "Null";
-                    $history->comment = "Not Applicable";
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $oos->status;
-                    $history->stage = $oos->stage;
-                    $history->change_to =   "Opened";
-                    $history->change_from = "Initiator";
-                    $history->action_name = 'Create';
-                    $history->activity_type = 'Average of all six test results';
-                    $history->current = $request->average_all_six_result;
-                    $history->save();
-                }
+                // if (!empty($request->average_all_six_result)){
+                //     $history = new OosAuditTrial();
+                //     $history->oos_id = $oos->id;
+                //     $history->previous = "Null";
+                //     $history->comment = "Not Applicable";
+                //     $history->user_id = Auth::user()->id;
+                //     $history->user_name = Auth::user()->name;
+                //     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                //     $history->origin_state = $oos->status;
+                //     $history->stage = $oos->stage;
+                //     $history->change_to =   "Opened";
+                //     $history->change_from = "Initiator";
+                //     $history->action_name = 'Create';
+                //     $history->activity_type = 'Average of all six test results';
+                //     $history->current = $request->average_all_six_result;
+                //     $history->save();
+                // }
 
                 if (!empty($request->phase_iii_investigator_result1)){
                     $history = new OosAuditTrial();

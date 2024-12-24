@@ -14,6 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::table('o_o_s', function (Blueprint $table) {
+
+            $table->longtext('hypothesis_investigator')->nullable();
+            $table->longtext('approval_1')->nullable();
+            $table->longtext('approval_2')->nullable();
+            $table->longtext('phase_1_result')->nullable();
+            $table->longtext('phase_1_test_result')->nullable();
+            $table->longtext('phase_1_limit')->nullable();
+            $table->longtext('phase_1_conclusion')->nullable();
+            $table->longtext('phase_1_investigator')->nullable();
             $table->text('Submite_by')->nullable();
             $table->text('Submite_on')->nullable();
             $table->text('Submite_comment')->nullable();
