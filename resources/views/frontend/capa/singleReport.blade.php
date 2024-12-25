@@ -159,9 +159,9 @@
 
     <header>
         <table>
-            <tr>
+            <tr> 
                 <td class="w-70 head">
-                    Capa Report
+                    Capa Single Report
                 </td>
                 <td class="w-30">
                     <div class="logo">
@@ -177,7 +177,7 @@
                     <strong> Capa No.</strong>
                 </td>
                 <td class="w-40">
-                    {{ Helpers::divisionNameForQMS($data->division_id) }}/DEV/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
+                    {{ Helpers::divisionNameForQMS($data->division_id) }}/Capa/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
                 </td>
                 <td class="w-30">
                     <strong>Record No.</strong> {{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
@@ -195,7 +195,7 @@
                     <strong>Printed By :</strong> {{ Auth::user()->name }}
                 </td>
                 {{-- <td class="w-30">
-                    <strong>Page :</strong> 
+                    <strong>Page :</strong>
                 </td> --}}
             </tr>
         </table>
@@ -238,6 +238,10 @@
                                 Not Applicable
                             @endif
                         </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
                         <th class="w-20">Short Description</th>
                         <td class="w-30">
                             @if ($data->short_description)
@@ -250,7 +254,8 @@
                         {{-- <th class="w-20">Department Code</th> --}}
                         {{-- <td class="w-30">@if ($data->initiator_group_code){{ $data->initiator_group_code }} @else Not Applicable @endif</td> --}}
                     </tr>
-                   
+                </table>
+                <table>
                     <tr>
                         <th class="w-20"> Source of CAPA</th>
                         <td class="w-30">
@@ -277,17 +282,17 @@
                         @else
                             Not Applicable
                         @endif</td>
-                       
 
 
-                   
+
+
 
 
                     {{-- <tr> --}}
                     {{-- <th class="w-20">Name of Product & Batch No</th> --}}
                     {{-- <td class="w-30">@if ($data->Product_Batch){{ ($data->Product_Batch) }} @else Not Applicable @endif</td> --}}
                     {{-- </tr> --}}
-                 
+
 
                 </table>
                 <div class="block">
@@ -368,7 +373,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="border-table" style="margin-bottom: 15px;">
                     <div class="block-" style="margin-bottom:5px; font-weight:bold;">
                         Proposed Preventive Action
@@ -413,11 +418,11 @@
                         </tbody>
                     </table>
                 </div>
-                
 
-                
-                
-                
+
+
+
+
                 <div class="block">
                     <div class="block-head">
                         Document Details
@@ -625,7 +630,7 @@
                             @endif
                         </td>
                     </tr>
-                  
+
                     <tr>
                         {{-- <th class="w-20">Customer Notification Required ?</th> --}}
                         {{-- <td class="w-30">@if ($data->Customer_notification){{$data->Customer_notification}}@else Not Applicable @endif</td> --}}
@@ -645,8 +650,8 @@
                     </td> --}}
                     </tr>
 
-                   
-                   
+
+
                 </table>
                 <div class="border-table">
                     <div class="block-head">
@@ -676,8 +681,8 @@
                     </table>
                 </div>
             </div>
-           
-          
+
+
 
 
             <div class="block">
@@ -775,7 +780,7 @@
 
     </div>
 
-  
+
 
 </body>
 

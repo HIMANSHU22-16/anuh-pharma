@@ -116,7 +116,7 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::get('LabIncidentAuditReport/{id}', [LabIncidentController::class, 'auditReport'])->name('LabIncidentAuditReport');
             //------------------------------------
 
-            
+
             Route::post('create', [AuditProgramController::class, 'create'])->name('createAuditProgram');
             Route::get('AuditProgramShow/{id}', [AuditProgramController::class, 'AuditProgramShow'])->name('ShowAuditProgram');
             Route::post('AuditStateChange/{id}', [AuditProgramController::class, 'AuditStateChange'])->name('StateChangeAuditProgram');
@@ -187,7 +187,7 @@ Route::group(['prefix' => 'rcms'], function () {
              Route::get('deviationAuditReport/{id}', [DeviationController::class, 'auditReport'])->name('deviationAuditReport');
              Route::get('deviationparentchildReport/{id}', [DeviationController::class, 'parentchildReport'])->name('deviationparentchildReport');
              Route::get('DeviationFamily/{id}', [DeviationController::class, 'deviationfamilyReport'])->name('DeviationFamily');
-             
+
 //=======================market complaint START =======
 // Route::view('marketcomplaintkp', 'frontend.marketcomplaint.marketcomplaint');
         Route::get('marketcomplaintcreate', [MarketComplaintController::class, 'marketcomplaint']);
@@ -200,14 +200,16 @@ Route::group(['prefix' => 'rcms'], function () {
         Route::get('MarketComplaintAuditTrial/{id}', [MarketComplaintController::class, 'AuditTrial'])->name('MarketcomplaintAuditTrial');
         Route::get('/marketcomplaint/{id}',[MarketComplaintController::class,'audit_trail_filter_marketcomplaint'])->name('marketcomplaint_filter');
         Route::get('marketAuditReport/{id}', [MarketComplaintController::class, 'auditReport'])->name('marketcomplaintAuditReport');
+        Route::post('market_child/{id}', [MarketComplaintController::class, 'child_change_control'])->name('child_changecontrol');
 
 
 
 
-//====================MARKET compalint end 
+
+//====================MARKET compalint end
 
 
-             
+
 
         }
     );
