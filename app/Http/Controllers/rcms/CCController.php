@@ -84,7 +84,7 @@ class CCController extends Controller
         //     'short_description' => 'required|unique:open_stages,short_description',
         //     'due_date' => 'required',
         // ]);
-        
+        // dd($request->all());
         $openState = new CC();
         $openState->form_type = "CC";
         $openState->division_id = $request->division_id;
@@ -136,7 +136,13 @@ class CCController extends Controller
         $openState->effectiveness = $request->effectiveness;
         $openState->remark = implode(',', $request->remark);
         $openState->closure_conclusion = implode(',', $request->closure_conclusion);
-
+        $openState->impact_on = implode(',', $request->impact_on);
+        $openState->impact_on_facility = implode(',', $request->impact_on_facility);
+        $openState->impact_on_documents = implode(',', $request->impact_on_documents);
+        $openState->risk_assessment = $request->risk_assessment;
+        $openState->risk_justification = $request->risk_justification;
+        $openState->others = $request->others;
+        $openState->save();
         // Iterate over the rows and save each one
         // foreach ($request->action_description as $index => $description) {
         //     ActionsPlan::create([
@@ -153,28 +159,41 @@ class CCController extends Controller
 
         $actionsPlanData = [];
         if ($request->has('action_description')) {
-            foreach ($request->action_description as $index => $description) {
+            foreach ($request->action_description as $key => $description) {
                 $actionsPlanData[] = [
                     'action_description' => $description,
-                    'responsible_department' => $request->responsible_department[$index],
-                    'planned_date' => $request->planned_date[$index],
-                    'actual_date' => $request->actual_date[$index] ?? null,
-                    'evidence_attached' => $request->evidence_attached[$index],
-                    'hod_sign_date' => $request->hod_sign_date[$index] ?? null,
-                    'qa_verification' => $request->qa_verification[$index] ?? null,
-                    'reference_annexures' => $request->reference_annexures[$index] ?? null,
+                    'responsible_department' => $request->responsible_department[$key],
+                    'planned_date' => $request->planned_date[$key],
+                    'actual_date' => $request->actual_date[$key],
+                    'evidence_attached' => $request->evidence_attached[$key],
+                    'hod_sign_date' => $request->hod_sign_date[$key],
+                    'qa_verification' => $request->qa_verification[$key],
+                    'reference_annexures' => $request->reference_annexures[$key],
                 ];
             }
         }
 
+
         // Store the data as JSON in the database
-        $actionsPlanGridData = ActionsPlan::where([ 
+        $actionsPlanGridData = ActionsPlan::where([
+            'action_id' => $openState->id,  
             'identifier' => "ActionsPlan",
         ])->firstOrCreate();
 
+        $actionsPlanGridData->action_id = $openState->id;
         $actionsPlanGridData->identifier = "ActionsPlan";
         $actionsPlanGridData->data = $actionsPlanData; // Storing data as JSON
         $actionsPlanGridData->save();
+
+        // $action_id = $openState->division_id;
+        // dd($openState->id);
+
+        // $employeeJobGrid = ActionsPlan::where(['action_id' => $action_id, 'identifier' => 'jobResponsibilites'])->firstOrNew();
+        // $employeeJobGrid->action_id = $action_id;
+        // $employeeJobGrid->identifier = 'jobResponsibilites';
+        // $employeeJobGrid->data = $request->jobResponsibilities;  
+
+        // $employeeJobGrid->save();
 
         
         $openState->type_chnage = $request->type_chnage;
@@ -188,13 +207,14 @@ class CCController extends Controller
         $openState->training_required = $request->training_required;
         $openState->train_comments = $request->train_comments;
 
-    //    $openState->Microbiology = $request->Microbiology;
-    //    if ($request->Microbiology_Person) {
-    //        $openState->Microbiology_Person = implode(',', $request->Microbiology_Person);
-    //    } else {
-    //        toastr()->warning('CFT reviewers can not be empty');
-    //        return back();
-    //    }
+        // $openState->Microbiology = $request->Microbiology;
+        // if ($request->Microbiology_Person) {
+        //     $openState->Microbiology_Person = implode(',', $request->Microbiology_Person);
+        // } else {
+        //     toastr()->warning('CFT reviewers can not be empty');
+        //     return back();
+        // }
+
         $openState->goup_review = $request->goup_review;
         $openState->Production = $request->Production;
         $openState->Production_Person = $request->Production_Person;
@@ -347,6 +367,7 @@ class CCController extends Controller
              $info->Microbiology = $request->Microbiology;
             
          }
+
         //  if ($request->Microbiology_Person) {
         //      $info->Microbiology_Person = implode(',', $request->Microbiology_Person);
         //  } else {
@@ -1176,14 +1197,16 @@ class CCController extends Controller
         $approcomments = QaApprovalComments::where('cc_id', $id)->first();
         $closure = ChangeClosure::where('cc_id', $id)->first();
 
-        $actionsPlanGridData= ActionsPlan::where([
-            'identifier' => 'ProductDetails'
+        $actionsplangridData = ActionsPlan::where([
+            'action_id' => $id, 
+            'identifier' => 'ActionsPlan'
         ])->first();
         
-        $actionsPlanGridData = $actionsPlanGridData && is_string($actionsPlanGridData->data)
-            ? json_decode($actionsPlanGridData->data, true) 
-            : ($actionsPlanGridData->data ?? []);
-
+        $actionsplanData = $actionsplangridData && is_string($actionsplangridData->data)
+            ? json_decode($actionsplangridData->data, true) 
+            : ($actionsplangridData->data ?? []);
+            
+        
         $hod = User::get();
         $cft = User::get();
         $cft_aff = [];
@@ -1208,7 +1231,7 @@ class CCController extends Controller
             "cft_aff",
             "due_date_extension",
             "cc_lid",
-            "actionsPlanGridData",
+            "actionsplanData",
             "pre"
         ));
     }
@@ -1222,8 +1245,64 @@ class CCController extends Controller
         $openState->Initiator_Group = $request->Initiator_Group;
         $openState->initiator_group_code = $request->initiator_group_code;
         $openState->short_description = $request->short_description;
+
+        if (is_array($request->audit_type)) {
+            $openState->audit_type = implode(',', $request->audit_type);
+        }
+        $openState->title = $request->title;
+        $openState->doc_no = $request->doc_no;
+        $openState->Existing_Stage = implode(',', $request->Existing_Stage);
+        $openState->Proposed_changes = implode(',', $request->Proposed_changes);
+        $openState->justification_changes = implode(',', $request->justification_changes);
+        $openState->review_initiating = implode(',', $request->review_initiating);
+        $openState->identification_cross_funct = $request->identification_cross_funct;
+        $openState->evaluation = implode(',', $request->review_initiating);
+        $openState->outcome_risk = implode(',', $request->outcome_risk);
+        $openState->proposal_change = $request->proposal_change;
+        $openState->change_category = $request->change_category;
+        $openState->reason_categorization = $request->reason_categorization;
+        $openState->intimation = $request->intimation;
+        $openState->acknowledgement = implode(',', $request->acknowledgement);
+        $openState->justification_extension = implode(',', $request->justification_extension);
+        $openState->closure_remark = implode(',', $request->closure_remark);
+        $openState->effectiveness = $request->effectiveness;
+        $openState->remark = implode(',', $request->remark);
+        $openState->closure_conclusion = implode(',', $request->closure_conclusion);
+        $openState->save();
+
+
+        //grid data
+        $actionsPlanData = [];
+        if ($request->has('action_description')) {
+            foreach ($request->action_description as $key => $description) {
+                $actionsPlanData[] = [
+                    'action_description' => $description,
+                    'responsible_department' => $request->responsible_department[$key],
+                    'planned_date' => $request->planned_date[$key],
+                    'actual_date' => $request->actual_date[$key],
+                    'evidence_attached' => $request->evidence_attached[$key],
+                    'hod_sign_date' => $request->hod_sign_date[$key],
+                    'qa_verification' => $request->qa_verification[$key],
+                    'reference_annexures' => $request->reference_annexures[$key],
+                ];
+            }
+        }
+        
+        // Store the data as JSON in the database
+        $actionsPlanGridData = ActionsPlan::where([
+            'action_id' => $openState->id,  
+            'identifier' => "ActionsPlan",
+        ])->firstOrCreate();
+
+        $actionsPlanGridData->action_id = $openState->id;
+        $actionsPlanGridData->identifier = "ActionsPlan";
+        $actionsPlanGridData->data = $actionsPlanData; // Storing data as JSON
+        $actionsPlanGridData->save();
+
+
+        
         $openState->assign_to = $request->assign_to;
-        $openState->due_date = $request->due_date;
+        // $openState->due_date = $request->due_date;
         $openState->doc_change = $request->naturechange;
         $openState->If_Others = $request->others;
         $openState->Division_Code = $request->div_code;
@@ -1248,14 +1327,14 @@ class CCController extends Controller
         $openState->training_required = $request->training_required;
         $openState->train_comments = $request->train_comments;
 
-        $openState->Microbiology = $request->Microbiology;
+        // $openState->Microbiology = $request->Microbiology;
         
-         if ($request->Microbiology_Person) {
-             $openState->Microbiology_Person = implode(',', $request->Microbiology_Person);
-         } else {
-             toastr()->warning('CFT reviewers can not be empty');
-             return back();
-         }
+        //  if ($request->Microbiology_Person) {
+        //      $openState->Microbiology_Person = implode(',', $request->Microbiology_Person);
+        //  } else {
+        //      toastr()->warning('CFT reviewers can not be empty');
+        //      return back();
+        //  }
         $openState->goup_review = $request->goup_review;
         $openState->Production = $request->Production;
         $openState->Production_Person = $request->Production_Person;
@@ -1388,16 +1467,16 @@ class CCController extends Controller
         $info->Production_Person = $request->Production_Person;
         $info->Quality_Approver = $request->Quality_Approver;
         $info->Quality_Approver_Person = $request->Quality_Approver_Person;
-         if ($request->Microbiology == "yes") {
-             $info->Microbiology = $request->Microbiology;
+        //  if ($request->Microbiology == "yes") {
+        //      $info->Microbiology = $request->Microbiology;
            
-         }
-         if ($request->Microbiology_Person) {
-             $info->Microbiology_Person = implode(',', $request->Microbiology_Person);
-         } else {
-             toastr()->warning('CFT reviewers can not be empty');
-             return back();
-         }
+        //  }
+        //  if ($request->Microbiology_Person) {
+        //      $info->Microbiology_Person = implode(',', $request->Microbiology_Person);
+        //  } else {
+        //      toastr()->warning('CFT reviewers can not be empty');
+        //      return back();
+        //  }
         $info->bd_domestic = $request->bd_domestic;
         $info->Bd_Person = $request->Bd_Person;
 

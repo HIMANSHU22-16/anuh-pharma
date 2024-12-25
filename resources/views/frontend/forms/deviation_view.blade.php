@@ -709,6 +709,7 @@
                     </div>
 
                 </div>
+                
                 <div class="status">
                     <div class="head">Current Status</div>
                     @if ($data->stage == 0)
@@ -1136,6 +1137,7 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                
                                     <script>
                                         function handleDateInput(element, textInputID) {
                                         let textInput = document.getElementById(textInputID);
