@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\OOS;
 use App\Models\User;
+use App\Models\Capa;
 use App\Models\RoleGroup;
 use App\Models\Oosgrids;
 use App\Models\OosAuditTrial;
@@ -23,19 +24,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 
-
-
 class OOSController extends Controller
 {
     public function index()
     {
         $cft = [];
 
-        // $old_records = OOS::select('id', 'division_id', 'record_number')->get();
-        // $old_record = ActionItem::select('id', 'division_id', 'record')->get();
-        // $capa_record = Capa::select('id', 'division_id', 'record')->get();
-        // $record_number = ((RecordNumber::first()->value('counter')) + 1);
-        // $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
+        $old_records = OOS::select('id', 'division_id', 'record_number')->get();
+        $old_record = ActionItem::select('id', 'division_id', 'record')->get();
+        $capa_record = Capa::select('id', 'division_id', 'record')->get();
+        $record_number = ((RecordNumber::first()->value('counter')) + 1);
+        $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
         $division = QMSDivision::where('name', Helpers::getDivisionName(session()->get('division')))->first();
 
         $users = User::get();
@@ -44,13 +43,13 @@ class OOSController extends Controller
         $due_date= $formattedDate->format('Y-m-d');
         // $changeControl = OpenStage::find(1);
         //  if(!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
-        return view("frontend.oos.oos-form", compact('due_date', 'cft','users'));
+        return view("frontend.oos.oos-form", compact('due_date', 'record_number', 'old_records', 'cft','old_record','capa_record','users'));
 
     }
     
     public function store(Request $request)
     { 
-        // dd($request->all());
+        
         $res = Helpers::getDefaultResponse();
 
         try {
@@ -70,19 +69,7 @@ class OOSController extends Controller
             ]);
         }
         
-        // $oos = new OOS();
 
-        if (!empty($request->outcome_phase_i_investigation)) {
-            // Ensure it's an array
-            $outcomes = is_array($request->outcome_phase_i_investigation) 
-                ? $request->outcome_phase_i_investigation 
-                : [$request->outcome_phase_i_investigation];
-            
-            $oos_record->outcome_phase_i_investigation = implode(',', $outcomes);
-        }
-        
-        $oos_record->save();
-        
         // $oos_id = $oos->id;
 
         // $trainerSkillGrid = Oosgrids::where(['oos_id' => $oos_id, 'identifier' => 'info_product_material'])->firstOrNew();
@@ -104,6 +91,7 @@ class OOSController extends Controller
         $revised_date = "";
         $data = OOS::find($id);
         $users = User::get();
+        $currentDate = Carbon::now();
         $old_record = OOS::select('id', 'division_id', 'record_number')->get();
         // $revised_date = Extension::where('parent_id', $id)->where('parent_type', "OOS Chemical")->value('revised_date');
         $data->record_number = str_pad($data->record_number, 4, '0', STR_PAD_LEFT);
@@ -166,767 +154,378 @@ class OOSController extends Controller
             if ($changestage->stage == 1) {
                 $changestage->stage = "2";
                 $changestage->status = "HOD Primary Review";
-                $changestage->Submite_by = Auth::user()->name;
-                $changestage->Submite_on = Carbon::now()->format('d-M-Y');
-                $changestage->Submite_comment = $request->comment;
+                $changestage->completed_by_pending_initial_assessment = Auth::user()->name;
+                $changestage->completed_on_pending_initial_assessment = Carbon::now()->format('d-M-Y');
+                $changestage->comment_pending_initial_assessment = $request->comment;
                                 $history = new OosAuditTrial();
                                 $history->oos_id = $id;
-                                $history->activity_type = 'Submitted By    ,   Submitted On';
-                                if (is_null($lastDocument->Submite_by) || $lastDocument->Submite_by === '') {
-                                    $history->previous = "Null";
-                                } else {
-                                    $history->previous = $lastDocument->Submite_by . ' , ' . $lastDocument->Submite_on;
-                                }
+                                $history->activity_type = 'Activity Log';
+                                $history->current = $changestage->completed_by_pending_initial_assessment;
                                 $history->comment = $request->comment;
                                 $history->user_id = Auth::user()->id;
                                 $history->user_name = Auth::user()->name;
                                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                                 $history->origin_state = $lastDocument->status;
-                                //$history->action = 'Submit';
-                                $history->change_from = $lastDocument->status;
-                                $history->change_to =   "HOD Primary Review";
-                                $history->current = $changestage->Submite_by . ' , ' . $changestage->Submite_on;
-                                if (is_null($lastDocument->Submite_by) || $lastDocument->Submite_by === '') {
-                                    $history->action_name = 'New';
-                                } else {
-                                    $history->action_name = 'Update';
-                                }
-                                $history->action = 'Submit';
+                                $history->stage = "Completed";
+                                $history->action = 'submit';
+                                $history->change_to ="HOD Primary Review";
                                 $history->save();
-
-                                
-                                // $list = Helpers::getHodUserList($changestage->division_id);
-                                // foreach ($list as $u) {
-                                //    $email = Helpers::getUserEmail($u->user_id);
-                                //        if ($email !== null) {
-                                //        Mail::send(
-                                //            'mail.view-mail',
-                                //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                                //            function ($message) use ($email, $changestage) {
-                                //                $message->to($email)
-                                //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                                //            }
-                                //        );
-                                //    }
-                                // }
-                               
+                            //     $list = Helpers::getLeadAuditeeUserList();
+                            //     foreach ($list as $u) {
+                            //         if($u->q_m_s_divisions_id == $changestage->division_id){
+                            //             $email = Helpers::getInitiatorEmail($u->user_id);
+                            //              if ($email !== null) {
+                                      
+                            //               Mail::send(
+                            //                   'mail.view-mail',
+                            //                    ['data' => $changestage],
+                            //                 function ($message) use ($email) {
+                            //                     $message->to($email)
+                            //                         ->subject("Document sent ".Auth::user()->name);
+                            //                 }
+                            //               );
+                            //             }
+                            //      } 
+                            //   }
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 2) {
-                if (!$changestage->hod_remark1) {
-                    // Flash message for warning (field not filled)
-                    Session::flash('swal', [
-                        'title' => 'Mandatory Fields Required!',
-                        'message' => 'HOD Remarks is yet to be filled!',
-                        'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                    ]);
-            
-                    return redirect()->back();
-                } else {
-                    // Flash message for success (when the form is filled correctly)
-                    Session::flash('swal', [
-                        'title' => 'Success!',
-                        'message' => 'Sent for QA/CQA initial review state',
-                        'type' => 'success',
-                    ]);
-                }
-                $changestage->stage = "4";
+                $changestage->stage = "3";
                 $changestage->status = "CQA/QA Head Primary Review";
-                $changestage->HOD_Primary_Review_Complete_By = Auth::user()->name;
-                $changestage->HOD_Primary_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->HOD_Primary_Review_Complete_Comment = $request->comment;
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'HOD Primary Review Complete By    ,   HOD Primary Review Complete On';
-                    if (is_null($lastDocument->HOD_Primary_Review_Complete_By) || $lastDocument->HOD_Primary_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->HOD_Primary_Review_Complete_By . ' , ' . $lastDocument->HOD_Primary_Review_Complete_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'HOD Primary Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "CQA/QA Head Primary Review";
-                    $history->current = $changestage->HOD_Primary_Review_Complete_By . ' , ' . $changestage->HOD_Primary_Review_Complete_On;
-                    if (is_null($lastDocument->HOD_Primary_Review_Complete_By) || $lastDocument->HOD_Primary_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    // $history->stage = "Lab Supervisor";
+                    $history->action = 'submit';
+                    $history->change_to ="CQA/QA Head Primary Review";
                     $history->save();
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    //             foreach ($list as $u) {
-                    //                $email = Helpers::getUserEmail($u->user_id);
-                    //                    if ($email !== null) {
-                    //                    Mail::send(
-                    //                        'mail.view-mail',
-                    //                        ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //                        function ($message) use ($email, $changestage) {
-                    //                            $message->to($email)
-                    //                            ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //                        }
-                    //                    );
-                    //                }
-                    //             }
-                    
-                    //             $list = Helpers::getCQAUsersList($changestage->division_id);
-                    //             foreach ($list as $u) {
-                    //                $email = Helpers::getUserEmail($u->user_id);
-                    //                    if ($email !== null) {
-                    //                    Mail::send(
-                    //                        'mail.view-mail',
-                    //                        ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //                        function ($message) use ($email, $changestage) {
-                    //                            $message->to($email)
-                    //                            ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //                        }
-                    //                    );
-                    //                }
-                    //             }
-
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
-            // if ($changestage->stage == 3) {
-            //     $changestage->stage = "4";
-            //     $changestage->status = "CQA/QA Head Primary Review Complete";
-            //     $changestage->CQA_Head_Primary_Review_Complete_By = Auth::user()->name;
-            //     $changestage->CQA_Head_Primary_Review_Complete_On = Carbon::now()->format('d-M-Y');
-            //     $changestage->CQA_Head_Primary_Review_Complete_Comment = $request->comment;
-            //                 $history = new OosAuditTrial();
-            //                 $history->oos_id = $id;
-            //                   $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                  
-            //                 $history->comment = $request->comment;
-            //                 $history->user_id = Auth::user()->id;
-            //                 $history->user_name = Auth::user()->name;
-            //                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            //                 $history->origin_state = $lastDocument->status;
-            //                 //$history->action = 'Assignable Cause Not Found';
-            //                 $history->change_from = $lastDocument->status;
-            //                 $history->change_to =   "CQA/QA Head Primary Review Complete";
-            //                 $history->action_name = 'Update';
-            //                 $history->save();
+            if ($changestage->stage == 3) {
+                $changestage->stage = "4";
+                $changestage->status = "Under Phase-IA Investigation";
+                $changestage->completed_by_under_phaseIB_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseIB_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseIB_investigation = $request->comment;
+                            $history = new OosAuditTrial();
+                            $history->oos_id = $id;
+                            $history->activity_type = 'Activity Log';
+                            $history->current = $changestage->completed_by_under_phaseIB_investigation;
+                            $history->comment = $request->comment;
+                            $history->user_id = Auth::user()->id;
+                            $history->user_name = Auth::user()->name;
+                            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                            $history->origin_state = $lastDocument->status;
+                            $history->stage = "Lab Supervisor";
+                            $history->save();
+                        
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($changestage->stage == 4) {
+                $changestage->stage = "5";
+                $changestage->status = "Phase IA HOD Primary Review";
+                $changestage->completed_by_under_hypothesis = Auth::user()->name;
+                $changestage->completed_on_under_hypothesis = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_hypothesis = $request->comment;
 
-            //     $changestage->update();
-            //     toastr()->success('Document Sent');
-            //     return back();
-            // }
-            if ($changestage->stage == 6) {
-                // if (!$changestage->hod_remark2) {
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase IA HOD Primary Remark is yet to be filled!',
-                //         'type' => 'warning',
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
-                $changestage->stage = "7";
-                $changestage->status = "Phase IA QA/CQA Review ";
-                $changestage->Phase_IA_HOD_Review_Complete_By = Auth::user()->name;
-                $changestage->Phase_IA_HOD_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_IA_HOD_Review_Complete_Comment = $request->comment;
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->current = $changestage->completed_by_under_hypothesis;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "Final Approval";
+                $history->save();
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+
+            if ($changestage->stage == 5) {
+                $changestage->stage = "6";
+                $changestage->status = "Phase IA QA/CQA Review";
+                $changestage->completed_by_under_phaseII_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseII_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseII_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Phase IA HOD Review Complete By    ,   Phase IA HOD Review Complete On';
-                    if (is_null($lastDocument->Phase_IA_HOD_Review_Complete_By) || $lastDocument->Phase_IA_HOD_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_IA_HOD_Review_Complete_By . ' , ' . $lastDocument->Phase_IA_HOD_Review_Complete_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase IA HOD Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IA QA Review ";
-                    $history->current = $changestage->Phase_IA_HOD_Review_Complete_By . ' , ' . $changestage->Phase_IA_HOD_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_IA_HOD_Review_Complete_By) || $lastDocument->Phase_IA_HOD_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Under Phase II investigation";
                     $history->save();
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                  
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($changestage->stage == 6) {
+                $changestage->stage = "7";
+                $changestage->status = "P-IA CQAH/QAH Review";
+                $changestage->completed_by_under_manufacturing_investigation_phaseIIA = Auth::user()->name;
+                $changestage->completed_on_under_manufacturing_investigation_phaseIIA = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_manufacturing_investigation_phaseIIA = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_manufacturing_investigation_phaseIIA;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    $history->stage = "Under Manufacturing Phase II b Additional Lab Investigation";
+                    $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 7) {
-                // if (!$changestage->QA_Head_remark2) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase IA CQA/QA Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "8";
-                $changestage->status = "Phase IA CQAH/QAH Review";
-                $changestage->Phase_IA_QA_Review_Complete_By = Auth::user()->name;
-                $changestage->Phase_IA_QA_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_IA_QA_Review_Complete_Comment = $request->comment;
+                $changestage->status = "Under Phase-IB Investigation";
+                $changestage->completed_by_under_phaseIIB_additional_lab_investigation= Auth::user()->name;
+                $changestage->completed_on_under_phaseIIB_additional_lab_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseIIB_additional_lab_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Phase IA QA/CQA Review Complete By    ,   Phase IA QA/CQA Review Complete On';
-                    if (is_null($lastDocument->Phase_IA_QA_Review_Complete_By) || $lastDocument->Phase_IA_QA_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_IA_QA_Review_Complete_By . ' , ' . $lastDocument->Phase_IA_QA_Review_Complete_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_manufacturing_investigation_phaseIIA;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase IA QA/CQA Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IA CQAH/QAH Review";
-                    $history->current = $changestage->Phase_IA_QA_Review_Complete_By . ' , ' . $changestage->Phase_IA_QA_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_IA_QA_Review_Complete_By) || $lastDocument->Phase_IA_QA_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Under Manufacturing Phase II b Additional Lab Investigation";
                     $history->save();
-                //     $list = Helpers::getCQAUsersList($changestage->division_id);
-                //     foreach ($list as $u) {
-                //        $email = Helpers::getUserEmail($u->user_id);
-                //            if ($email !== null) {
-                //            Mail::send(
-                //                'mail.view-mail',
-                //                ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                //                function ($message) use ($email, $changestage) {
-                //                    $message->to($email)
-                //                    ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                //                }
-                //            );
-                //        }
-                //     }
-              
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($changestage->stage == 8) {
+                $changestage->stage = "9";
+                $changestage->status = "Phase IB HOD Primary Review";
+                $changestage->completed_by_under_phaseIII_investigation= Auth::user()->name;
+                $changestage->completed_on_under_phaseIII_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseIII_investigation = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    $history->stage = "Under Manufacturing Phase II b Additional Lab Investigation";
+                    $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 9) {
-                // if (!$changestage->outcome_phase_IA) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Outcome of Phase IA investigation is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "10";
-                $changestage->status = "Phase IB HOD Primary Review";
-                $changestage->Phase_IB_Investigation_By = Auth::user()->name;
-                $changestage->Phase_IB_Investigation_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_IB_Investigation_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'Phase IB Investigation By    ,   Phase IB Investigation On';
-                    if (is_null($lastDocument->Phase_IB_Investigation_By) || $lastDocument->Phase_IB_Investigation_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_IB_Investigation_By . ' , ' . $lastDocument->Phase_IB_Investigation_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase IB Investigation';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IB HOD Primary Review";
-                    $history->current = $changestage->Phase_IB_Investigation_By . ' , ' . $changestage->Phase_IB_Investigation_On;
-                    if (is_null($lastDocument->Phase_IB_Investigation_By) || $lastDocument->Phase_IB_Investigation_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
+                $changestage->status = "Phase IB QA/CQA Review";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
+
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->current = $changestage->completed_by_under_phaseIII_investigation;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "Approval Completed";
+                $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+           
             if ($changestage->stage == 10) {
-                // if (!$changestage->hod_remark3) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase IB HOD Primary Remark* is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "11";
-                $changestage->status = "Phase IB QA Review";
-                $changestage->Phase_IB_HOD_Review_Complete_By= Auth::user()->name;
-                $changestage->Phase_IB_HOD_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_IB_HOD_Review_Complete_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'Phase IB HOD Review Complete By    ,   Phase IB HOD Review Complete On';
-                    if (is_null($lastDocument->Phase_IB_HOD_Review_Complete_By) || $lastDocument->Phase_IB_HOD_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_IB_HOD_Review_Complete_By . ' , ' . $lastDocument->Phase_IB_HOD_Review_Complete_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase IB HOD Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IB QA Review";
-                    $history->current = $changestage->Phase_IB_HOD_Review_Complete_By . ' , ' . $changestage->Phase_IB_HOD_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_IB_HOD_Review_Complete_By) || $lastDocument->Phase_IB_HOD_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                 
-                    
+                $changestage->status = "P-IB CQAH/QAH Review";
+                $changestage->completed_by_close_done= Auth::user()->name;
+                $changestage->completed_on_close_done = Carbon::now()->format('d-M-Y');
+                $changestage->comment_close_done = $request->comment;
+                
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->current = $changestage->completed_by_under_phaseIII_investigation;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "";
+                $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 11) {
-                // if (!$changestage->QA_Head_remark3) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase IB CQA/QA Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "12";
-                $changestage->status = "P-IB CQAH/QAH Review";
-                $changestage->Phase_IB_QA_Review_Complete_By = Auth::user()->name;
-                $changestage->Phase_IB_QA_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_IB_QA_Review_Complete_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'Phase IB QA Review Complete By    ,   Phase IB QA Review Complete On';
-                    if (is_null($lastDocument->Phase_IB_QA_Review_Complete_By) || $lastDocument->Phase_IB_QA_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_IB_QA_Review_Complete_By . ' , ' . $lastDocument->Phase_IB_QA_Review_Complete_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase IB QA Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "P-IB CQAH/QAH Review";
-                    $history->current = $changestage->Phase_IB_QA_Review_Complete_By . ' , ' . $changestage->Phase_IB_QA_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_IB_QA_Review_Complete_By) || $lastDocument->Phase_IB_QA_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getQAHeadUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                
-                   
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            // if ($changestage->stage == 11) {
-            //     $changestage->stage = "13";
-            //     $changestage->status = "Under phase III Investigation";
-            //     $changestage->completed_by_under_phaseIII_investigation= Auth::user()->name;
-            //     $changestage->completed_on_under_phaseIII_investigation = Carbon::now()->format('d-M-Y');
-            //     $changestage->comment_under_phaseIII_investigation = $request->comment;
-            //         $history = new OosAuditTrial();
-            //         $history->oos_id = $id;
-            //           $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                   
-            //         $history->comment = $request->comment;
-            //         $history->user_id = Auth::user()->id;
-            //         $history->user_name = Auth::user()->name;
-            //         $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            //         $history->origin_state = $lastDocument->status;
-            //         $history->action = 'Phase II A Correction Inconclusive';
-            //         $history->change_from = $lastDocument->status;
-            //         $history->change_to =   "Pending Correction";
-            //         $history->action_name = 'Update';
-            //         $history->save();
-            //     $changestage->update();
-            //     toastr()->success('Document Sent');
-            //     return back();
-            // }
-            if ($changestage->stage == 12) {
-                // if (!$changestage->QA_Head_primary_remark3) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'P-IB CQAH/QAH Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
-                $changestage->stage = "13";
                 $changestage->status = "Under Phase-II A Investigation";
-                $changestage->P_I_B_Assignable_Cause_Not_Found_By= Auth::user()->name;
-                $changestage->P_I_B_Assignable_Cause_Not_Found_On = Carbon::now()->format('d-M-Y');
-                $changestage->P_I_B_Assignable_Cause_Not_Found_Comment = $request->comment;
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'P I B Assignable Cause Not Found By    ,   P I B Assignable Cause Not Found On';
-                    if (is_null($lastDocument->P_I_B_Assignable_Cause_Not_Found_By) || $lastDocument->P_I_B_Assignable_Cause_Not_Found_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->P_I_B_Assignable_Cause_Not_Found_By . ' , ' . $lastDocument->P_I_B_Assignable_Cause_Not_Found_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'P I B Assignable Cause Not Found';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Under Phase-II A Investigation";
-                    $history->current = $changestage->P_I_B_Assignable_Cause_Not_Found_By . ' , ' . $changestage->P_I_B_Assignable_Cause_Not_Found_On;
-                    if (is_null($lastDocument->P_I_B_Assignable_Cause_Not_Found_By) || $lastDocument->P_I_B_Assignable_Cause_Not_Found_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    // $history->stage = "Lab Supervisor";
+                    $history->action = 'submit';
+                    $history->change_to ="Under Phase-II A Investigation";
                     $history->save();
-                    // $list = Helpers::getProductionUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
-            
-            if($changestage->stage == 14) {
-                // if (!$changestage->hod_remark4) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase II A HOD Primary Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
-                $changestage->stage = "15";
-                $changestage->status = "Phase II A CQA/QA Review";
-                $changestage->Phase_II_A_HOD_Review_Complete_By= Auth::user()->name;
-                $changestage->Phase_II_A_HOD_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_II_A_HOD_Review_Complete_Comment = $request->comment;
+
+            if ($changestage->stage == 12) {
+                $changestage->stage = "13";
+                $changestage->status = "Phase II A HOD Primary Review";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Phase II A HOD Review Complete By    ,   Phase II A HOD Review Complete On';
-                    if (is_null($lastDocument->Phase_II_A_HOD_Review_Complete_By) || $lastDocument->Phase_II_A_HOD_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_II_A_HOD_Review_Complete_By . ' , ' . $lastDocument->Phase_II_A_HOD_Review_Complete_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase II A HOD Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II A CQA/QA Review";
-                    $history->current = $changestage->Phase_II_A_HOD_Review_Complete_By . ' , ' . $changestage->Phase_II_A_HOD_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_II_A_HOD_Review_Complete_By) || $lastDocument->Phase_II_A_HOD_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    // $history->stage = "Lab Supervisor";
+                    $history->action = 'submit';
+                    $history->change_to ="Phase II A HOD Primary Review";
                     $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+
+            if ($changestage->stage == 13) {
+                $changestage->stage = "14";
+                $changestage->status = "Phase II A QA/CQA Review";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    // $history->stage = "Lab Supervisor";
+                    $history->action = 'submit';
+                    $history->change_to ="Phase II A QA/CQA Review";
+                    $history->save();
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+
+            if ($changestage->stage == 14) {
+                $changestage->stage = "15";
+                $changestage->status = "P-II A QAH/CQAH Review";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    // $history->stage = "Lab Supervisor";
+                    $history->action = 'submit';
+                    $history->change_to ="P-II A QAH/CQAH Review";
+                    $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
 
             if ($changestage->stage == 15) {
-                // if (!$changestage->QA_Head_remark4) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase II A CQA/QA Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "16";
-                $changestage->status = "P-II A QAH/CQAH Review";
-                $changestage->Phase_II_A_QA_Review_Complete_By= Auth::user()->name;
-                $changestage->Phase_II_A_QA_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_II_A_QA_Review_Complete_Comment = $request->comment;
+                $changestage->status = "Under Phase-II B Investigation";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Phase II A CQA/QA Review Complete By    ,   Phase II A CQA/QA Review Complete On';
-                    if (is_null($lastDocument->Phase_II_A_QA_Review_Complete_By) || $lastDocument->Phase_II_A_QA_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_II_A_QA_Review_Complete_By . ' , ' . $lastDocument->Phase_II_A_QA_Review_Complete_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase II A CQA/QA Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "P-II A QAH/CQAH Review";
-                    $history->current = $changestage->Phase_II_A_QA_Review_Complete_By . ' , ' . $changestage->Phase_II_A_QA_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_II_A_QA_Review_Complete_By) || $lastDocument->Phase_II_A_QA_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    // $history->stage = "Lab Supervisor";
+                    $history->action = 'submit';
+                    $history->change_to ="Under Phase-II B Investigation";
                     $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
-                   
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
 
             if ($changestage->stage == 16) {
-                // if (!$changestage->QA_Head_primary_remark4) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'P-II A QAH/CQAH Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "17";
-                $changestage->status = "Under Phase-II B Investigation";
-                $changestage->P_II_A_Assignable_Cause_Not_Found_By= Auth::user()->name;
-                $changestage->P_II_A_Assignable_Cause_Not_Found_On = Carbon::now()->format('d-M-Y');
-                $changestage->P_II_A_Assignable_Cause_Not_Found_Comment = $request->comment;
+                $changestage->status = "Phase II B HOD Primary Review";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'P II A Assignable Cause Not Found By    ,   P II A Assignable Cause Not Found On';
-                    if (is_null($lastDocument->P_II_A_Assignable_Cause_Not_Found_By) || $lastDocument->P_II_A_Assignable_Cause_Not_Found_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->P_II_A_Assignable_Cause_Not_Found_By . ' , ' . $lastDocument->P_II_A_Assignable_Cause_Not_Found_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'P II A Assignable Cause Not Found';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Under Phase-II B Investigation";
-                    $history->current = $changestage->P_II_A_Assignable_Cause_Not_Found_By . ' , ' . $changestage->P_II_A_Assignable_Cause_Not_Found_On;
-                    if (is_null($lastDocument->P_II_A_Assignable_Cause_Not_Found_By) || $lastDocument->P_II_A_Assignable_Cause_Not_Found_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->action = 'submit';
+                    $history->change_to ="Phase II B HOD Primary Review";
                     $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
@@ -934,286 +533,76 @@ class OOSController extends Controller
 
             if ($changestage->stage == 17) {
                 $changestage->stage = "18";
-                $changestage->status = "Phase II B HOD Primary Review";
-                $changestage->Phase_II_B_Investigation_By= Auth::user()->name;
-                $changestage->Phase_II_B_Investigation_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_II_B_Investigation_Comment = $request->comment;
+                $changestage->status = "Phase II B QA/CQA Review";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Phase II B Investigation By    ,   Phase II B Investigation On';
-                    if (is_null($lastDocument->Phase_II_B_Investigation_By) || $lastDocument->Phase_II_B_Investigation_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_II_B_Investigation_By . ' , ' . $lastDocument->Phase_II_B_Investigation_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                     $history->action = 'Phase II B Investigation';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II B HOD Primary Review";
-                    $history->current = $changestage->Phase_II_B_Investigation_By . ' , ' . $changestage->Phase_II_B_Investigation_On;
-                    if (is_null($lastDocument->Phase_II_B_Investigation_By) || $lastDocument->Phase_II_B_Investigation_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->action = 'submit';
+                    $history->change_to ="Phase II B QA/CQA Review";
                     $history->save();
-                    // $list = Helpers::getHodUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
 
             if ($changestage->stage == 18) {
-                // if (!$changestage->hod_remark5) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase II B HOD Primary Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "19";
-                $changestage->status = "Phase II B QA/CQA Review";
-                $changestage->Phase_II_B_HOD_Review_Complete_By= Auth::user()->name;
-                $changestage->Phase_II_B_HOD_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_II_B_HOD_Review_Complete_Comment = $request->comment;
+                $changestage->status = "P-II B QAH/CQAH Review";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Phase II B HOD Review Complete By    ,   Phase II B HOD Review Complete On';
-                    if (is_null($lastDocument->Phase_II_B_HOD_Review_Complete_By) || $lastDocument->Phase_II_B_HOD_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_II_B_HOD_Review_Complete_By . ' , ' . $lastDocument->Phase_II_B_HOD_Review_Complete_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase II B HOD Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II B QA/CQA Review";
-                    $history->current = $changestage->Phase_II_B_HOD_Review_Complete_By . ' , ' . $changestage->Phase_II_B_HOD_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_II_B_HOD_Review_Complete_By) || $lastDocument->Phase_II_B_HOD_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->action = 'submit';
+                    $history->change_to ="P-II B QAH/CQAH Review";
                     $history->save();
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
 
             if ($changestage->stage == 19) {
-                // if (!$changestage->QA_Head_remark5) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Phase II B CQA/QA Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
                 $changestage->stage = "20";
-                $changestage->status = "P-II B CQAH/QAH Review";
-                $changestage->Phase_II_B_QA_Review_Complete_By= Auth::user()->name;
-                $changestage->Phase_II_B_QA_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_II_B_QA_Review_Complete_Comment = $request->comment;
+                $changestage->status = "Closed - Done";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Phase II B QA Review Complete By    ,   Phase II B QA Review Complete On';
-                    if (is_null($lastDocument->Phase_II_B_QA_Review_Complete_By) || $lastDocument->Phase_II_B_QA_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_II_B_QA_Review_Complete_By . ' , ' . $lastDocument->Phase_II_B_QA_Review_Complete_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase II B QA Review Complete';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "P-II B QAH/CQAH Review";
-                    $history->current = $changestage->Phase_II_B_QA_Review_Complete_By . ' , ' . $changestage->Phase_II_B_QA_Review_Complete_On;
-                    if (is_null($lastDocument->Phase_II_B_QA_Review_Complete_By) || $lastDocument->Phase_II_B_QA_Review_Complete_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->action = 'submit';
+                    $history->change_to ="Closed - Done";
                     $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                
-                   
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
 
-            if ($changestage->stage == 20) {
-                // if (!$changestage->reopen_approval_comments_uaa) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Approval Comments is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
-                $changestage->stage = "21";
-                $changestage->status = "Closed - Done";
-                $changestage->P_II_B_Assignable_Cause_Not_Found_By= Auth::user()->name;
-                $changestage->P_II_B_Assignable_Cause_Not_Found_On = Carbon::now()->format('d-M-Y');
-                $changestage->P_II_B_Assignable_Cause_Not_Found_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'P II B Assignable Cause Not Found By    ,   P II B Assignable Cause Not Found On';
-                    if (is_null($lastDocument->P_II_B_Assignable_Cause_Not_Found_By) || $lastDocument->P_II_B_Assignable_Cause_Not_Found_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->P_II_B_Assignable_Cause_Not_Found_By . ' , ' . $lastDocument->P_II_B_Assignable_Cause_Not_Found_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'P II B Assignable Cause Not Found';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   " Closed - Done";
-                    $history->current = $changestage->P_II_B_Assignable_Cause_Not_Found_By . ' , ' . $changestage->P_II_B_Assignable_Cause_Not_Found_On;
-                    if (is_null($lastDocument->P_II_B_Assignable_Cause_Not_Found_By) || $lastDocument->P_II_B_Assignable_Cause_Not_Found_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($changestage->stage == 21) {
-                $changestage->stage = "22";
-                $changestage->status = "Closed - Done";
-                $changestage->P_III_Investigation_Applicable_By = Auth::user()->name;
-                $changestage->P_III_Investigation_Applicable_On = Carbon::now()->format('d-M-Y');
-                $changestage->P_III_Investigation_Applicable_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'Closed - Done By    ,   Closed - Done On';
-                    if (is_null($lastDocument->P_III_Investigation_Applicable_By) || $lastDocument->P_III_Investigation_Applicable_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->P_III_Investigation_Applicable_By . ' , ' . $lastDocument->P_III_Investigation_Applicable_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'P III Investigation Applicable';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Closed - Done";
-                    $history->current = $changestage->P_III_Investigation_Applicable_By . ' , ' . $changestage->P_III_Investigation_Applicable_On;
-                    if (is_null($lastDocument->P_III_Investigation_Applicable_By) || $lastDocument->P_III_Investigation_Applicable_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            // --------------------------------------------------------------------------------------------------------------
-            
+
         } else {
             toastr()->error('E-signature Not match');
             return back();
@@ -1222,1016 +611,404 @@ class OOSController extends Controller
     // ========== requestmoreinfo_back_stage ==============
     public function requestmoreinfo_back_stage(Request $request, $id)
     {
-       
+
         if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changestage = OOS::find($id);
             $lastDocument = OOS::find($id);
-            // if ($changestage->stage == 2) {
-            //     $changestage->stage = "1";
-            //     $changestage->status = "Opened";
-            //     $changestage->completed_by_pending_initial_assessment = Auth::user()->name;
-            //     $changestage->completed_on_pending_initial_assessment = Carbon::now()->format('d-M-Y');
-            //     $changestage->comment_pending_initial_assessment = $request->comment;
-            //         $history = new OosAuditTrial();
-            //         $history->oos_id = $id;
-            //         $history->activity_type = 'Activity Log';
-            //         $history->comment = $request->comment;
-            //         $history->user_id = Auth::user()->id;
-            //         $history->user_name = Auth::user()->name;
-            //         $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-            //         $history->origin_state = $lastDocument->status;
-            //         $history->action = 'Request More Info';
-            //         $history->change_from = $lastDocument->status;
-            //         $history->change_to =   "Opened";
-            //         $history->action_name = 'Update';
-            //         $history->save();
-            //     $changestage->update();
-            //     toastr()->success('Document Sent');
-            //     return back();
-            // }
-            // -------------------------------------------------------------------------------------------------------------
             if ($changestage->stage == 2) {
                 $changestage->stage = "1";
                 $changestage->status = "Opened";
-                $changestage->more_info_requiered1_By = Auth::user()->name;
-                $changestage->more_info_requiered1_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered1_Comment = $request->comment;
+                $changestage->completed_by_pending_initial_assessment = Auth::user()->name;
+                $changestage->completed_on_pending_initial_assessment = Carbon::now()->format('d-M-Y');
+                $changestage->comment_pending_initial_assessment = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered1_By) || $lastDocument->more_info_requiered1_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered1_By . ' , ' . $lastDocument->more_info_requiered1_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_pending_initial_assessment;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Opened";
-                    $history->current = $changestage->more_info_requiered1_By . ' , ' . $changestage->more_info_requiered1_On;
-                    if (is_null($lastDocument->more_info_requiered1_By) || $lastDocument->more_info_requiered1_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Completed";
                     $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($changestage->stage == 3) {
+                $changestage->stage = "2";
+                $changestage->status = "Pending Initial Assessment & Lab Incident";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    $history->stage = "Lab Supervisor";
+                    $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 4) {
-                $changestage->stage = "2";
-                $changestage->status = "HOD Primary Review";
-                $changestage->more_info_requiered2_By = Auth::user()->name;
-                $changestage->more_info_requiered2_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered2_Comment = $request->comment;
+                $changestage->stage = "3";
+                $changestage->status = "Under Phase I Investigation";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered2_By) || $lastDocument->more_info_requiered2_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered2_By . ' , ' . $lastDocument->more_info_requiered2_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "HOD Primary Review";
-                    $history->current = $changestage->more_info_requiered2_By . ' , ' . $changestage->more_info_requiered2_On;
-                    if (is_null($lastDocument->more_info_requiered2_By) || $lastDocument->more_info_requiered2_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Lab Supervisor";
                     $history->save();
-                    // $list = Helpers::getHodUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 5) {
                 $changestage->stage = "4";
-                $changestage->status = "CQA/QA Head Primary Review";
-                $changestage->Request_More_Info3_By = Auth::user()->name;
-                $changestage->Request_More_Info3_On = Carbon::now()->format('d-M-Y');
-                $changestage->Request_More_Info3_Comment = $request->comment;
+                $changestage->status = "Under Phase-IA Investigation";
+                // $changestage->status = "Under Phase I Investigation";
+                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseI_investigation = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Request More Info By    ,  Request More Info On';
-                    if (is_null($lastDocument->Request_More_Info3_By) || $lastDocument->Request_More_Info3_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Request_More_Info3_By . ' , ' . $lastDocument->Request_More_Info3_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Request More Info';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "CQA/QA Head Primary Review";
-                    $history->current = $changestage->Request_More_Info3_By . ' , ' . $changestage->Request_More_Info3_On;
-                    if (is_null($lastDocument->Request_More_Info3_By) || $lastDocument->Request_More_Info3_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Lab Supervisor";
                     $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 6) {
                 $changestage->stage = "5";
-                $changestage->status = "Under Phase-IA Investigation";
-                $changestage->more_info_requiered4_By = Auth::user()->name;
-                $changestage->more_info_requiered4_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered4_Comment = $request->comment;
+                $changestage->status = "Phase IA HOD Primary Review";
+                $changestage->completed_by_under_hypothesis = Auth::user()->name;
+                $changestage->completed_on_under_hypothesis = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_hypothesis = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered4_By) || $lastDocument->more_info_requiered4_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered4_By . ' , ' . $lastDocument->more_info_requiered4_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_hypothesis;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Under Phase-IA Investigation";
-                    $history->current = $changestage->more_info_requiered4_By . ' , ' . $changestage->more_info_requiered4_On;
-                    if (is_null($lastDocument->more_info_requiered4_By) || $lastDocument->more_info_requiered4_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Final Approval";
                     $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
-           
+
             if ($changestage->stage == 7) {
                 $changestage->stage = "6";
-                $changestage->status = "Phase IA HOD Primary Review";
-                $changestage->more_info_requiered5_By = Auth::user()->name;
-                $changestage->more_info_requiered5_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered5_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered5_By) || $lastDocument->more_info_requiered5_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered5_By . ' , ' . $lastDocument->more_info_requiered5_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IA HOD Primary Review";
-                    $history->current = $changestage->more_info_requiered5_By . ' , ' . $changestage->more_info_requiered5_On;
-                    if (is_null($lastDocument->more_info_requiered5_By) || $lastDocument->more_info_requiered5_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getHodUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
+                $changestage->status = "Phase IA QA/CQA Review";
+                $changestage->completed_by_under_phaseII_investigation = Auth::user()->name;
+                $changestage->completed_on_under_phaseII_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseII_investigation = $request->comment;
+                
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->current = $changestage->completed_by_under_phaseII_investigation;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "Under Phase II investigation";
+                $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 8) {
                 $changestage->stage = "7";
-                $changestage->status = "Phase IA QA Review";
-                $changestage->Request_More_Info6_By = Auth::user()->name;
-                $changestage->Request_More_Info6_On = Carbon::now()->format('d-M-Y');
-                $changestage->Request_More_Info6_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'Request More Info By    ,  Request More Info On';
-                    if (is_null($lastDocument->Request_More_Info6_By) || $lastDocument->Request_More_Info6_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Request_More_Info6_By . ' , ' . $lastDocument->Request_More_Info6_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'Request More Info';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IA QA Review";
-                    $history->current = $changestage->Request_More_Info6_By . ' , ' . $changestage->Request_More_Info6_On;
-                    if (is_null($lastDocument->Request_More_Info6_By) || $lastDocument->Request_More_Info6_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
-                   
+                $changestage->status = "P-IA CQAH/QAH Review";
+                // $changestage->completed_by_under_phaseII_investigation = Auth::user()->name;
+                // $changestage->completed_on_under_phaseII_investigation = Carbon::now()->format('d-M-Y');
+                // $changestage->comment_under_phaseII_investigation = $request->comment;
+                
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                // $history->current = $changestage->completed_by_under_phaseII_investigation;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "P-IA CQAH/QAH Review";
+                $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 9) {
                 $changestage->stage = "8";
-                $changestage->status = "P-IA CQAH/QAH Review";
-                $changestage->more_info_requiered7_By = Auth::user()->name;
-                $changestage->more_info_requiered7_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered7_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered7_By) || $lastDocument->more_info_requiered7_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered7_By . ' , ' . $lastDocument->more_info_requiered7_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "P-IA CQAH/QAH Review";
-                    $history->current = $changestage->more_info_requiered7_By . ' , ' . $changestage->more_info_requiered7_On;
-                    if (is_null($lastDocument->more_info_requiered7_By) || $lastDocument->more_info_requiered7_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    // $list = Helpers::getQAHeadUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
+                $changestage->status = "Under Phase-II A Investigation";
+                $changestage->completed_by_under_manufacturing_investigation_phaseIIA = Auth::user()->name;
+                $changestage->completed_on_under_manufacturing_investigation_phaseIIA = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_manufacturing_investigation_phaseIIA = $request->comment;
+                
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->current = $changestage->completed_by_under_manufacturing_investigation_phaseIIA;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "Under Manufacturing Phase II b Additional Lab Investigation";
+                $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 10) {
                 $changestage->stage = "9";
-                $changestage->status = "Under Phase-IB Investigation";
-                $changestage->more_info_requiered8_By= Auth::user()->name;
-                $changestage->more_info_requiered8_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered8_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered8_By) || $lastDocument->more_info_requiered8_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered8_By . ' , ' . $lastDocument->more_info_requiered8_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Under Phase-IB Investigation";
-                    $history->current = $changestage->more_info_requiered8_By . ' , ' . $changestage->more_info_requiered8_On;
-                    if (is_null($lastDocument->more_info_requiered8_By) || $lastDocument->more_info_requiered8_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                  
-                   
+                $changestage->status = "Phase II A HOD Primary Review";
+                $changestage->completed_by_under_phaseIIB_additional_lab_investigation= Auth::user()->name;
+                $changestage->completed_on_under_phaseIIB_additional_lab_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseIIB_additional_lab_investigation = $request->comment;
+                
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->current = $changestage->completed_by_under_manufacturing_investigation_phaseIIA;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "Under Manufacturing Phase II b Additional Lab Investigation";
+                $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 11) {
                 $changestage->stage = "10";
-                $changestage->status = "Phase IB HOD Primary Review";
-                $changestage->more_info_requiered9_By= Auth::user()->name;
-                $changestage->more_info_requiered9_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered9_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered9_By) || $lastDocument->more_info_requiered9_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered9_By . ' , ' . $lastDocument->more_info_requiered9_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IB HOD Primary Review";
-                    $history->current = $changestage->more_info_requiered9_By . ' , ' . $changestage->more_info_requiered9_On;
-                    if (is_null($lastDocument->more_info_requiered9_By) || $lastDocument->more_info_requiered9_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
+                $changestage->status = "Phase IB QA/CQA Review";
+                $changestage->completed_by_under_phaseIII_investigation= Auth::user()->name;
+                $changestage->completed_on_under_phaseIII_investigation = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_phaseIII_investigation = $request->comment;
+                
+                $history = new OosAuditTrial();
+                $history->oos_id = $id;
+                $history->activity_type = 'Activity Log';
+                $history->current = $changestage->completed_by_under_phaseIII_investigation;
+                $history->comment = $request->comment;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                $history->origin_state = $lastDocument->status;
+                $history->stage = "Under Manufacturing Phase II b Additional Lab Investigation";
+                $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
             if ($changestage->stage == 12) {
                 $changestage->stage = "11";
-                $changestage->status = "Phase IB QA Review";
-                $changestage->Request_More_Info10_By= Auth::user()->name;
-                $changestage->Request_More_Info10_On = Carbon::now()->format('d-M-Y');
-                $changestage->Request_More_Info10_Comment = $request->comment;
+                $changestage->status = "P-IB CQAH/QAH Review";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Request More Info By    ,  Request More Info On';
-                    if (is_null($lastDocument->Request_More_Info10_By) || $lastDocument->Request_More_Info10_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Request_More_Info10_By . ' , ' . $lastDocument->Request_More_Info10_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Request More Info';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IB QA Review";
-                    $history->current = $changestage->Request_More_Info10_By . ' , ' . $changestage->Request_More_Info10_On;
-                    if (is_null($lastDocument->Request_More_Info10_By) || $lastDocument->Request_More_Info10_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Approval Completed";
                     $history->save();
-                    // $list = Helpers::getHodUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                  
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 13) {
                 $changestage->stage = "12";
-                $changestage->status = "P-IB CQAH/QAH Review";
-                $changestage->more_info_requiered11_By= Auth::user()->name;
-                $changestage->more_info_requiered11_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered11_Comment = $request->comment;
+                $changestage->status = "Under Phase-II A Investigation";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered11_By) || $lastDocument->more_info_requiered11_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered11_By . ' , ' . $lastDocument->more_info_requiered11_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "P-IB CQAH/QAH Review";
-                    $history->current = $changestage->more_info_requiered11_By . ' , ' . $changestage->more_info_requiered11_On;
-                    if (is_null($lastDocument->more_info_requiered11_By) || $lastDocument->more_info_requiered11_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Approval Completed";
                     $history->save();
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 14) {
                 $changestage->stage = "13";
-                $changestage->status = "Under Phase-II A Investigation";
-                $changestage->more_info_requiered12_By= Auth::user()->name;
-                $changestage->more_info_requiered12_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered12_Comment = $request->comment;
+                $changestage->status = "Phase II A HOD Primary Review";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered12_By) || $lastDocument->more_info_requiered12_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered12_By . ' , ' . $lastDocument->more_info_requiered12_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Under Phase-II A Investigation";
-                    $history->current = $changestage->more_info_requiered12_By . ' , ' . $changestage->more_info_requiered12_On;
-                    if (is_null($lastDocument->more_info_requiered12_By) || $lastDocument->more_info_requiered12_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Approval Completed";
                     $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 15) {
                 $changestage->stage = "14";
-                $changestage->status = "Phase II A HOD Primary Review";
-                $changestage->more_info_requiered13_By= Auth::user()->name;
-                $changestage->more_info_requiered13_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered13_Comment = $request->comment;
+                $changestage->status = "Phase II A QA/CQA Review";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered13_By) || $lastDocument->more_info_requiered13_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered13_By . ' , ' . $lastDocument->more_info_requiered13_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II A HOD Primary Review";
-                    $history->current = $changestage->more_info_requiered13_By . ' , ' . $changestage->more_info_requiered13_On;
-                    if (is_null($lastDocument->more_info_requiered13_By) || $lastDocument->more_info_requiered13_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Phase II A QA/CQA Review";
                     $history->save();
-                    // $list = Helpers::getProductionUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 16) {
                 $changestage->stage = "15";
-                $changestage->status = "Phase II A QA Review";
-                $changestage->more_info_requiered14_By= Auth::user()->name;
-                $changestage->more_info_requiered14_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered14_Comment = $request->comment;
+                $changestage->status = "P-II A QAH/CQAH Review";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'Request More Info By    ,  Request More Info On';
-                    if (is_null($lastDocument->more_info_requiered14_By) || $lastDocument->more_info_requiered14_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered14_By . ' , ' . $lastDocument->more_info_requiered14_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Request More Info';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II A QA Review";
-                    $history->current = $changestage->more_info_requiered14_By . ' , ' . $changestage->more_info_requiered14_On;
-                    if (is_null($lastDocument->more_info_requiered14_By) || $lastDocument->more_info_requiered14_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "P-II A QAH/CQAH Review";
                     $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 17) {
                 $changestage->stage = "16";
-                $changestage->status = "P-II A QAH/CQAH Review";
-                $changestage->Request_More_Info15_By= Auth::user()->name;
-                $changestage->Request_More_Info15_On = Carbon::now()->format('d-M-Y');
-                $changestage->Request_More_Info15_Comment = $request->comment;
+                $changestage->status = "Under Phase-II B Investigation";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->Request_More_Info15_By) || $lastDocument->Request_More_Info15_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Request_More_Info15_By . ' , ' . $lastDocument->Request_More_Info15_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "P-II A QAH/CQAH Review";
-                    $history->current = $changestage->Request_More_Info15_By . ' , ' . $changestage->Request_More_Info15_On;
-                    if (is_null($lastDocument->Request_More_Info15_By) || $lastDocument->Request_More_Info15_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Under Phase-II B Investigation";
                     $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    // $list = Helpers::getQAHeadUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 18) {
                 $changestage->stage = "17";
-                $changestage->status = "Under Phase-II B Investigation";
-                $changestage->more_info_requiered16_By= Auth::user()->name;
-                $changestage->more_info_requiered16_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered16_Comment = $request->comment;
+                $changestage->status = "Phase II B HOD Primary Review";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                    $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered16_By) || $lastDocument->more_info_requiered16_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered16_By . ' , ' . $lastDocument->more_info_requiered16_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Under Phase-II B Investigation";
-                    $history->current = $changestage->more_info_requiered16_By . ' , ' . $changestage->more_info_requiered16_On;
-                    if (is_null($lastDocument->more_info_requiered16_By) || $lastDocument->more_info_requiered16_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Phase II B HOD Primary Review";
                     $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
+
             if ($changestage->stage == 19) {
                 $changestage->stage = "18";
-                $changestage->status = "Phase II B HOD Primary Review";
-                $changestage->more_info_requiered17_By= Auth::user()->name;
-                $changestage->more_info_requiered17_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered17_Comment = $request->comment;
+                $changestage->status = "Phase II B QA/CQA Review";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                     $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered17_By) || $lastDocument->more_info_requiered17_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered17_By . ' , ' . $lastDocument->more_info_requiered17_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II B HOD Primary Review";
-                    $history->current = $changestage->more_info_requiered17_By . ' , ' . $changestage->more_info_requiered17_On;
-                    if (is_null($lastDocument->more_info_requiered17_By) || $lastDocument->more_info_requiered17_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getHodUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($changestage->stage == 20) {
-                $changestage->stage = "19";
-                $changestage->status = "Phase II B QA Review";
-                $changestage->more_info_requiered18_By= Auth::user()->name;
-                $changestage->more_info_requiered18_On = Carbon::now()->format('d-M-Y');
-                $changestage->more_info_requiered18_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                     $history->activity_type = 'More Information Required By    ,  More Information Required On';
-                    if (is_null($lastDocument->more_info_requiered18_By) || $lastDocument->more_info_requiered18_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->more_info_requiered18_By . ' , ' . $lastDocument->more_info_requiered18_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'More Information Required';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II B QA Review";
-                    $history->current = $changestage->more_info_requiered18_By . ' , ' . $changestage->more_info_requiered18_On;
-                    if (is_null($lastDocument->more_info_requiered18_By) || $lastDocument->more_info_requiered18_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getCQAUsersList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                    // $list = Helpers::getQAUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($changestage->stage == 21) {
-                $changestage->stage = "20";
-                $changestage->status = "P-II B QAH/CQAH Review";
-                $changestage->Request_More_Info19_By= Auth::user()->name;
-                $changestage->Request_More_Info19_On = Carbon::now()->format('d-M-Y');
-                $changestage->Request_More_Info19_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                     $history->activity_type = 'Request More Info By    ,  Request More Info On';
-                    if (is_null($lastDocument->Request_More_Info19_By) || $lastDocument->Request_More_Info19_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Request_More_Info19_By . ' , ' . $lastDocument->Request_More_Info19_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'Request More Info';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "P-II B QAH/CQAH Review";
-                    $history->current = $changestage->Request_More_Info19_By . ' , ' . $changestage->Request_More_Info19_On;
-                    if (is_null($lastDocument->Request_More_Info19_By) || $lastDocument->Request_More_Info19_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Phase II B QA/CQA Review";
                     $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
-            // -------------------------------------------------------------------------------------------------------------
-           
         } else {
             toastr()->error('E-signature Not match');
             return back();
@@ -2243,6 +1020,51 @@ class OOSController extends Controller
         if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changestage = OOS::find($id);
             $lastDocument = OOS::find($id);
+
+            if ($changestage->stage == 1) {
+                $changestage->stage = "21";
+                $changestage->status = "QA Head Approval";
+                // $changestage->completed_by_under_phaseI_correction= Auth::user()->name;
+                // $changestage->completed_on_under_phaseI_correction = Carbon::now()->format('d-M-Y');
+                // $changestage->comment_under_phaseI_correction = $request->comment;
+                            // $history = new OosAuditTrial();
+                            // $history->oos_id = $id;
+                            // $history->activity_type = 'Activity Log';
+                            // $history->current = $changestage->completed_by_under_phaseI_correction;
+                            // $history->comment = $request->comment;
+                            // $history->user_id = Auth::user()->id;
+                            // $history->user_name = Auth::user()->name;
+                            // $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                            // $history->origin_state = $lastDocument->status;
+                            // $history->stage = "Lab Supervisor";
+                            // $history->save();
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+
+            if ($changestage->stage == 2) {
+                $changestage->stage = "21";
+                $changestage->status = "QA Head Approval";
+                // $changestage->completed_by_under_phaseI_correction= Auth::user()->name;
+                // $changestage->completed_on_under_phaseI_correction = Carbon::now()->format('d-M-Y');
+                // $changestage->comment_under_phaseI_correction = $request->comment;
+                            // $history = new OosAuditTrial();
+                            // $history->oos_id = $id;
+                            // $history->activity_type = 'Activity Log';
+                            // $history->current = $changestage->completed_by_under_phaseI_correction;
+                            // $history->comment = $request->comment;
+                            // $history->user_id = Auth::user()->id;
+                            // $history->user_name = Auth::user()->name;
+                            // $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                            // $history->origin_state = $lastDocument->status;
+                            // $history->stage = "Lab Supervisor";
+                            // $history->save();
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+
             // if ($changestage->stage == 3) {
             //     $changestage->stage = "4";
             //     $changestage->status = "Under Phase I Correction";
@@ -2252,371 +1074,184 @@ class OOSController extends Controller
             //                 $history = new OosAuditTrial();
             //                 $history->oos_id = $id;
             //                 $history->activity_type = 'Activity Log';
+            //                 $history->current = $changestage->completed_by_under_phaseI_correction;
             //                 $history->comment = $request->comment;
             //                 $history->user_id = Auth::user()->id;
             //                 $history->user_name = Auth::user()->name;
             //                 $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
             //                 $history->origin_state = $lastDocument->status;
-            //                 $history->action = 'Assignable Cause Found';
-            //                 $history->change_from = $lastDocument->status;
-            //                 $history->change_to =   "Under Phase I Correction";
-            //                 $history->action_name = 'Update';
+            //                 $history->stage = "Lab Supervisor";
             //                 $history->save();
             //     $changestage->update();
             //     toastr()->success('Document Sent');
             //     return back();
             // }
-            // ------------------------------------------------------------------------------------------------------------
-            if ($changestage->stage == 1) {
-                // if (!$changestage->QA_Head_remark1) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'CQA/QA Head Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
-                $changestage->stage = "3";
-                $changestage->status = "QA Head Approval";
-                $changestage->Opened_to_QA_Head_Approval_By= Auth::user()->name;
-                $changestage->Opened_to_QA_Head_Approval_On  = Carbon::now()->format('d-M-Y');
-                $changestage->Opened_to_QA_Head_Approval_Comment = $request->comment;
-                            $history = new OosAuditTrial();
-                            $history->oos_id = $id;
-                              $history->activity_type = 'QA Head Approval By    ,  QA Head Approval On';
-                            if (is_null($lastDocument->Opened_to_QA_Head_Approval_By) || $lastDocument->Opened_to_QA_Head_Approval_By === '') {
-                                $history->previous = "Null";
-                            } else {
-                                $history->previous = $lastDocument->Opened_to_QA_Head_Approval_By . ' , ' . $lastDocument->Opened_to_QA_Head_Approval_On;
-                            }
-                            $history->comment = $request->comment;
-                            $history->user_id = Auth::user()->id;
-                            $history->user_name = Auth::user()->name;
-                            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                            $history->origin_state = $lastDocument->status;
-                            $history->action = 'QA Head Approval';
-                            $history->change_from = $lastDocument->status;
-                            $history->change_to =   "QA Head Approval";
-                            $history->current = $changestage->Opened_to_QA_Head_Approval_By . ' , ' . $changestage->Opened_to_QA_Head_Approval_On;
-                            if (is_null($lastDocument->Opened_to_QA_Head_Approval_By) || $lastDocument->Opened_to_QA_Head_Approval_By === '') {
-                                $history->action_name = 'New';
-                            } else {
-                                $history->action_name = 'Update';
-                            }
-                            $history->save();
-                    //         $list = Helpers::getQAUserList($changestage->division_id);
-                    //         foreach ($list as $u) {
-                    //            $email = Helpers::getUserEmail($u->user_id);
-                    //                if ($email !== null) {
-                    //                Mail::send(
-                    //                    'mail.view-mail',
-                    //                    ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //                    function ($message) use ($email, $changestage) {
-                    //                        $message->to($email)
-                    //                        ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //                    }
-                    //                );
-                    //            }
-                    //         }
-                    //         $list = Helpers::getQAHeadUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($changestage->stage == 2) {
-              
-                $changestage->stage = "3";
-                $changestage->status = "QA Head Approval";
-                $changestage->QA_Head_Approval_By= Auth::user()->name;
-                $changestage->QA_Head_Approval_On  = Carbon::now()->format('d-M-Y');
-                $changestage->QA_Head_Approval_Comment = $request->comment;
-                            $history = new OosAuditTrial();
-                            $history->oos_id = $id;
-                              $history->activity_type = 'QA Head Approval By    ,  QA Head Approval On';
-                    if (is_null($lastDocument->QA_Head_Approval_By) || $lastDocument->QA_Head_Approval_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->QA_Head_Approval_By . ' , ' . $lastDocument->QA_Head_Approval_On;
-                    }
-                            $history->comment = $request->comment;
-                            $history->user_id = Auth::user()->id;
-                            $history->user_name = Auth::user()->name;
-                            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                            $history->origin_state = $lastDocument->status;
-                            $history->action = 'QA Head Approval';
-                            $history->change_from = $lastDocument->status;
-                            $history->change_to =   "QA Head Approval";
-                            $history->current = $changestage->QA_Head_Approval_By . ' , ' . $changestage->QA_Head_Approval_On;
-                            if (is_null($lastDocument->QA_Head_Approval_By) || $lastDocument->QA_Head_Approval_By === '') {
-                                $history->action_name = 'New';
-                            } else {
-                                $history->action_name = 'Update';
-                            }
-                            $history->save();
-                            // $list = Helpers::getQAUserList($changestage->division_id);
-                            // foreach ($list as $u) {
-                            //    $email = Helpers::getUserEmail($u->user_id);
-                            //        if ($email !== null) {
-                            //        Mail::send(
-                            //            'mail.view-mail',
-                            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                            //            function ($message) use ($email, $changestage) {
-                            //                $message->to($email)
-                            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                            //            }
-                            //        );
-                            //    }
-                            // }
-                          
-                           
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($changestage->stage == 4) {
-                // if (!$changestage->QA_Head_primary_remark1) {
-                //     // Flash message for warning (field not filled)
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'CQA/QA Head Remark is yet to be filled!',
-                //         'type' => 'warning',  // Type can be success, error, warning, info, etc.
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
-                $changestage->stage = "5";
-                $changestage->status = "Under Phase-IA Investigation";
-                $changestage->CQA_Head_Primary_Review_Complete_By= Auth::user()->name;
-                $changestage->CQA_Head_Primary_Review_Complete_On = Carbon::now()->format('d-M-Y');
-                $changestage->CQA_Head_Primary_Review_Complete_Comment = $request->comment;
-                            $history = new OosAuditTrial();
-                            $history->oos_id = $id;
-                              $history->activity_type = 'CQA Head Primary Review Complete By    ,  CQA Head Primary Review Complete On';
-                    if (is_null($lastDocument->CQA_Head_Primary_Review_Complete_By) || $lastDocument->CQA_Head_Primary_Review_Complete_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->CQA_Head_Primary_Review_Complete_By . ' , ' . $lastDocument->CQA_Head_Primary_Review_Complete_On;
-                    }
-                            $history->comment = $request->comment;
-                            $history->user_id = Auth::user()->id;
-                            $history->user_name = Auth::user()->name;
-                            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                            $history->origin_state = $lastDocument->status;
-                            $history->action = 'CQA Head Primary Review Complete';
-                            $history->change_from = $lastDocument->status;
-                            $history->change_to =   "Under Phase-IA Investigation";
-                            $history->current = $changestage->CQA_Head_Primary_Review_Complete_By . ' , ' . $changestage->CQA_Head_Primary_Review_Complete_On;
-                            if (is_null($lastDocument->CQA_Head_Primary_Review_Complete_By) || $lastDocument->CQA_Head_Primary_Review_Complete_By === '') {
-                                $history->action_name = 'New';
-                            } else {
-                                $history->action_name = 'Update';
-                            }
-                            $history->save();
-                            // $list = Helpers::getQAUserList($changestage->division_id);
-                            // foreach ($list as $u) {
-                            //    $email = Helpers::getUserEmail($u->user_id);
-                            //        if ($email !== null) {
-                            //        Mail::send(
-                            //            'mail.view-mail',
-                            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                            //            function ($message) use ($email, $changestage) {
-                            //                $message->to($email)
-                            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                            //            }
-                            //        );
-                            //    }
-                            // }
-                           
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-            if ($changestage->stage == 5) {
-                // if (!$changestage->Comments_plidata) {
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'Comment is yet to be filled!',
-                //         'type' => 'warning',
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     // Flash message for success (when the form is filled correctly)
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
-                $changestage->stage = "6";
-                $changestage->status = "Phase IA HOD Primary Review";
-                $changestage->Phase_IA_Investigation_By= Auth::user()->name;
-                $changestage->Phase_IA_Investiigation_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_IA_Investigation_Comment = $request->comment;
-                    $history = new OosAuditTrial();
-                    $history->oos_id = $id;
-                      $history->activity_type = 'Phase IA Investigation By    , Phase IA Investigation On';
-                    if (is_null($lastDocument->Phase_IA_Investigation_By) || $lastDocument->Phase_IA_Investigation_By === '') {
-                        $history->previous = "";
-                    } else {
-                        $history->previous = $lastDocument->Phase_IA_Investigation_By . ' , ' . $lastDocument->Phase_IA_Investiigation_On;
-                    }
-                    $history->comment = $request->comment;
-                    $history->user_id = Auth::user()->id;
-                    $history->user_name = Auth::user()->name;
-                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                    $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase IA Investigation';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase IA HOD Primary Review";
-                    $history->current = $changestage->Phase_IA_Investigation_By . ' , ' . $changestage->Phase_IA_Investiigation_On;
-                    if (is_null($lastDocument->Phase_IA_Investigation_By) || $lastDocument->Phase_IA_Investigation_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
-                    $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                $changestage->update();
-                toastr()->success('Document Sent');
-                return back();
-            }
-           
-            if ($changestage->stage == 8) {
-                // if (!$changestage->QA_Head_primary_remark2) {
-                //     Session::flash('swal', [
-                //         'title' => 'Mandatory Fields Required!',
-                //         'message' => 'P-IA CQAH/QAH Primary Remark is yet to be filled!',
-                //         'type' => 'warning',
-                //     ]);
-            
-                //     return redirect()->back();
-                // } else {
-                //     Session::flash('swal', [
-                //         'title' => 'Success!',
-                //         'message' => 'Sent for Next Stage',
-                //         'type' => 'success',
-                //     ]);
-                // }
 
-                $changestage->stage = "9";
-                $changestage->status = "Under Phase-IB Investigation";
-                $changestage->Assignable_Cause_Not_Found_By= Auth::user()->name;
-                $changestage->Assignable_Cause_Not_Found_On = Carbon::now()->format('d-M-Y');
-                $changestage->Assignable_Cause_Not_Found_Comment = $request->comment;
+            //     if ($changestage->stage == 5) {
+            //         $changestage->stage = "6";
+            //         $changestage->status = "Phase IA HOD Primary Review";
+            //         $changestage->completed_by_under_phaseI_correction= Auth::user()->name;
+            //         $changestage->completed_on_under_phaseI_correction = Carbon::now()->format('d-M-Y');
+            //         $changestage->comment_under_phaseI_correction = $request->comment;
+            //                     $history = new OosAuditTrial();
+            //                     $history->oos_id = $id;
+            //                     $history->activity_type = 'Activity Log';
+            //                     $history->current = $changestage->completed_by_under_phaseI_correction;
+            //                     $history->comment = $request->comment;
+            //                     $history->user_id = Auth::user()->id;
+            //                     $history->user_name = Auth::user()->name;
+            //                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+            //                     $history->origin_state = $lastDocument->status;
+            //                     $history->stage = "Lab Supervisor";
+            //                     $history->save();
+            //         $changestage->update();
+            //         toastr()->success('Document Sent');
+            //         return back();
+            //     }
+
+            // if ($changestage->stage == 4) {
+            //     $changestage->stage = "14";
+            //     $changestage->status = "Pending Final Approval Completed";
+            //     $changestage->completed_by_approval_completed= Auth::user()->name;
+            //     $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+            //     $changestage->comment_approval_completed = $request->comment;
+            //         $history = new OosAuditTrial();
+            //         $history->oos_id = $id;
+            //         $history->activity_type = 'Activity Log';
+            //         $history->current = $changestage->completed_by_under_phaseIII_investigation;
+            //         $history->comment = $request->comment;
+            //         $history->user_id = Auth::user()->id;
+            //         $history->user_name = Auth::user()->name;
+            //         $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+            //         $history->origin_state = $lastDocument->status;
+            //         $history->stage = "Approval Completed";
+            //         $history->save();
+            //     $changestage->update();
+            //     toastr()->success('Document Sent');
+            //     return back();
+            // }
+            if ($changestage->stage == 6) {
+                $changestage->stage = "7";
+                $changestage->status = "Under Repeat Analysis";
+                $changestage->completed_by_under_repeat_analysis= Auth::user()->name;
+                $changestage->completed_on_under_repeat_analysis = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_repeat_analysis = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                      $history->activity_type = 'Assignable Cause Not Found By    ,  Assignable Cause Not Found On';
-                    if (is_null($lastDocument->Assignable_Cause_Not_Found_By) || $lastDocument->Assignable_Cause_Not_Found_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Assignable_Cause_Not_Found_By . ' , ' . $lastDocument->Assignable_Cause_Not_Found_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_repeat_analysis;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Assignable Cause Not Found';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Under Phase-IB Investigation";
-                    $history->current = $changestage->Assignable_Cause_Not_Found_By . ' , ' . $changestage->Assignable_Cause_Not_Found_On;
-                    if (is_null($lastDocument->Assignable_Cause_Not_Found_By) || $lastDocument->Assignable_Cause_Not_Found_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Under Repeat Analysis";
                     $history->save();
-                    // $list = Helpers::getInitiatorUserList($changestage->division_id);
-                    // foreach ($list as $u) {
-                    //    $email = Helpers::getUserEmail($u->user_id);
-                    //        if ($email !== null) {
-                    //        Mail::send(
-                    //            'mail.view-mail',
-                    //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-                    //            function ($message) use ($email, $changestage) {
-                    //                $message->to($email)
-                    //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-                    //            }
-                    //        );
-                    //    }
-                    // }
-                   
                 $changestage->update();
                 toastr()->success('Document Sent');
                 return back();
             }
-            
-            if ($changestage->stage == 13) {
+            if ($changestage->stage == 7) {
                 $changestage->stage = "14";
-                $changestage->status = "Phase II A HOD Primary Review";
-                $changestage->Phase_II_A_Investigation_By= Auth::user()->name;
-                $changestage->Phase_II_A_Investigation_On = Carbon::now()->format('d-M-Y');
-                $changestage->Phase_II_A_Investigation_Comment = $request->comment;
+                $changestage->status = "Pending Final Approval Completed";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                      $history->activity_type = 'Phase II A Investigation By    ,  Phase II A Investigation On';
-                    if (is_null($lastDocument->Phase_II_A_Investigation_By) || $lastDocument->Phase_II_A_Investigation_By === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->Phase_II_A_Investigation_By . ' , ' . $lastDocument->Phase_II_A_Investigation_On;
-                    }
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
-                    $history->action = 'Phase II A Investigation';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Phase II A HOD Primary Review";
-                    $history->current = $changestage->Phase_II_A_Investigation_By . ' , ' . $changestage->Phase_II_A_Investigation_On;
-                    if (is_null($lastDocument->Phase_II_A_Investigation_By) || $lastDocument->Phase_II_A_Investigation_By === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = "Approval Completed";
+                    $history->save();
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            // if ($changestage->stage == 9) {
+            //     $changestage->stage = "10";
+            //     $changestage->status = "Under PhaseIIA Correction";
+            //     $changestage->completed_by_under_phaseIIA_correction= Auth::user()->name;
+            //     $changestage->completed_on_under_phaseIIA_correction = Carbon::now()->format('d-M-Y');
+            //     $changestage->comment_under_phaseIIA_correction = $request->comment;
+            //         $history = new OosAuditTrial();
+            //         $history->oos_id = $id;
+            //         $history->activity_type = 'Activity Log';
+            //         $history->current = $changestage->completed_by_under_phaseIIA_correction;
+            //         $history->comment = $request->comment;
+            //         $history->user_id = Auth::user()->id;
+            //         $history->user_name = Auth::user()->name;
+            //         $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+            //         $history->origin_state = $lastDocument->status;
+            //         $history->stage = "Approval Completed";
+            //         $history->save();
+            //     $changestage->update();
+            //     toastr()->success('Document Sent');
+            //     return back();
+            // }
+            if ($changestage->stage == 10) {
+                $changestage->stage = "12";
+                $changestage->status = "Under Batch Disposition";
+                $changestage->completed_by_under_batch_disposition= Auth::user()->name;
+                $changestage->completed_on_under_batch_disposition = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_batch_disposition = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_batch_disposition;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    $history->stage = "Approval Completed";
+                    $history->save();
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+
+            if ($changestage->stage == 11) {
+                $changestage->stage = "12";
+                $changestage->status = "Under Batch Disposition";
+                $changestage->completed_by_under_batch_disposition= Auth::user()->name;
+                $changestage->completed_on_under_batch_disposition = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_batch_disposition = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_batch_disposition;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    $history->stage = "Approval Completed";
+                    $history->save();
+                $changestage->update();
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($changestage->stage == 12) {
+                $changestage->stage = "14";
+                $changestage->status = "Pending Final Approval Completed";
+                $changestage->completed_by_approval_completed= Auth::user()->name;
+                $changestage->completed_on_approval_completed = Carbon::now()->format('d-M-Y');
+                $changestage->comment_approval_completed = $request->comment;
+                    $history = new OosAuditTrial();
+                    $history->oos_id = $id;
+                    $history->activity_type = 'Activity Log';
+                    $history->current = $changestage->completed_by_under_phaseIII_investigation;
+                    $history->comment = $request->comment;
+                    $history->user_id = Auth::user()->id;
+                    $history->user_name = Auth::user()->name;
+                    $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                    $history->origin_state = $lastDocument->status;
+                    $history->stage = "Approval Completed";
                     $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
@@ -2632,36 +1267,23 @@ class OOSController extends Controller
         if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $data = OOS::find($id);
             $lastDocument = OOS::find($id);
-            
             $data->stage = "0";
             $data->status = "Closed-Cancelled";
             $data->cancelled_by = Auth::user()->name;
             $data->cancelled_on = Carbon::now()->format('d-M-Y');
-            $data->cancelled_Comment = $request->comment;
+            $data->comment_cancle = $request->comment;
 
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
-                      $history->activity_type = 'Cancel By    ,  Cancel On';
-                    if (is_null($lastDocument->cancelled_by) || $lastDocument->cancelled_by === '') {
-                        $history->previous = "Null";
-                    } else {
-                        $history->previous = $lastDocument->cancelled_by . ' , ' . $lastDocument->cancelled_on;
-                    }
+                    $history->activity_type = 'Activity Log';
                     $history->previous ="";
+                    $history->current = $data->cancelled_by;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state =  $data->status;
-                    $history->action = 'Cancel';
-                    $history->change_from = $lastDocument->status;
-                    $history->change_to =   "Closed-Cancelled";
-                    $history->current = $data->cancelled_by . ' , ' . $data->cancelled_on;
-                    if (is_null($lastDocument->cancelled_by) || $lastDocument->cancelled_by === '') {
-                        $history->action_name = 'New';
-                    } else {
-                        $history->action_name = 'Update';
-                    }
+                    $history->stage = 'Cancelled';
                     $history->save();
             $data->update();
             toastr()->success('Document Sent');
@@ -2671,6 +1293,87 @@ class OOSController extends Controller
             return back();
         }
     }
+
+
+    public function reject_stage(Request $request, $id)
+    {
+
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
+            $capa = Capa::find($id);
+            $lastDocument = Capa::find($id);
+
+
+            if ($capa->stage == 2) {
+                $capa->stage = "1";
+                $capa->status = "Opened";
+                // $capa->rejected_by = Auth::user()->name;
+                // $capa->rejected_on = Carbon::now()->format('d-M-Y');
+                $capa->update();
+                $history = new CapaHistory();
+                $history->type = "Capa";
+                $history->doc_id = $id;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->stage_id = $capa->stage;
+                $history->status = "Opened";
+                // $list = Helpers::getInitiatorUserList();
+                // foreach ($list as $u) {
+                //     if($u->q_m_s_divisions_id == $capa->division_id){
+                //     $email = Helpers::getInitiatorEmail($u->user_id);
+                //     if ($email !== null) {
+                       
+                //         Mail::send(
+                //             'mail.view-mail',
+                //             ['data' => $capa],
+                //             function ($message) use ($email) {
+                //                 $message->to($email)
+                //                     ->subject("More Info Required ".Auth::user()->name);
+                //             }
+                //         );
+                //       }
+                //     } 
+                // }
+                $history->save();
+
+                toastr()->success('Document Sent');
+                return back();
+            }
+            if ($capa->stage == 3) {
+                $capa->stage = "2";
+                $capa->status = "Pending CAPA Plan";
+                $capa->qa_more_info_required_by = Auth::user()->name;
+                $capa->qa_more_info_required_on = Carbon::now()->format('d-M-Y');
+                        $history = new CapaAuditTrial();
+                        $history->capa_id = $id;
+                        $history->activity_type = 'Activity Log';
+                        $history->previous = "";
+                        $history->current = $capa->qa_more_info_required_by;
+                        $history->comment = $request->comment;
+                        $history->user_id = Auth::user()->id;
+                        $history->user_name = Auth::user()->name;
+                        $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+                        $history->origin_state = $lastDocument->status;
+                        $history->stage = 'Qa More Info Required';
+                        $history->save();   
+                $capa->update();
+                $history = new CapaHistory();
+                $history->type = "Capa";
+                $history->doc_id = $id;
+                $history->user_id = Auth::user()->id;
+                $history->user_name = Auth::user()->name;
+                $history->stage_id = $capa->stage;
+                $history->status = "Pending CAPA Plan<";
+                $history->save();
+                toastr()->success('Document Sent');
+                return back();
+            }
+
+        } else {
+            toastr()->error('E-signature Not match');
+            return back();
+        }
+    }
+
 
     public function Done_stage(Request $request, $id)
     {
@@ -2707,21 +1410,6 @@ class OOSController extends Controller
                 $history->action_name = 'Update';
             }
             $history->save();
-            // $list = Helpers::getQAUserList($changestage->division_id);
-            // foreach ($list as $u) {
-            //    $email = Helpers::getUserEmail($u->user_id);
-            //        if ($email !== null) {
-            //        Mail::send(
-            //            'mail.view-mail',
-            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
-            //            function ($message) use ($email, $changestage) {
-            //                $message->to($email)
-            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
-            //            }
-            //        );
-            //    }
-            // }
-           
           
             $data->update();
             toastr()->success('Document Sent');
@@ -2778,7 +1466,48 @@ class OOSController extends Controller
             //        );
             //    }
             // }
-           
+            // $list = Helpers::getCQAUsersList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
+            // $list = Helpers::getInitiatorUserList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
+            // $list = Helpers::getHodUserList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
           
             $data->update();
             toastr()->success('Document Sent');
@@ -2835,13 +1564,81 @@ class OOSController extends Controller
             //        );
             //    }
             // }
-           
+            // $list = Helpers::getCQAUsersList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
+            // $list = Helpers::getInitiatorUserList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
+            // $list = Helpers::getHodUserList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
+            // $list = Helpers::getProductionUserList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
+            // $list = Helpers::getProductionHeadUserList($changestage->division_id);
+            // foreach ($list as $u) {
+            //    $email = Helpers::getUserEmail($u->user_id);
+            //        if ($email !== null) {
+            //        Mail::send(
+            //            'mail.view-mail',
+            //            ['data' => $changestage, 'site' => "OOS/OOT", 'history' => "Review", 'process' => 'OOS/OOT', 'comment' => $request->comments, 'user'=> Auth::user()->name],
+            //            function ($message) use ($email, $changestage) {
+            //                $message->to($email)
+            //                ->subject("Agio Notification: OOS/OOT, Record #" . str_pad($changestage->record, 4, '0', STR_PAD_LEFT) . " - Activity: Review");
+            //            }
+            //        );
+            //    }
+            // }
             $data->update();
             toastr()->success('Document Sent');
             return back();
         }
     }
-
     public function child(Request $request, $id)
     {
         $cft = [];
@@ -2886,13 +1683,13 @@ class OOSController extends Controller
             $actionchild = OOS::find($id);
             $data = OOS::find($id);
             // $p_record = RootCauseAnalysis::find($id);
-            $data_record = Helpers::getDivisionName($actionchild->division_id ) . '/' . 'OOS/OOT' .'/' . date('Y') .'/' . str_pad($actionchild->record, 4, '0', STR_PAD_LEFT);    
-            $parentRecord = OOS::where('id', $id)->value('record');
+            $data_record = Helpers::getDivisionName($actionchild->division_id ) . '/' . 'OOS' .'/' . date('Y') .'/' . str_pad($actionchild->record, 4, '0', STR_PAD_LEFT);    
+            $parentRecord = OOS::where('id', $id)->value('record_number');
             $actionchild->actionchild = $record_number;
             $parent_id = $id;
             $actionchild->save();
 
-            return view('frontend.action-item.action-item', compact('parentRecord','parent_short_description','old_records','record_number', 'data_record', 'parent_initiator_id', 'parent_intiation_date', 'parent_name', 'parent_division_id', 'parent_record', 'record', 'due_date', 'parent_id', 'parent_type', 'data'));
+            return view('frontend.action-item.action-item', compact('parentRecord','parent_short_description','old_records','record_number', 'data_record', 'parent_initiator_id', 'parent_intiation_date', 'parent_name', 'parent_division_id', 'parent_record','parent_type', 'record', 'due_date', 'parent_id', 'data'));
         }
         elseif ($request->child_type == "Resampling")
          {
@@ -2986,23 +1783,21 @@ class OOSController extends Controller
     
     public static function singleReport($id)
     {
-
         $data = OOS::find($id);
         if (!empty($data)) {
             $data->info_product_materials = $data->grids()->where('identifier', 'info_product_material')->first();
-            $details_stabilities = $data->grids()->where('identifier', 'details_stability')->first();
+            $data->details_stabilities = $data->grids()->where('identifier', 'details_stability')->first();
             $data->oos_details = $data->grids()->where('identifier', 'oos_detail')->first();
             $checklist_lab_invs = $data->grids()->where('identifier', 'checklist_lab_inv')->first();
             $instrument_details = $data->grids()->where('identifier', 'instrument_details')->first();
             $phase_two_invs = $data->grids()->where('identifier', 'phase_two_inv')->first();
-            $result_analyst_2 = $data->grids()->where('identifier', 'phase_iii_result')->first();
-            $result_analyst_1 = $data->grids()->where('identifier', 'phase_iii_result_i')->first();
+            $oos_conclusions = $data->grids()->where('identifier', 'oos_conclusion')->first();
             $oos_conclusion_reviews = $data->grids()->where('identifier', 'oos_conclusion_review')->first();
     
             $data->originator = User::where('id', $data->initiator_id)->value('name');
             $pdf = App::make('dompdf.wrapper');
             $time = Carbon::now();
-            $pdf = PDF::loadview('frontend.OOS.comps.singleReport', compact('data','checklist_lab_invs','phase_two_invs','instrument_details','result_analyst_2','result_analyst_1','oos_conclusion_reviews','details_stabilities'))
+            $pdf = PDF::loadview('frontend.OOS.comps.singleReport', compact('data','checklist_lab_invs','phase_two_invs','instrument_details','oos_conclusions','oos_conclusion_reviews'))
                 ->setOptions([
                     'defaultFont' => 'sans-serif',
                     'isHtml5ParserEnabled' => true,

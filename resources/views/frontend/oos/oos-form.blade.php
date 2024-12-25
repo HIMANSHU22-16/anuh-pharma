@@ -428,26 +428,26 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator"> OOS Number </label>
-                                <input type="number" disabled>
+                                <input type="hidden" name="record_number" value="{{ $record_number }}">
+                                <input disabled type="text" id="record_display" name="record_number"
+                                       value="{{ Helpers::getDivisionName(session()->get('division')) }}/OOS/OOT/{{ date('Y') }}/{{ $record_number }}">
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator Group"> Division Code </label>
-                                <select disabled>
-                                    <option>Enter Your Selection Here</option>
-                                    <option></option>
-                                    <option></option>
-                                </select>
+                                <input disabled type="text" name="division_code"
+                                        value="{{ Helpers::getDivisionName(session()->get('division')) }}">
+                                <input type="hidden" name="division_id" value="{{ session()->get('division') }}">
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator">Initiator <span class="text-danger"></span></label>
-                                {{-- <input type="hidden" name="initiator_id" value="{{ Auth::user()->id }}">
-                                <input disabled type="text" name="initiator" value="{{ Auth::user()->name }}"> --}}
+                                <input type="hidden" name="initiator_id" value="{{ Auth::user()->id }}">
+                                <input disabled type="text" name="initiator" value="{{ Auth::user()->name }}">
                             </div>
                         </div>
 
@@ -463,11 +463,12 @@
                             <div class="group-input">
                                 <label for="Initiator"> Due Date
                                 </label>
-
-                                <small class="text-primary">
-                                    Please mention expected date of completion
-                                </small>
-                                <input type="date" id="date" name="date-time">
+                                <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small></div>
+                                <div class="calenderauditee">
+                                    <input type="hidden" name="due_date"  id="due_date"  readonly placeholder="DD-MMM-YYYY"/>
+                                    <input type="date" name="due_date" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
+                                    oninput="handleDateInput(this, 'due_date')" />
+                                </div>
 
                             </div>
                         </div>

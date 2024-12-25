@@ -177,9 +177,9 @@
                     <strong> OOS/OOT No.</strong>
                 </td>
                 <td class="w-40">
-                {{ Helpers::getDivisionName($data->division_id) }}/{{ $data->Form_type }}/{{ Helpers::year($data->created_at) }}/{{ $data->record_number ? str_pad($data->record_number, 4, '0', STR_PAD_LEFT) : '1' }}
+                {{-- {{ Helpers::getDivisionName($data->division_id) }}/{{ $data->Form_type }}/{{ Helpers::year($data->created_at) }}/{{ $data->record_number ? str_pad($data->record_number, 4, '0', STR_PAD_LEFT) : '1' }} --}}
 
-                  {{--{{ Helpers::getDivisionName(session()->get('division')) }}/OOS/OOT/{{ date('Y') }}/{{ str_pad($data->record_number, 4, '0', STR_PAD_LEFT) }}--}}
+                  {{ Helpers::getDivisionName(session()->get('division')) }}/OOS/{{ date('Y') }}/{{ str_pad($data->record_number, 4, '0', STR_PAD_LEFT) }}
                 </td>
                 <td class="w-30">
                     <strong>Record No.</strong> {{ str_pad($data->record_number, 4, '0', STR_PAD_LEFT) }}
@@ -220,6 +220,8 @@
 @endphp
 
 @php
+    use Carbon\Carbon;
+
     $phase_two_inv_questions = array(
         "Is correct batch manufacturing record used?",
         "Correct quantities of correct ingredients were used in manufacturing?",
@@ -250,7 +252,9 @@
                     <tr>
                         <th class="w-20">OOS Number</th>
                         <td class="w-30">
-                            {{ Helpers::getDivisionName($data->division_id) }}/{{ $data->Form_type }}/{{ Helpers::year($data->created_at) }}/{{ $data->record_number ? str_pad($data->record_number, 4, '0', STR_PAD_LEFT) : '1' }}
+                            {{-- {{ Helpers::getDivisionName($data->division_id) }}/{{ $data->Form_type }}/{{ Helpers::year($data->created_at) }}/{{ $data->record_number ? str_pad($data->record_number, 4, '0', STR_PAD_LEFT) : '1' }} --}}
+                            {{ Helpers::getDivisionName(session()->get('division')) }}/OOS/{{ date('Y') }}/{{ str_pad($data->record_number, 4, '0', STR_PAD_LEFT) }}
+
                         </td>
                         <th class="w-20">Site/Location Code</th>
                         <td class="w-30">{{ Helpers::getDivisionName($data->division_id) }}</td>
@@ -263,11 +267,11 @@
                     </tr>
                     <tr>
                         <th class="w-20">Date of Initiation</th>
-                        <td class="w-30">{{ Helpers::getdateFormat($data->created_at) }}</td>
+                        <td class="w-30">{{ $data->intiation_date }}</td>
                         <th class="w-20">Due Date</th>
                         <td class="w-30">
                             @if($data->due_date)
-                                {{ Helpers::getdateFormat($data->due_date) }}
+                                {{ $data->due_date }}
                             @else
                                 Not Applicable
                             @endif
@@ -672,8 +676,8 @@
                             <th style="width: 8%"> CAPA taken for OOS</th>
                         </tr>
 
-                        @if(($details_stabilities) && is_array($details_stabilities->data))
-                        @foreach ($details_stabilities->data as $key => $instrument_detail)
+                        @if(($data) && is_array($data->data))
+                        @foreach ($data->data as $key => $instrument_detail)
                         <tr>
                             <td class="w-15">{{ $instrument_detail ? $key + 1  : "Not Applicable" }}</td>
                             <td class="w-15">{{ $instrument_detail['summary_of_previous_oos'] ?  $instrument_detail['summary_of_previous_oos']: "Not Applicable"}}</td>
@@ -1052,8 +1056,8 @@
                             <th style="width: 8%">Set-III</th>
                         </tr>
 
-                        @if(($result_analyst_2) && is_array($result_analyst_2->data))
-                        @foreach ($result_analyst_2->data as $key => $phase_iii_result)
+                        @if(($data) && is_array($data->data))
+                        @foreach ($data->data as $key => $phase_iii_result)
                         <tr>
                             <td class="w-15">{{ $phase_iii_result ? $key + 1  : "Not Applicable" }}</td>
                             <td class="w-15">{{ $phase_iii_result['phase_iii_result_set_1'] ?  $phase_iii_result['phase_iii_result_set_1']: "Not Applicable"}}</td>
@@ -1090,8 +1094,8 @@
                             <th style="width: 8%">Set-III</th>
                         </tr>
 
-                        @if(($result_analyst_1) && is_array($result_analyst_1->data))
-                        @foreach ($result_analyst_1->data as $key => $phase_iii_result_i)
+                        @if(($data) && is_array($data->data))
+                        @foreach ($data->data as $key => $phase_iii_result_i)
                         <tr>
                             <td class="w-15">{{ $phase_iii_result_i ? $key + 1  : "Not Applicable" }}</td>
                             <td class="w-15">{{ $phase_iii_result_i['phase_iii_result_i_set_1'] ?  $phase_iii_result_i['phase_iii_result_i_set_1']: "Not Applicable"}}</td>

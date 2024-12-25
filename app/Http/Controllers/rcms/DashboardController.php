@@ -377,12 +377,11 @@ class DashboardController extends Controller
             $data->create = Carbon::parse($data->created_at)->format('d-M-Y h:i A');
             array_push($table, [
                 "id" => $data->id,
-                "parent" => $data->record_number ? $data->record_number : "-",
+                "parent" => $data->parent_record ? $data->parent_record : "-",
                 "record" => $data->record_number,
                 "division_id" => $data->division_id,
                 "type" => "OOS/OOT",
                 "parent_id" => $data->parent_id,
-                "parent_record" => $data->parent_record? $data->parent_record : "-",
                 "parent_type" => $data->parent_type,
                 "short_description" => $data->description_gi ? $data->description_gi : "-",
                 "initiator_id" => $data->initiator_id,
@@ -789,6 +788,8 @@ class DashboardController extends Controller
             $data = OOS::find($id);
             $single = "single_report/" . $data->id;
             $audit = "audit_report/" . $data->id;
+            $parent="deviationparentchildReport/". $data->id;
+            $family="DeviationFamily/". $data->id;
             
         } elseif ($type == "Observation") {
             $data = Observation::find($id);
