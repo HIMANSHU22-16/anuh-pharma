@@ -200,7 +200,7 @@ Route::group(['prefix' => 'rcms'], function () {
         Route::get('MarketComplaintAuditTrial/{id}', [MarketComplaintController::class, 'AuditTrial'])->name('MarketcomplaintAuditTrial');
         Route::get('/marketcomplaint/{id}',[MarketComplaintController::class,'audit_trail_filter_marketcomplaint'])->name('marketcomplaint_filter');
         Route::get('marketAuditReport/{id}', [MarketComplaintController::class, 'auditReport'])->name('marketcomplaintAuditReport');
-        Route::post('market_child/{id}', [MarketComplaintController::class, 'child_change_control'])->name('child_changecontrol');
+        Route::post('market_child/{id}', [MarketComplaintController::class, 'child_capa_devtion'])->name('child_capa_devtion');
 
 
 

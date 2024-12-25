@@ -4045,7 +4045,7 @@
                     </div>
                     {{-- pr <form action="{{ route('capa_child_changecontrol', $data->id) }}" method="POST"> --}}
                     <form
-                        action="{{ route('capa_child_changecontrol', $data->parent_id ? $data->parent_id : $data->id) }}"
+                        action="{{ route('child_capa_devtion', $data->parent_id ? $data->parent_id : $data->id) }}"
                         method="POST">
                         @csrf
                         <!-- Modal body -->
@@ -4056,12 +4056,12 @@
 
                                     </label>
                                     <label for="major">
-                                        <input type="radio" name="child_type" value="Change_control">
-                                        Change Control
+                                        <input type="radio" name="child_type" value="capa">
+                                        Capa
                                     </label>
                                     <label for="major">
-                                        <input type="radio" name="child_type" value="Action_Item">
-                                        Action Item
+                                        <input type="radio" name="child_type" value="deviation">
+                                        Devitaion
                                     </label>
                                     <!-- <label for="major">
                                                                 <input type="radio" name="child_type" value="extension">
