@@ -483,7 +483,6 @@ class DeviationController extends Controller
 
         $deviation->status = 'Opened';
         $deviation->stage = 1;
-
         $deviation->save();
 
         $productDetailsData = [];
@@ -499,13 +498,12 @@ class DeviationController extends Controller
                 ];
             }
         }
-        
+
         // Store the grid data as JSON in the database
         $productDetailsGridData = DeviationNewGridData::where([
             'deviation_id' => $deviation->id, 
             'identifier' => "ProductDetails"
         ])->firstOrCreate();
-        
         $productDetailsGridData->deviation_id = $deviation->id;
         $productDetailsGridData->identifier = "ProductDetails";
         $productDetailsGridData->data = $productDetailsData;

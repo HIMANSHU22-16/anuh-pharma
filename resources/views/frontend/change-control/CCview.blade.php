@@ -57,16 +57,23 @@
             }
         }
     </script>
-    <div id="rcms_form-head">
+
+   {{-- <div id="rcms_form-head">
         <div class="container-fluid">
             <div class="inner-block">
-
-
+                
                 <div class="slogan">
                     <strong>Site Division / Project </strong>:
                     {{ Helpers::getDivisionName(session()->get('division')) }} / Change Control
                 </div>
             </div>
+        </div>
+    </div> --}}
+
+        <div class="form-field-head">
+         <div class="division-bar">
+            <strong>Site Division / Project</strong>:
+            {{ Helpers::getDivisionName(session()->get('division')) }} / Change Control
         </div>
     </div>
 
@@ -425,7 +432,6 @@
                                                 });
                                             </script>
                                             
-
                                             <script>
                                                 function showOtherInput() {
                                                     const initiatorGroup = document.getElementById('initiator_group').value;
@@ -546,7 +552,6 @@
                                                 @enderror
                                             </div>
                                             
-
                                             <div class="col-12">
                                                 <div class="group-input">
                                                     <label for="Title"><b>Title</b></label>
@@ -563,7 +568,6 @@
                                                 @enderror
                                             </div>
                                             
-
                                             <div class="col-12">
                                                 <div class="group-input">
                                                     <label for="Document Number"><b>Document Number</b></label>
@@ -579,7 +583,6 @@
                                                 @enderror
                                             </div>
                                             
-
                                             <div class="col-md-12 mb-3">
                                                 <div class="group-input">
                                                     <label for="Existing_Stage"><b>Existing Stage / System</b></label>
@@ -654,120 +657,147 @@
 
                                             <div class="col-md-12 mb-3">
                                                 <div class="group-input">
-                                                    <label for="impact_assessment">
-                                                        <b>Impact Assessment By QA Executive / Designee in consultation with Head Quality</b>
+                                                    <label for="Description Deviation">
+                                                        Impact Assessment By QA Executive / Designee in consultation with Head Quality
                                                     </label>
                                             
+                                                    @php
+                                                        // Helper function to safely decode JSON or return an array
+                                                        function parseImpactData($input) {
+                                                            return is_string($input) ? json_decode($input, true) : $input;
+                                                        }
+                                            
+                                                        $impactArray = parseImpactData($data->impact_on);
+                                                        $facilityImpacts = parseImpactData($data->impact_on_facility);
+                                                        $documentImpacts = parseImpactData($data->impact_on_documents);
+                                                    @endphp
+                                            
+                                                    <!-- Editable Mode or View Mode based on a condition -->
+                                                    @php
+                                                        $isEditMode = isset($isEditMode) && $isEditMode;
+                                                    @endphp
+                                            
                                                     <!-- Impact on Qualification -->
-                                                    <div class="mb-3" style="display: flex; align-items: center; gap: 15px;">
-                                                        <label style="margin: 0;"><strong>i) Impact on:</strong></label>
-                                                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                                                            @foreach(['Qualification', 'Calibration', 'Validation', 'Stability'] as $item)
-                                                                <span style="display: inline-flex; align-items: center; gap: 5px;">
-                                                                    <input 
-                                                                        type="checkbox" 
-                                                                        id="impact_{{ $item }}" 
-                                                                        name="impact_on[]" 
-                                                                        value="{{ $item }}" 
-                                                                        style="vertical-align: middle; position: relative; bottom: 1px;"
-                                                                        {{ in_array($item, is_array($data->impact_on ?? null) ? $data->impact_on : explode(',', $data->impact_on ?? '')) ? 'checked' : '' }}>
-                                                                    <label for="impact_{{ $item }}" style="margin: 0; display: block;">{{ $item }}</label>
-                                                                </span>
-                                                            @endforeach
+                                                    <div class="mb-3">
+                                                        <label><strong>i) Impact on:</strong></label>
+                                                        <div>
+                                                            @if($isEditMode)
+                                                                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                                                    @foreach(['Qualification', 'Calibration', 'Validation', 'Stability'] as $item)
+                                                                        <span style="display: inline-flex; align-items: center; gap: 5px;">
+                                                                            <input type="checkbox" id="impact_{{ $item }}" name="impact_on[]" value="{{ $item }}" 
+                                                                                   {{ in_array($item, $impactArray) ? 'checked' : '' }} style="vertical-align: middle; position: relative; bottom: 1px;">
+                                                                            <label for="impact_{{ $item }}" style="margin: 0;">{{ $item }}</label>
+                                                                        </span>
+                                                                    @endforeach
+                                                                </div>
+                                                            @else
+                                                                @if(!empty($impactArray) && is_array($impactArray))
+                                                                    @foreach($impactArray as $impact)
+                                                                        <span class="badge bg-primary">{{ $impact }}</span>
+                                                                    @endforeach
+                                                                @else
+                                                                    <p>No impacts specified</p>
+                                                                @endif
+                                                            @endif
                                                         </div>
                                                     </div>
-                                                    
                                             
                                                     <!-- Impact on Facility -->
-                                                    <div class="mb-3" style="display: flex; align-items: center; gap: 15px;">
-                                                        <label style="margin: 0;"><strong>ii) Impact on:</strong></label>
-                                                        <div style="display: flex; gap: 10px;">
-                                                            @foreach(['Facility', 'Equipment', 'Instrument'] as $item)
-                                                                <span style="display: inline-flex; align-items: center; gap: 5px;">
-                                                                    <input 
-                                                                        type="checkbox" 
-                                                                        id="impact_facility_{{ $item }}" 
-                                                                        name="impact_on_facility[]" 
-                                                                        value="{{ $item }}" 
-                                                                        {{ in_array($item, is_array($data->impact_on_facility ?? null) ? $data->impact_on_facility : explode(',', $data->impact_on_facility ?? '')) ? 'checked' : '' }}>
-                                                                    <label for="impact_facility_{{ $item }}">{{ $item }}</label>
-                                                                </span>
-                                                            @endforeach
+                                                    <div class="mb-3">
+                                                        <label><strong>ii) Impact on Facility:</strong></label>
+                                                        <div>
+                                                            @if($isEditMode)
+                                                                <div style="display: flex; gap: 10px;">
+                                                                    @foreach(['Facility', 'Equipment', 'Instrument'] as $item)
+                                                                        <span style="display: inline-flex; align-items: center; gap: 5px;">
+                                                                            <input type="checkbox" id="impact_facility_{{ $item }}" name="impact_on_facility[]" value="{{ $item }}" 
+                                                                                   {{ in_array($item, $facilityImpacts) ? 'checked' : '' }}>
+                                                                            <label for="impact_facility_{{ $item }}">{{ $item }}</label>
+                                                                        </span>
+                                                                    @endforeach
+                                                                </div>
+                                                            @else
+                                                                @if(!empty($facilityImpacts) && is_array($facilityImpacts))
+                                                                    @foreach($facilityImpacts as $impact)
+                                                                        <span class="badge bg-success">{{ $impact }}</span>
+                                                                    @endforeach
+                                                                @else
+                                                                    <p>No impacts specified</p>
+                                                                @endif
+                                                            @endif
                                                         </div>
                                                     </div>
-                                                    
                                             
                                                     <!-- Impact on Documents -->
-                                                    <div class="mb-3" style="display: flex; align-items: flex-start; gap: 15px;">
-                                                        <label style="margin: 0; white-space: nowrap;"><strong>iii) Impact on Documents:</strong></label>
-                                                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                                            @foreach(['SOP', 'Specification', 'AMV', 'Protocols', 'Train', 'BMCR/BPCR'] as $item)
-                                                                <span style="display: inline-flex; align-items: center; gap: 5px; margin-bottom: 5px;">
-                                                                    <input 
-                                                                        type="checkbox" 
-                                                                        id="impact_documents_{{ $item }}" 
-                                                                        name="impact_on_documents[]" 
-                                                                        value="{{ $item }}" 
-                                                                        {{ in_array($item, is_array($data->impact_on_documents ?? null) ? $data->impact_on_documents : explode(',', $data->impact_on_documents ?? '')) ? 'checked' : '' }}>
-                                                                    <label for="impact_documents_{{ $item }}">{{ $item }}</label>
-                                                                </span>
-                                                            @endforeach
+                                                    <div class="mb-3">
+                                                        <label><strong>iii) Impact on Documents:</strong></label>
+                                                        <div>
+                                                            @if($isEditMode)
+                                                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                                                    @foreach(['SOP', 'Specification', 'AMV', 'Protocols', 'Train', 'BMCR/BPCR'] as $item)
+                                                                        <span style="display: inline-flex; align-items: center; gap: 5px;">
+                                                                            <input type="checkbox" id="impact_documents_{{ $item }}" name="impact_on_documents[]" value="{{ $item }}" 
+                                                                                   {{ in_array($item, $documentImpacts) ? 'checked' : '' }}>
+                                                                            <label for="impact_documents_{{ $item }}">{{ $item }}</label>
+                                                                        </span>
+                                                                    @endforeach
+                                                                </div>
+                                                            @else
+                                                                @if(!empty($documentImpacts) && is_array($documentImpacts))
+                                                                    @foreach($documentImpacts as $impact)
+                                                                        <span class="badge bg-info">{{ $impact }}</span>
+                                                                    @endforeach
+                                                                @else
+                                                                    <p>No impacts specified</p>
+                                                                @endif
+                                                            @endif
                                                         </div>
                                                     </div>
-                                                    
                                             
                                                     <!-- Risk Assessment -->
                                                     <div class="mb-3">
                                                         <label><strong>iv) Risk Assessment:</strong></label>
-                                                        <div style="display: inline-flex; gap: 15px; align-items: center; margin-left: 10px;">
-                                                            <div>
-                                                                <input type="radio" id="risk_yes" name="risk_assessment" value="Yes" 
-                                                                    {{ old('risk_assessment', $data->risk_assessment ?? '') == 'Yes' ? 'checked' : '' }} required>
-                                                                <label for="risk_yes">Yes</label>
-                                                            </div>
-                                                            <div>
-                                                                <input type="radio" id="risk_no" name="risk_assessment" value="No" 
-                                                                    {{ old('risk_assessment', $data->risk_assessment ?? '') == 'No' ? 'checked' : '' }} required>
-                                                                <label for="risk_no">No</label>
-                                                            </div>
+                                                        <div>
+                                                            @if($isEditMode)
+                                                                <select name="risk_assessment" class="form-control">
+                                                                    <option value="Yes" {{ $data->risk_assessment == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                                    <option value="No" {{ $data->risk_assessment == 'No' ? 'selected' : '' }}>No</option>
+                                                                </select>
+                                                                @if($data->risk_assessment == 'No')
+                                                                    <textarea name="risk_justification" class="form-control">{{ $data->risk_justification ?? '' }}</textarea>
+                                                                @endif
+                                                            @else
+                                                                <p>{{ $data->risk_assessment == 'Yes' ? 'Yes' : 'No' }}</p>
+                                                                @if($data->risk_assessment == 'No' && !empty($data->risk_justification))
+                                                                    <div>
+                                                                        <strong>Justification:</strong>
+                                                                        <p>{{ $data->risk_justification }}</p>
+                                                                    </div>
+                                                                @endif
+                                                            @endif
                                                         </div>
-                                                        <textarea 
-                                                            name="risk_justification" 
-                                                            id="risk_justification" 
-                                                            placeholder="If No, provide justification" 
-                                                            style="display: {{ old('risk_assessment', $data->risk_assessment ?? '') == 'No' ? 'block' : 'none' }}; margin-top: 10px;" 
-                                                            aria-describedby="risk_help">{{ old('risk_justification', $data->risk_justification ?? '') }}</textarea>
                                                     </div>
-                                                </div>
-                                            </div>
-                                                                                       
-                                                    <script>
-                                                        // Show/Hide the justification textarea based on the radio button selection
-                                                        document.querySelectorAll('input[name="risk_assessment"]').forEach((elem) => {
-                                                            elem.addEventListener("change", function() {
-                                                                var justificationField = document.getElementById('risk_justification');
-                                                                if (document.getElementById('risk_no').checked) {
-                                                                    justificationField.style.display = 'block';  // Show textarea if 'No' is selected
-                                                                } else {
-                                                                    justificationField.style.display = 'none';  // Hide textarea if 'Yes' is selected
-                                                                }
-                                                            });
-                                                        });
-                                                    </script>
                                             
                                                     <!-- Others -->
                                                     <div class="mb-3">
-                                                        <label><strong>v) Others (Please specify):</strong></label>
-                                                        <textarea 
-                                                            name="others" 
-                                                            class="form-control mt-2" 
-                                                            placeholder="Specify other impacts" 
-                                                            rows="3" 
-                                                            style="resize: vertical;">{{ old('others', $data->others ?? '') }}</textarea>
+                                                        <label><strong>v) Others:</strong></label>
+                                                        <div>
+                                                            @if($isEditMode)
+                                                                <textarea name="others" class="form-control">{{ $data->others ?? '' }}</textarea>
+                                                            @else
+                                                                <p>{{ $data->others ?? 'No additional impacts specified' }}</p>
+                                                            @endif
+                                                        </div>
                                                     </div>
+                                            
+                                                    @if($isEditMode)
+                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                    @endif
                                                 </div>
                                             </div>
-                                            
+                                                                                                                                                                                
+                                                                                        
 
                                             <div class="col-lg-6">
                                                 <div class="group-input">
@@ -793,110 +823,105 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            
-                                            <div class="col-12" id="actionsPlanGroup">
-                                                <div class="group-input">
-                                                    <label for="ActionsPlan">
-                                                        Actions Plan, Tracking, Verification, and Closure
-                                                        <button type="button" name="addActionRow" id="addActionRowButton">+</button>
-                                                    </label>
-                                                    <table class="table table-bordered" id="actionsPlanTable">
-                                                        <thead>
+
+                                           
+                                        <div class="col-12" id="actionsPlanGroup">
+                                            <div class="group-input">
+                                                <label for="ActionsPlan">
+                                                    Actions Plan, Tracking, Verification, and Closure
+                                                    <button type="button" name="addActionRow" id="addActionRowButton">+</button>
+                                                </label>
+                                                <table class="table table-bordered" id="actionsPlanTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr. No.</th>
+                                                            <th>Description of Action</th>
+                                                            <th>Responsible Department</th>
+                                                            <th>Planned Completion Date</th>
+                                                            <th>Actual Completion Date</th>
+                                                            <th>Evidence Attached (Y/N)</th>
+                                                            <th>HOD Sign & Date</th>
+                                                            <th>QA Verification (Sign & Date)</th>
+                                                            <th>Reference Annexures</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (is_array($actionsplanData) && !empty($actionsplanData))
+                                                        @foreach($actionsplanData as $index => $action)
                                                             <tr>
-                                                                <th>Sr. No.</th>
-                                                                <th>Description of Action</th>
-                                                                <th>Responsible Department</th>
-                                                                <th>Planned Completion Date</th>
-                                                                <th>Actual Completion Date</th>
-                                                                <th>Evidence Attached (Y/N)</th>
-                                                                <th>HOD Sign & Date</th>
-                                                                <th>QA Verification (Sign & Date)</th>
-                                                                <th>Reference Annexures</th>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td><input type="text" name="action_description[]" id="actionDescription_{{ $loop->iteration }}" class="form-control" value="{{ $action['action_description'] }}"></td>
+                                                                <td><input type="text" name="responsible_department[]" id="responsibleDepartment_{{ $loop->iteration }}" class="form-control" value="{{ $action['responsible_department'] }}"></td>
+                                                                <td><input type="date" name="planned_date[]" id="plannedDate_{{ $loop->iteration }}" class="form-control" value="{{ $action['planned_date'] }}"></td>
+                                                                <td><input type="date" name="actual_date[]" id="actualDate_{{ $loop->iteration }}" class="form-control" value="{{ $action['actual_date'] }}"></td>
+                                                                <td>
+                                                                    <select name="evidence_attached[]" id="evidenceAttached_{{ $loop->iteration }}" class="form-control">
+                                                                        <option value="">Select</option>
+                                                                        <option value="Yes" {{ $action['evidence_attached'] == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                                        <option value="No" {{ $action['evidence_attached'] == 'No' ? 'selected' : '' }}>No</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="text" name="hod_sign_date[]" id="hodSignDate_{{ $loop->iteration }}" class="form-control" value="{{ $action['hod_sign_date'] }}"></td>
+                                                                <td><input type="text" name="qa_verification[]" id="qaVerification_{{ $loop->iteration }}" class="form-control" value="{{ $action['qa_verification'] }}"></td>
+                                                                <td><input type="text" name="reference_annexures[]" id="referenceAnnexures_{{ $loop->iteration }}" class="form-control" value="{{ $action['reference_annexures'] }}"></td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @if (is_array($actionsPlanGridData) && !empty($actionsPlanGridData))
-                                                                @foreach($actionsPlanGridData as $index => $action)
-                                                                    <tr>
-                                                                        <td>{{ $loop->iteration }}</td>
-                                                                        <td><input type="text" name="action_description[]" class="form-control" value="{{ old('action_description.' . $index, $action['action_description']) }}" required></td>
-                                                                        <td><input type="text" name="responsible_department[]" class="form-control" value="{{ old('responsible_department.' . $index, $action['responsible_department']) }}" required></td>
-                                                                        <td><input type="date" name="planned_date[]" class="form-control" value="{{ old('planned_date.' . $index, $action['planned_date']) }}" required></td>
-                                                                        <td><input type="date" name="actual_date[]" class="form-control" value="{{ old('actual_date.' . $index, $action['actual_date']) }}"></td>
-                                                                        <td>
-                                                                            <select name="evidence_attached[]" class="form-control" required>
-                                                                                <option value="Yes" {{ old('evidence_attached.' . $index, $action['evidence_attached']) == 'Yes' ? 'selected' : '' }}>Yes</option>
-                                                                                <option value="No" {{ old('evidence_attached.' . $index, $action['evidence_attached']) == 'No' ? 'selected' : '' }}>No</option>
-                                                                            </select>
-                                                                        </td>
-                                                                        <td><input type="text" name="hod_sign_date[]" class="form-control" value="{{ old('hod_sign_date.' . $index, $action['hod_sign_date']) }}"></td>
-                                                                        <td><input type="text" name="qa_verification[]" class="form-control" value="{{ old('qa_verification.' . $index, $action['qa_verification']) }}"></td>
-                                                                        <td><input type="text" name="reference_annexures[]" class="form-control" value="{{ old('reference_annexures.' . $index, $action['reference_annexures']) }}"></td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            @else
-                                                                <!-- Default empty row -->
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td><input type="text" name="action_description[]" class="form-control" placeholder="Description of Action" required></td>
-                                                                    <td><input type="text" name="responsible_department[]" class="form-control" placeholder="Responsible Department" required></td>
-                                                                    <td><input type="date" name="planned_date[]" class="form-control" required></td>
-                                                                    <td><input type="date" name="actual_date[]" class="form-control"></td>
-                                                                    <td>
-                                                                        <select name="evidence_attached[]" class="form-control" required>
-                                                                            <option value="Yes">Yes</option>
-                                                                            <option value="No">No</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td><input type="text" name="hod_sign_date[]" class="form-control" placeholder="HOD Sign & Date"></td>
-                                                                    <td><input type="text" name="qa_verification[]" class="form-control" placeholder="QA Verification"></td>
-                                                                    <td><input type="text" name="reference_annexures[]" class="form-control" placeholder="Reference Annexures"></td>
-                                                                </tr>
-                                                            @endif
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                        @endforeach
+                                                        @else
+                                                            <!-- Default empty row -->
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td><input type="text" name="action_description[]" id="actionDescription_1" class="form-control"></td>
+                                                                <td><input type="text" name="responsible_department[]" id="responsibleDepartment_1" class="form-control"></td>
+                                                                <td><input type="date" name="planned_date[]" id="plannedDate_1" class="form-control"></td>
+                                                                <td><input type="date" name="actual_date[]" id="actualDate_1" class="form-control"></td>
+                                                                <td>
+                                                                    <select name="evidence_attached[]" id="evidenceAttached_1" class="form-control">
+                                                                        <option value="">Select</option>
+                                                                        <option value="Yes">Yes</option>
+                                                                        <option value="No">No</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="text" name="hod_sign_date[]" id="hodSignDate_1" class="form-control"></td>
+                                                                <td><input type="text" name="qa_verification[]" id="qaVerification_1" class="form-control"></td>
+                                                                <td><input type="text" name="reference_annexures[]" id="referenceAnnexures_1" class="form-control"></td>
+                                                            </tr>
+                                                        @endif
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                                                                        
-                                            
-                                            <script>
-                                               document.addEventListener("DOMContentLoaded", function() {
-                                                // Set initial row count based on existing data
-                                                let rowCount = {{ isset($actionsPlans) ? count($actionsPlans) : 0 }};
+                                        </div>
 
-                                                // Get references to the "Add Row" button and the table body
-                                                const addActionRowButton = document.getElementById("addActionRowButton");
+                                        <script>
+                                            document.getElementById("addActionRowButton").addEventListener("click", function (event) {
+                                                event.preventDefault(); // Prevent default button behavior
+
                                                 const tableBody = document.querySelector("#actionsPlanTable tbody");
+                                                const rowCount = tableBody.rows.length + 1; // Calculate the new row count
 
-                                                // Add event listener for the "Add Row" button
-                                                addActionRowButton.addEventListener("click", function() {
-                                                    rowCount++; // Increment row count
+                                                // Create a new row dynamically
+                                                const newRow = document.createElement("tr");
+                                                newRow.innerHTML = `
+                                                    <td>${rowCount}</td>
+                                                    <td><input type="text" name="action_description[]" id="actionDescription_${rowCount}" class="form-control"></td>
+                                                    <td><input type="text" name="responsible_department[]" id="responsibleDepartment_${rowCount}" class="form-control"></td>
+                                                    <td><input type="date" name="planned_date[]" id="plannedDate_${rowCount}" class="form-control"></td>
+                                                    <td><input type="date" name="actual_date[]" id="actualDate_${rowCount}" class="form-control"></td>
+                                                    <td>
+                                                        <select name="evidence_attached[]" id="evidenceAttached_${rowCount}" class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" name="hod_sign_date[]" id="hodSignDate_${rowCount}" class="form-control"></td>
+                                                    <td><input type="text" name="qa_verification[]" id="qaVerification_${rowCount}" class="form-control"></td>
+                                                    <td><input type="text" name="reference_annexures[]" id="referenceAnnexures_${rowCount}" class="form-control"></td>
+                                                `;
 
-                                                    // Create a new table row with appropriate input fields
-                                                    const newRow = document.createElement("tr");
-                                                    newRow.innerHTML = `
-                                                        <td class="text-center">${rowCount}</td>
-                                                        <td><input type="text" name="action_description[]" class="form-control" required></td>
-                                                        <td><input type="text" name="responsible_department[]" class="form-control" required></td>
-                                                        <td><input type="date" name="planned_date[]" class="form-control" required></td>
-                                                        <td><input type="date" name="actual_date[]" class="form-control"></td>
-                                                        <td>
-                                                            <select name="evidence_attached[]" class="form-control" required>
-                                                                <option value="">Select</option>
-                                                                <option value="Yes">Yes</option>
-                                                                <option value="No">No</option>
-                                                            </select>
-                                                        </td>
-                                                        <td><input type="text" name="hod_sign_date[]" class="form-control"></td>
-                                                        <td><input type="text" name="qa_verification[]" class="form-control"></td>
-                                                        <td><input type="text" name="reference_annexures[]" class="form-control"></td>
-                                                    `;
+                                                tableBody.appendChild(newRow); // Append the new row
+                                            });
+                                        </script>
 
-                                                    // Append the new row to the table body
-                                                    tableBody.appendChild(newRow);
-                                                });
-                                              });
-                                            </script>
                                             
 
                                             <div class="col-md-12 mb-3">

@@ -192,8 +192,7 @@
                                         @enderror
                                     </div>
                                     <div class="group-input" id="other_input_group" style="display: none;">
-                                        <label for="Other Department"><b>Department (Any Other)</b><span
-                                                class="text-danger">*</span></label>
+                                        <label for="Other Department"><b>Department (Any Other)</b></label>
                                         <input type="text" name="departments_other" id="other_department" />
                                     </div>
                                 </div>
@@ -316,7 +315,7 @@
                                         <label for="Description Deviation">
                                             Impact Assessment By QA Executive / Designee in consultation with Head Quality
                                         </label>
-                                        
+                                
                                         <!-- Impact on Qualification -->
                                         <div class="mb-3" style="display: flex; align-items: center; gap: 15px;">
                                             <label style="margin: 0;"><strong>i) Impact on:</strong></label>
@@ -329,7 +328,7 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                        
+                                
                                         <!-- Impact on Facility -->
                                         <div class="mb-3" style="display: flex; align-items: center; gap: 15px;">
                                             <label style="margin: 0;"><strong>ii) Impact on:</strong></label>
@@ -342,8 +341,8 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                        
-                                       <!-- Impact on Documents -->
+                                
+                                        <!-- Impact on Documents -->
                                         <div class="mb-3" style="display: flex; align-items: flex-start; gap: 15px;">
                                             <label style="margin: 0; white-space: nowrap;"><strong>iii) Impact on Documents:</strong></label>
                                             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -355,17 +354,17 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                        
+                                
                                         <!-- Risk Assessment -->
                                         <div class="mb-3">
                                             <label><strong>iv) Risk Assessment:</strong></label>
                                             <div style="display: inline-flex; gap: 15px; align-items: center; margin-left: 10px;">
                                                 <div>
-                                                    <input type="radio" id="risk_yes" name="risk_assessment" value="Yes" required>
+                                                    <input type="radio" id="risk_yes" name="risk_assessment" value="Yes">
                                                     <label for="risk_yes">Yes</label>
                                                 </div>
                                                 <div>
-                                                    <input type="radio" id="risk_no" name="risk_assessment" value="No" required>
+                                                    <input type="radio" id="risk_no" name="risk_assessment" value="No">
                                                     <label for="risk_no">No</label>
                                                 </div>
                                             </div>
@@ -390,6 +389,7 @@
                                                 });
                                             });
                                         </script>
+                                
                                         <!-- Others -->
                                         <div class="mb-3">
                                             <label><strong>v) Others (Please specify):</strong></label>
@@ -403,7 +403,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                                                
+                                                                                                
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="audit type">Identification of Cross functional departments by QA for review of change proposal & Impact</label>
@@ -424,14 +424,14 @@
                                         </select>
                                     </div>
                                 </div>
-
+                                
                                 <div class="col-12" id="actionsPlanGroup">
                                     <div class="group-input">
                                         <label for="ActionsPlan">
                                             Actions Plan, tracking, verification, and closure
-                                            <button type="button" name="addRow" id="addActionRowButton">+</button>
+                                            <button type="button" name="addRow" id="addProductRowButton">+</button>
                                         </label>
-                                        <table class="table table-bordered" id="actionsPlanTable">
+                                        <table class="table table-bordered" id="productDetailsTable">
                                             <thead>
                                                 <tr>
                                                     <th rowspan="2" class="text-center">Sr. No.</th>
@@ -452,10 +452,10 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="text-center">1</td>
-                                                    <td><input type="text" name="action_description[]"></td>
-                                                    <td><input type="text" name="responsible_department[]"></td>
-                                                    <td><input type="date" name="planned_date[]"></td>
-                                                    <td><input type="date" name="actual_date[]"></td>
+                                                    <td><input type="text" name="action_description[]" class="form-control"></td>
+                                                    <td><input type="text" name="responsible_department[]" class="form-control"></td>
+                                                    <td><input type="date" name="planned_date[]" class="form-control"></td>
+                                                    <td><input type="date" name="actual_date[]" class="form-control"></td>
                                                     <td>
                                                         <select name="evidence_attached[]" class="form-control">
                                                             <option value="">Select</option>
@@ -463,52 +463,55 @@
                                                             <option value="No">No</option>
                                                         </select>
                                                     </td>
-                                                    <td><input type="text" name="hod_sign_date[]"></td>
-                                                    <td><input type="text" name="qa_verification[]"></td>
-                                                    <td><input type="text" name="reference_annexures[]"></td>
+                                                    <td><input type="text" name="hod_sign_date[]" class="form-control"></td>
+                                                    <td><input type="text" name="qa_verification[]" class="form-control"></td>
+                                                    <td><input type="text" name="reference_annexures[]" class="form-control"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                 <script>
-                                    document.addEventListener("DOMContentLoaded", function() {
-                                        let rowCount = 1; // Initial row count for numbering
-                                
-                                        // Add row button functionality
-                                        const addActionRowButton = document.getElementById("addActionRowButton");
-                                        const tableBody = document.querySelector("#actionsPlanTable tbody");
-                                
-                                        addActionRowButton.addEventListener("click", function() {
-                                            rowCount++;
-                                
-                                            // Create a new table row
-                                            const newRow = document.createElement("tr");
-                                            newRow.innerHTML = `
-                                                <td class="text-center">${rowCount}</td>
-                                                <td><input type="text" name="action_description[]" class="form-control" required></td>
-                                                <td><input type="text" name="responsible_department[]" class="form-control" required></td>
-                                                <td><input type="date" name="planned_date[]" class="form-control" required></td>
-                                                <td><input type="date" name="actual_date[]" class="form-control"></td>
-                                                <td>
-                                                    <select name="evidence_attached[]" class="form-control" required>
-                                                        <option value="">Select</option>
-                                                        <option value="Yes">Yes</option>
-                                                        <option value="No">No</option>
-                                                    </select>
-                                                </td>
-                                                <td><input type="text" name="hod_sign_date[]" class="form-control"></td>
-                                                <td><input type="text" name="qa_verification[]" class="form-control"></td>
-                                                <td><input type="text" name="reference_annexures[]" class="form-control"></td>
-                                            `;
-                                
-                                            // Append the new row to the table body
-                                            tableBody.appendChild(newRow);
-                                        });
-                                    });
-                                </script>
+                                  $(document).ready(function() {
+                                        // Function to add a new row
+                                        $('#addProductRowButton').click(function() {
+                                            const rowCount = $('#productDetailsTable tbody tr').length + 1;
 
+                                            const newRow = `
+                                                <tr>
+                                                    <td class="text-center">${rowCount}</td>
+                                                    <td><input type="text" name="action_description[]" class="form-control"></td>
+                                                    <td><input type="text" name="responsible_department[]" class="form-control"></td>
+                                                    <td><input type="date" name="planned_date[]" class="form-control"></td>
+                                                    <td><input type="date" name="actual_date[]" class="form-control"></td>
+                                                    <td>
+                                                        <select name="evidence_attached[]" class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" name="hod_sign_date[]" class="form-control"></td>
+                                                    <td><input type="text" name="qa_verification[]" class="form-control"></td>
+                                                    <td><input type="text" name="reference_annexures[]" class="form-control"></td>
+                                                </tr>
+                                            `;
+
+                                            $('#productDetailsTable tbody').append(newRow);
+                                        });
+
+                                        // Function to update row numbers after adding a new row
+                                        function updateRowNumbers() {
+                                            $('#productDetailsTable tbody tr').each(function(index) {
+                                                $(this).find('td:first').text(index + 1);
+                                            });
+                                        }
+                                    });
+
+                                </script>
+                                
                                 <div class="col-md-12 mb-3">
                                     <div class="group-input">
                                         <label for="Description Deviation">Evaluation and Approval by Head Quality / Designee</label>
