@@ -298,7 +298,8 @@
                
               
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_ar_no]" value=""></td>' +
-                        '<td><input type="text" name="info_product_material[' + serialNumber + '][info_stage]" value=""></td>' +
+                        '<td><select name="info_product_material[' + serialNumber + '][info_stage]"><option value="">--Select--</option><option value="finished_product">Finished Product</option><option value="raw_material">Raw Material</option><option value="reaction_material">Reaction Material</option><option value="stability_study">Stability Study</option><option value="other">Other (Specify)</option></select></td>' +
+                                  // '<td><input type="text" name="info_product_material[' + serialNumber + '][info_stage]"><option value="">--Select--</option><option value="finished_product">Finished Product</option><option value="raw_material">Raw Material</option><option value="reaction_material">Reaction Material</option><option value="stability_study">Stability Study</option><option value="other">Other (Specify)</option></select>
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_reference_specification_no]" value=""></td>' +
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_test]" value=""></td>' +
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_results_obtained]" value=""></td>' +
@@ -430,7 +431,7 @@
                                 <label for="Initiator"> OOS Number </label>
                                 <input type="hidden" name="record_number" value="{{ $record_number }}">
                                 <input disabled type="text" id="record_display" name="record_number"
-                                       value="{{ Helpers::getDivisionName(session()->get('division')) }}/OOS/OOT/{{ date('Y') }}/{{ $record_number }}">
+                                       value="{{ Helpers::getDivisionName(session()->get('division')) }}/OOS/{{ date('Y') }}/{{ $record_number }}">
                             </div>
                         </div>
 
@@ -476,7 +477,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS Occurrence<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="date" value="" name="oos_occurrence_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -484,7 +485,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS reporting<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="date" value="" name="oos_reporting_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -666,9 +667,9 @@
                                             <th style="width: 10%">Stage</th>
                                             <th style="width: 12% pt-3">Reference Specification No.</th>
                                             <th style="width: 16% pt-2"> Test</th>
-                                            <th style="width: 8%">Results Obtained</th>
-                                            <th style="width: 8%">Specification limit</th>
-                                            <th style="width: 15%">Action</th>
+                                            <th style="width: 12%">Results Obtained</th>
+                                            <th style="width: 10%">Specification limit</th>
+                                            <th style="width: 8%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -679,7 +680,7 @@
 
                                             <td>
                                                 <select name="info_product_material[0][info_stage]">
-                                                <option value="">Enter Your Selection Here</option>
+                                                    <option value="">--Select--</option>
                                                     <option value="finished_product">Finished Product</option>
                                                     <option value="raw_material">Raw Material</option>
                                                     <option value="reaction_material">Reaction Material</option>
@@ -690,7 +691,16 @@
                                             <td><input type="text" name="info_product_material[0][info_reference_specification_no]" value=""></td>
                                             <td><input type="text" name="info_product_material[0][info_test]" value=""></td>
                                             <td><input type="text" name="info_product_material[0][info_results_obtained]" value=""></td>
-                                            <td><input type="text" name="info_product_material[0][info_specification_limit]" value=""></td>
+                                            <td>
+                                                {{-- <input type="text" name="info_product_material[0][info_specification_limit]" value=""> --}}
+                                                <select name="info_product_material[0][info_specification_limit]">
+                                                    <option value="">--Select--</option>
+                                                    <option value="Primary">Primary</option>
+                                                    <option value="Secondary">Secondary</option>
+                                                    <option value="Tertiary">Tertiary</option>
+                                                    <option value="Not Applicable">Not Applicable</option>
+                                                </select>
+                                            </td>
                                             <td><button type="text" class="removeRowBtn">Remove</button></td>
                                         </tr>
                                     </tbody>
@@ -716,7 +726,7 @@
                             </div>
                         </div>
 
-
+                     </div>
                         <div class="button-block">
                             <button type="submit" class="saveButton">Save</button>
                             <!-- <button type="button" class="backButton" onclick="previousStep()">Back</button> -->
@@ -726,7 +736,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            
 
 
             <!-- Preliminary Lab. Investigation -->
@@ -958,7 +968,7 @@
                                 </div>
                             </div>
                         </div>
-                   
+                   </div>
 
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -971,8 +981,7 @@
                     </div>
                 </div>
 
-            </div>
-
+        
 
             <!-- Preliminary Lab Inv. Conclusion -->
             <div id="CCForm3" class="inner-block cctabcontent">
@@ -1246,7 +1255,7 @@
                                 </div>
                             </div>
                         </div>
-
+                    </div>
 
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -1258,7 +1267,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            
             <!-- Preliminary Lab Invst. Review--->
             <div id="CCForm4" class="inner-block cctabcontent">
                 <div class="inner-block-content">
@@ -1347,7 +1356,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -1358,8 +1367,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+      
         <!--Phase II Investigation -->
         <div id="CCForm5" class="inner-block cctabcontent">
             <div class="inner-block-content">
@@ -1649,45 +1657,7 @@
                         </div>
                     </div>
                     
-                <!--<div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments"> Hypo/Exp. Required ?</label>
-                            <select>
-                                <option>Yes</option>
-                                <option>No</option>
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Hypo/Exp. Reference  .</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
-                                <option value=""> Enter Your Selection Here</option>
-                                <option value=""></option>
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="group-input">
-                            <label for="Audit Attachments"> Attachment</label>
-                            <small class="text-primary">
-                                Please Attach all relevant or supporting documents
-                            </small>
-                            <div class="file-attachment-field">
-                                <div class="file-attachment-list" id="file_attach"></div>
-                                <div class="add-btn">
-                                    <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
-                                        oninput="addMultipleFiles(this, 'file_attach')" multiple>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div> -->
+               </div>
 
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -1938,7 +1908,7 @@
                             <textarea  type="text" class="" name="justification_text" id=""></textarea>
                         </div>
                     </div>
-
+                </div>
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -2240,8 +2210,8 @@
                 <div class="button-block">
                     <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                     <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                    <button type="button" id="ChangeNextButton" class="nextButton"
-                        onclick="nextStep()">Next</button>
+                    <!-- <button type="button" id="ChangeNextButton" class="nextButton"
+                        onclick="nextStep()">Next</button> -->
                     <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                             Exit </a> </button>
                 </div>

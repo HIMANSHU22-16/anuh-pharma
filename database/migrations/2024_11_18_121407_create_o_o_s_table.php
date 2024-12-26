@@ -121,6 +121,10 @@ return new class extends Migration
              $table->longText('action_plan_ref_oosc')->nullable();
              $table->longText('justification_for_delay_oosc')->nullable();
              $table->longText('attachments_if_any_oosc')->nullable();
+
+             $table->date('oos_occurrence_date')->nullable();
+             $table->date('oos_reporting_date')->nullable();
+
             //  ashish
             $table->longtext('conclusion_review_comments_ocr')->nullable();
             $table->longtext('action_taken_on_affec_batch_ocr')->nullable();

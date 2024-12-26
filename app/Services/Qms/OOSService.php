@@ -28,11 +28,15 @@ class OOSService
 
         try {
 
-            $input = $request->all();
+            // $input = $request->all();
+            $input = $request->except(['proposal_for_hypothesis_IB','checklists']);
             $input['form_type'] = "OOS";
             $input['status'] = 'Opened';
             $input['stage'] = 1;
             $input['record_number'] = ((RecordNumber::first()->value('counter')) + 1);
+            $input['proposal_for_hypothesis_IB'] = implode(',', $request->proposal_for_hypothesis_IB);
+            $input['checklists'] = implode(',', $request->checklists);
+
 
             $file_input_names = [
                 // 'initial_attachment_gi',
@@ -71,6 +75,11 @@ class OOSService
                 // 'provide_attachment4',
                 // 'provide_attachment5',
             ];
+
+            if ($request->has('outcome_phase_ib_investigation2')) {
+                $multiSelectValues = $request->input('outcome_phase_ib_investigation2');
+                $input['outcome_phase_ib_investigation2'] = json_encode($multiSelectValues); // Save as JSON
+            }
 
             foreach ($file_input_names as $file_input_name)
             {
@@ -2499,8 +2508,21 @@ class OOSService
         $res = Helpers::getDefaultResponse();
 
         try {
-
+            $data = OOS::findOrFail($id);
             $input = $request->all();
+
+            // Handle multi-select field
+        // if ($request->has('outcome_phase_ib_investigation2') && !empty($request->input('outcome_phase_ib_investigation2'))) {
+        //     $multiSelectValues = $request->input('outcome_phase_ib_investigation2');
+        //     $input['outcome_phase_ib_investigation2'] = json_encode($multiSelectValues); // Convert to JSON
+        // } else {
+        //     $input['outcome_phase_ib_investigation2'] = json_encode([]); // Save an empty array if no value is selected
+        // }
+
+        // Update the record
+        $data->update($input);
+            
+            
 
             $lastOosRecod = OOS::where('id', $id)->first();
 
@@ -5099,6 +5121,7 @@ class OOSService
                 }
             
             }
+
 
              // Find the OOS record by ID
 

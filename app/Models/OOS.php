@@ -22,6 +22,8 @@ class OOS extends Model
           'initiator_group',
           'initiator_group_code',
           'due_date',
+          'oos_occurrence_date',
+          'oos_reporting_date',
           'severity_level_gi',
           'initiated_through_gi',
           'if_others_gi',

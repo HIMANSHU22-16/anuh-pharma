@@ -18,7 +18,7 @@
     <div class="main-head">Record Workflow </div>
         <div class="d-flex" style="gap:20px;">
             @php
-            $userRoles = DB::table('user_roles')->where(['user_id' => Auth::user()->id, 'q_m_s_divisions_id' => $data->division_id])->get();
+            $userRoles = DB::table('user_roles')->where(['user_id' => Auth::user()->id, 'q_m_s_divisions_id' => 1])->get();
             $userRoleIds = $userRoles->pluck('q_m_s_roles_id')->toArray();
             @endphp
            
@@ -110,12 +110,12 @@
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#request-more-info-modal">More Information Required</button>
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">Phase II B CQA/QA Review Complete</button>
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal-rootcause-analysis">Child</button>
-             @elseif($data->stage == 19 || (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
+             @elseif($data->stage == 19 && (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#request-more-info-modal">Request More Info</button>
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">Phase II B Assignable Cause Found</button>
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">Phase II B Assignable Cause Not Found</button>
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal-rootcause-analysis">Child</button>
-             @elseif($data->stage == 20 || (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
+             @elseif($data->stage == 20 && (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
              {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#request-more-info-modal">More Information Required</button> --}}
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">PIhase II Investigation Applicable/Not Applicable</button>
              {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal-rootcause-analysis-Action-item">Child</button> --}}
@@ -126,7 +126,7 @@
              </a> </button>
              <button class="button_theme1"> <a class="text-white" href="{{ url('root-cause-analysis') }}"> Root Cause Analysis --}}
              </a> </button>
-             @elseif($data->stage == 21 && (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
+             @elseif($data->stage == 21 || (in_array(39, $userRoleIds) || in_array(18, $userRoleIds)))
              <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#cancel-modal">cancel</button>
              @endif
              <button class="button_theme1"> <a class="text-white" href="{{ url('rcms/qms-dashboard') }}"> Exit</a> </button>

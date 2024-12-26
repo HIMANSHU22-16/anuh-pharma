@@ -478,7 +478,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS Occurrence<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="text" value="{{$data->oos_occurrence_date}}" name="oos_occurrence_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -486,7 +486,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS reporting<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="text" value="{{$data->oos_reporting_date}}" name="oos_reporting_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -849,18 +849,18 @@
                                 </div>
                             </div>
                         </div>
-
-
+                  </div>
                         <div class="button-block">
                             <button type="submit" class="saveButton">Save</button>
                             <!-- <button type="button" class="backButton" onclick="previousStep()">Back</button> -->
-                            <button type="button" class="nextButton" onclick="nextStep()">Next</button>
+                            <button style=" justify-content: center; width: 4rem; margin-left: auto;" type="button"
+                            class="nextButton" onclick="nextStep()">Next</button>
+                            <!-- <button type="button" class="nextButton" id="" onclick="nextStep()">Next</button> -->
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
 
             <!-- Preliminary Lab. Investigation -->
@@ -1300,19 +1300,17 @@
                                 </div>
                             </div>
                         </div>
-
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                            <button type="button" id="ChangeNextButton" class="nextButton"
+                            <button type="button" id="nextButton" class="nextButton"
                                 onclick="nextStep()">Next</button>
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-
-            </div>
 
 
             <!-- Preliminary Lab Inv. Conclusion -->
@@ -1408,14 +1406,37 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <!-- <div class="col-lg-6">
                             <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation.</label>
+                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation</label>
                                 <select multiple id="reference_record" name="outcome_phase_i_investigation" id="">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
                                     <option value="Phase I (B) Investigation">Phase I (B) Investigation</option>
                                     <option value="Phase II">Phase II</option>
+                                </select>
+                            </div>
+                        </div> -->
+
+
+
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="checklists">Outcome Of Phase I(A) Investigation</label>
+                                @php
+                                $ChecklistData = $data->outcome_phase_i_investigation;
+
+                                if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                    $selectedChecklist = explode(',', $ChecklistData[0]);
+                                } else {
+                                    $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                }
+                            @endphp
+                                <select multiple id="reference_record" name="outcome_phase_i_investigation[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Closure of OOS with CAPA" @if (in_array('Closure of OOS with CAPA', $selectedChecklist)) selected @endif>Closure of OOS with CAPA</option>
+                                    <option value="Phase I (B) Investigation" @if (in_array('Phase I (B) Investigation', $selectedChecklist)) selected @endif>Phase I (B) Investigation</option>
+                                    <option value="Phase II" @if (in_array('Phase II', $selectedChecklist)) selected @endif>Phase II</option>
                                 </select>
                             </div>
                         </div>
@@ -1494,13 +1515,36 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <!-- <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Reference Recores">Outcome Of Phase I(B) Investigation.</label>
-                                <select multiple id="reference_record1" name="outcome_phase_ib_investigation2[]">
+                                <select multiple name="outcome_phase_ib_investigation2[]" id="reference_record1">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
                                     <option value="Phase II">Phase II</option>
+                                </select>
+
+                            </div>
+                        </div> -->
+
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="proposal_for_hypothesis_IB">Outcome Of Phase I(B) Investigation</label>
+                                @php
+                                $ChecklistData = $data->outcome_phase_ib_investigation2;
+
+                                if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                    $selectedChecklist = explode(',', $ChecklistData[0]);
+                                } else {
+                                    $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                }
+                                @endphp
+                                <select multiple id="reference_record002" name="outcome_phase_ib_investigation2[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Closure of OOS with CAPA" @if (in_array('Closure of OOS with CAPA', $selectedChecklist)) selected @endif>Closure of OOS with CAPA</option>
+                                    <option value="Phase II" @if (in_array('Phase II', $selectedChecklist)) selected @endif>Phase II</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
+
                                 </select>
                             </div>
                         </div>
@@ -1537,18 +1581,18 @@
                                 </div>
                             </div>
                         </div>
-
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                            <button type="button" id="ChangeNextButton" class="nextButton"
+                            <button type="button" id="" class="nextButton"
                                 onclick="nextStep()">Next</button>
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            
             <!-- Preliminary Lab Invst. Review--->
             <div id="CCForm4" class="inner-block cctabcontent">
                 <div class="inner-block-content">
@@ -1626,16 +1670,20 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Reference Records">Outcome Of Phase II Extended Laboratory Investigation</label>
-                                <select multiple id="reference_record2" name="outcome_phase_ii_investigation2[]" class="form-control">
-                                    <option value="">--Select---</option>
-                                    <option value="Closure of OOS with CAPA" 
-                                        {{ in_array('Closure of OOS with CAPA', $data->outcome_phase_ii_investigation2 ?? []) ? 'selected' : '' }}>
-                                        Closure of OOS with CAPA
-                                    </option>
-                                    <option value="Phase II" 
-                                        {{ in_array('Phase II', $data->outcome_phase_ii_investigation2 ?? []) ? 'selected' : '' }}>
-                                        Phase II (Manufacturing investigation)
-                                    </option>
+                                @php
+                                    $ChecklistData = $data->outcome_phase_ii_investigation2;
+
+                                    if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                        $selectedChecklist = explode(',', $ChecklistData[0]);
+                                    } else {
+                                        $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                    }
+                                @endphp
+                                <select multiple id="reference_record2" name="outcome_phase_ii_investigation2[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Closure of OOS with CAPA" @if (in_array('Closure of OOS with CAPA', $selectedChecklist)) selected @endif>Closure of OOS with CAPA</option>
+                                    <option value="Phase II" @if (in_array('Phase II', $selectedChecklist)) selected @endif>Phase II</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
                                 </select>
                             </div>
                         </div>
@@ -1754,19 +1802,19 @@
                                 </div>
                             </div>
                         </div>
-
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                            <button type="button" id="ChangeNextButton" class="nextButton"
+                            <button type="button" id="" class="nextButton"
                                 onclick="nextStep()">Next</button>
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            
+        
         <!--Phase II Investigation -->
         <div id="CCForm5" class="inner-block cctabcontent">
             <div class="inner-block-content">
@@ -1905,12 +1953,22 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Reference Recores">Recommendation for Batch Disposition</label>
-                                <select multiple id="reference_record2" name="recommendation_for_batch[]">
-                                    <option value="">--Select---</option>
-                                    <option value="Reported OOS for closure">Reported OOS for closure</option>
-                                    <option value="Recommended for Phase III investigation">Recommended for Phase III investigation</option>
-                                    <option value="Batch is recommended for R&D investigation followed by reprocessing, application for in process/Finished product.">Batch is recommended for R&D investigation followed by reprocessing, application for in process/Finished product.</option>
-                                    <option value="Material Reprocessing Authorization form">Material Reprocessing Authorization form</option>
+                                @php
+                                    $ChecklistData = $data->recommendation_for_batch;
+
+                                    if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                        $selectedChecklist = explode(',', $ChecklistData[0]);
+                                    } else {
+                                        $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                    }
+                                @endphp
+                                <select multiple id="reference_record112" name="recommendation_for_batch[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Reported OOS for closure" @if (in_array('Reported OOS for closure', $selectedChecklist)) selected @endif>Reported OOS for closure</option>
+                                    <option value="Recommended for Phase III investigation" @if (in_array('Recommended for Phase III investigation', $selectedChecklist)) selected @endif>Recommended for Phase III investigation</option>
+                                    <option value="Batch is recommended for R&D investigation followed by reprocessing" @if (in_array('Batch is recommended for R&D investigation followed by reprocessing', $selectedChecklist)) selected @endif>Batch is recommended for R&D investigation followed by reprocessing</option>
+                                    <option value="Material Reprocessing Authorization form" @if (in_array('Material Reprocessing Authorization form', $selectedChecklist)) selected @endif>Material Reprocessing Authorization form</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
                                 </select>
                             </div>
                         </div>
@@ -2039,11 +2097,11 @@
                             </select>
                         </div>
                     </div>
-
+                </div>
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                        <button type="button" id="ChangeNextButton" class="nextButton"
+                        <button type="button" id="" class="nextButton"
                             onclick="nextStep()">Next</button>
                         <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                 Exit </a> </button>
@@ -2284,11 +2342,20 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">OutCome Of Phase III (additional) Investigation</label>
-                            <select multiple id="reference_outcome" name="phase_iii_investigation[]">
-                                <option value="">--Select---</option>
-                                <option value="Reported OOS for closure">Reported OOS for closure</option>
+                                @php
+                                    $ChecklistData = $data->phase_iii_investigation;
 
-                           </select>
+                                    if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                        $selectedChecklist = explode(',', $ChecklistData[0]);
+                                    } else {
+                                        $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                    }
+                                @endphp
+                                <select multiple id="reference_outcome" name="phase_iii_investigation[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Reported OOS for closure" @if (in_array('Reported OOS for closure', $selectedChecklist)) selected @endif>Reported OOS for closure</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
+                                </select>
                         </div>
                     </div>
                     <div class="sub-head">JUSTIFICATION FOR DELAY IN CLOSING (If Applicable- Yes/No) </div>
@@ -2320,7 +2387,7 @@
                             <textarea  type="text" class="" name="justification_text" value="" id="">{{$data->justification_text}}</textarea>
                         </div>
                     </div>
-
+                </div>
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -2332,7 +2399,7 @@
 
                 </div>
             </div>
-        </div>
+    
 
 
 
@@ -3773,7 +3840,7 @@
 
     <script>
         VirtualSelect.init({
-            ele: '#reference_record, #reference_record2,#reference_record1, #reference_outcome, #notify_to'
+            ele: '#reference_record, #reference_record2, #reference_record1, #reference_record002,#reference_record112, #reference_outcome, #notify_to'
         });
 
         $('#summernote').summernote({
