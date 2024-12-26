@@ -1624,7 +1624,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -1633,7 +1633,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
 
                                         <div class="col-lg-6 p_erson">
                                             <div class="group-input">
@@ -1738,7 +1738,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -1747,7 +1747,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 warehouse">
                                             <div class="group-input">
                                                 <label for="Customer notification">Warehouse Person</label>
@@ -4007,7 +4007,7 @@
                     </div>
                     {{-- <form action="{{ route('capa_effectiveness_check', $data->parent_id) }}" method="POST"> --}}
                     <form
-                        action="{{ route('capa_child_changecontrol', $data->parent_id ? $data->parent_id : $data->id) }}"
+                        action="{{ route('child_changecontrol', $data->parent_id ? $data->parent_id : $data->id) }}"
                         method="POST">
 
                         @csrf
@@ -4017,8 +4017,8 @@
                                 <label for="major">
                                     <input type="hidden" name="parent_name" value="Capa">
                                     <input type="hidden" name="due_date" value="{{ $data->due_date }}">
-                                    <input type="radio" name="child_type" value="effectiveness_check">
-                                    Effectiveness Check
+                                    <input type="radio" name="child_type" value="change_control">
+                                    Change Control
                                 </label>
 
                             </div>

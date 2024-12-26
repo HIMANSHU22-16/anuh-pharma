@@ -10,7 +10,7 @@
 
         header {
             display: none;
-        } 
+        }
         .remove-file  {
             color: white;
             cursor: pointer;
@@ -96,7 +96,7 @@
                             </button>
                             {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
                                 Child
-                            </button> --}}  
+                            </button> --}}
                         @elseif($data->stage == 3 && (in_array(7, $userRoleIds) || in_array(18, $userRoleIds)))
                                <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#modal1">
                               QA More Info Required
@@ -104,10 +104,10 @@
                             <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#signature-modal">
                                 Complete
                             </button>
-                            <button id="major" type="button" class="button_theme1" data-bs-toggle="modal"
+                            {{-- <button id="major" type="button" class="button_theme1" data-bs-toggle="modal"
                                 data-bs-target="#child-modal">
                                 Child
-                            </button>
+                            </button> --}}
                             {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
                                 Child
                             </button> --}}
@@ -127,9 +127,9 @@
                                 All Actions Completed
                             </button>
                         @elseif($data->stage == 6)
-                            <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
+                            {{-- <button class="button_theme1" data-bs-toggle="modal" data-bs-target="#child-modal1">
                                 Child
-                            </button>
+                            </button> --}}
                         @endif
                         <button class="button_theme1"> <a class="text-white" href="{{ url('rcms/qms-dashboard') }}"> Exit
                             </a> </button>
@@ -153,40 +153,40 @@
                         @else
                             <div class="">Opened</div>
                         @endif
-                    
+
                         @if ($data->stage >= 2)
                             <div class="active">Pending CAPA Plan</div>
                         @else
                             <div class="">Pending CAPA Plan</div>
                         @endif
-                    
+
                         @if ($data->stage >= 3)
                             <div class="active">CAPA In Progress</div>
                         @else
                             <div class="">CAPA In Progress</div>
                         @endif
-                    
+
                         @if ($data->stage >= 4)
                             <div class="active">QA Review</div>
                         @else
                             <div class="">QA Review</div>
                         @endif
-                    
+
                         @if ($data->stage >= 5)
                             <div class="active">Pending Actions Completion</div>
                         @else
                             <div class="">Pending Actions Completion</div>
                         @endif
-                    
-                       
-                    
+
+
+
                         @if ($data->stage >= 6)
                             <div class="bg-danger">Closed - Done</div>
                         @else
                             <div class="">Closed - Done</div>
-                        @endif 
+                        @endif
                     </div>
-                    
+
                 @endif
                 {{-- ---------------------------------------------------------------------------------------- --}}
             </div>
@@ -267,18 +267,18 @@
                                                     {{-- Format the date as desired --}}
                                                     <input type="text" id="due_date_display" placeholder="DD-MMM-YYYY"
                                                         value="{{ $Date ? $Date->format('d-M-Y') : '' }}" readonly />
-            
+
                                                     <input type="date" name="due_date" id="due_date" class="hide-input"
                                                         min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
                                                         value="{{ $data->due_date ?? '' }}"
                                                         oninput="handleDateInput(this, 'due_date_display')"
                                                         />
-            
-            
+
+
                                                 </div>
                                             </div>
                                         </div>
-            
+
                                         <script>
                                             function handleDateInput(input, displayId) {
                                                 var display = document.getElementById(displayId);
@@ -292,14 +292,14 @@
                                                 display.value = formattedDate;
                                             }
                                         </script>
-            
-            
+
+
                                         <style>
                                             .hide-input {
                                                 display: none;
                                             }
                                         </style>
-        
+
 
                                         <div class="col-12">
                                             <div class="group-input">
@@ -308,10 +308,10 @@
                                                 <textarea name="short_description"   id="docname" type="text"    maxlength="255" required  {{ $data->stage == 0 || $data->stage == 6 ? "disabled" : "" }}>{{ $data->short_description }}</textarea>
                                             </div>
                                             <p id="docnameError" style="color:red">**Short Description is required</p>
-        
+
                                         </div>
-        
-                                        
+
+
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="Initiator Group">Department</label>
@@ -373,16 +373,16 @@
                                             </div>
                                         </div>
 
-                                        
+
                                         {{-- <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="Division Code">Site/Location Code</label>
                                                 <input disabled type="text" name="division_code"
                                                     value="{{ Helpers::getDivisionName($data->division_id) }}">
-                                               
+
                                             </div>
                                         </div> --}}
-                                        
+
                                         <div class="col-lg-6">
                                         <div class="group-input ">
                                             <label for="Date Due"><b>Date</b></label>
@@ -390,10 +390,10 @@
                                             <input type="hidden" value="{{ date('d-m-Y') }}" name="intiation_date">
                                         </div>
                                     </div>
-                                       
-                                        
-                                        
-                                       
+
+
+
+
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="source_of_capa">Source of CAPA</label>
@@ -411,7 +411,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                            
+
                                         <div class="col-lg-6">
                                             <div class="group-input" id="initiated_through_req" style="display: none;">
                                                 <label for="others">Others<span class="text-danger d-none">*</span></label>
@@ -423,7 +423,7 @@
                                             // JavaScript function to show/hide the 'Others' text area
                                             function toggleOtherField(value) {
                                                 var othersField = document.getElementById("initiated_through_req");
-                                        
+
                                                 // If 'Others' is selected, show the 'Others' field
                                                 if (value === "others") {
                                                     othersField.style.display = "block";
@@ -443,7 +443,7 @@
                                             </div>
                                         </div>
 
-                                    
+
                                         <div class="col-12 sub-head">
                                             Proposed Corrective Action
                                         </div>
@@ -489,13 +489,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <script>
                                             $(document).ready(function() {
                                                 // Add new row in Proposed Corrective Action table
                                                 $('#corrective_action_add').click(function(e) {
                                                     e.preventDefault();
-                                        
+
                                                     function generateCorrectiveActionRow(serialNumber) {
                                                         return (
                                                             '<tr>' +
@@ -510,24 +510,24 @@
                                                             '</tr>'
                                                         );
                                                     }
-                                        
+
                                                     var tableBody = $('#corrective_action_details tbody');
                                                     var rowCount = tableBody.children('tr').not('.no-data').length;
-                                        
+
                                                     // Remove "No data found" row if it exists
                                                     if (rowCount === 0) {
                                                         tableBody.find('.no-data').remove();
                                                         rowCount = 0; // Start count from 0 if no rows exist
                                                     }
-                                        
+
                                                     var newRow = generateCorrectiveActionRow(rowCount);
                                                     tableBody.append(newRow);
                                                 });
-                                        
+
                                                 // Remove row in Proposed Corrective Action table
                                                 $(document).on('click', '.removeRowBtn', function() {
                                                     $(this).closest('tr').remove();
-                                        
+
                                                     // Check if table is empty after deletion, add "No data found" row if so
                                                     if ($('#corrective_action_details tbody tr').length === 0) {
                                                         $('#corrective_action_details tbody').append('<tr class="no-data"><td colspan="7">No data found</td></tr>');
@@ -535,15 +535,15 @@
                                                 });
                                             });
                                         </script>
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                    
-                                    
-                                   
+
+
+
+
+
+
+
+
+
                                         <div class="col-12 sub-head">
                                             Proposed Preventive Action
                                         </div>
@@ -589,13 +589,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <script>
                                             $(document).ready(function() {
                                                 // Add new row in Proposed Preventive Action table
                                                 $('#preventive_action_add').click(function(e) {
                                                     e.preventDefault();
-                                        
+
                                                     function generatePreventiveActionRow(serialNumber) {
                                                         return (
                                                             '<tr>' +
@@ -610,24 +610,24 @@
                                                             '</tr>'
                                                         );
                                                     }
-                                        
+
                                                     var tableBody = $('#preventive_action_details tbody');
                                                     var rowCount = tableBody.children('tr').not('.no-data').length;
-                                        
+
                                                     // Remove "No data found" row if it exists
                                                     if (rowCount === 0) {
                                                         tableBody.find('.no-data').remove();
                                                         rowCount = 0; // Start count from 0 if no rows exist
                                                     }
-                                        
+
                                                     var newRow = generatePreventiveActionRow(rowCount);
                                                     tableBody.append(newRow);
                                                 });
-                                        
+
                                                 // Remove row in Proposed Preventive Action table
                                                 $(document).on('click', '.removeRowBtn', function() {
                                                     $(this).closest('tr').remove();
-                                        
+
                                                     // Check if table is empty after deletion, add "No data found" row if so
                                                     if ($('#preventive_action_details tbody tr').length === 0) {
                                                         $('#preventive_action_details tbody').append('<tr class="no-data"><td colspan="7">No data found</td></tr>');
@@ -635,13 +635,13 @@
                                                 });
                                             });
                                         </script>
-                                        
-                                                  
-                                        
-                                     
-                                        
-                                       
-                                        
+
+
+
+
+
+
+
                                         <div class="col-12 sub-head">
                                             Implementation of Corrective Action by means of
                                         </div>
@@ -685,13 +685,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <script>
                                             $(document).ready(function() {
                                                 // Add new row in Implementation Corrective Action table
                                                 $('#implementation_action_add').click(function(e) {
                                                     e.preventDefault();
-                                                
+
                                                     function generateImplementationActionRow(serialNumber) {
                                                         return (
                                                             '<tr>' +
@@ -705,24 +705,24 @@
                                                             '</tr>'
                                                         );
                                                     }
-                                            
+
                                                     var tableBody = $('#implementation_action_details tbody');
                                                     var rowCount = tableBody.children('tr').not('.no-data').length;
-                                            
+
                                                     // Remove "No data found" row if it exists
                                                     if (rowCount === 0) {
                                                         tableBody.find('.no-data').remove();
                                                         rowCount = 0; // Start count from 0 if no rows exist
                                                     }
-                                            
+
                                                     var newRow = generateImplementationActionRow(rowCount);
                                                     tableBody.append(newRow);
                                                 });
-                                            
+
                                                 // Remove row in Implementation Corrective Action table
                                                 $(document).on('click', '.removeRowBtn', function() {
                                                     $(this).closest('tr').remove();
-                                            
+
                                                     // Check if table is empty after deletion, add "No data found" row if so
                                                     if ($('#implementation_action_details tbody tr').length === 0) {
                                                         $('#implementation_action_details tbody').append('<tr class="no-data"><td colspan="6">No data found</td></tr>');
@@ -730,21 +730,21 @@
                                                 });
                                             });
                                         </script>
-                                        
-                                        
-                                        
-                                        
-                                        
-                                 
-                                        
-                                       
-                                        
 
-                                   
 
-    
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
                                     <div class="button-block">
                                         <button type="submit" id="ChangesaveButton" class="saveButton"
                                             {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>Save</button>
@@ -760,37 +760,37 @@
                             <div id="CCForm2" class="inner-block cctabcontent">
                                 <div class="inner-block-content">
                                     <div class="row">
-                                       
+
                                         <div class="col-12 sub-head">
                                             Closure of the CAPA
                                         </div>
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="due_date_extension">Comments</label>
-                                                
+
                                                 <textarea name="comments_cloasure">{{ $data->comments_cloasure }}</textarea>
                                             </div>
                                         </div>
-        
+
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Details">Head Quality / Designee</label>
                                                 <input type="text" name="head_quality" value="{{ $data->head_quality }}">
                                             </div>
                                         </div>
-        
+
                                         <div class="col-12 sub-head">
-                                            Extension (if required) 
+                                            Extension (if required)
                                         </div>
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="due_date_extension">Justification</label>
-                                                
+
                                                 <textarea name="justification">{{ $data->justification }}</textarea>
                                             </div>
                                         </div>
-        
-                                       
+
+
 
                                         {{-- <div class="col-12 sub-head">
                                             Material Details
@@ -815,14 +815,14 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                     
+
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                         <div class="col-12 sub-head">
                                             Equipment/Instruments Details
-                                        </div> 
+                                        </div>
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Material Details">
@@ -840,7 +840,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                    
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -889,8 +889,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        
-        
+
+
                                         <div class="col-lg-12" id="rootCauseGroup" style="display: none;">
                                             <div class="group-input">
                                                 <label for="RootCause">Remark</label>
@@ -902,7 +902,7 @@
                                             function toggleRootCauseInput() {
                                                 var selectValue = document.getElementById("assignableSelect").value;
                                                 var rootCauseGroup = document.getElementById("rootCauseGroup");
-        
+
                                                 if (selectValue === "YES") {
                                                     rootCauseGroup.style.display = "block"; // Show the textarea if "YES" is selected
                                                 } else {
@@ -1054,7 +1054,7 @@
                                                 </select>
 
                                             </div>
-                                        </div> 
+                                        </div>
 
 
                                      </div>
@@ -1160,8 +1160,8 @@
                                                     <div class="file-attachment-list" id="additional_attachments">
                                                         {{-- @if (is_array($data->additional_attachments)) --}}
                                                         @if ($data->additional_attachments)
-                                                           @foreach(json_decode($data->additional_attachments) as $file) 
-                                                          <h6 type="button" class="file-container text-dark" 
+                                                           @foreach(json_decode($data->additional_attachments) as $file)
+                                                          <h6 type="button" class="file-container text-dark"
                                                                     style="background-color: rgb(243, 242, 240);">
                                                                     <b>{{ $file }}</b>
                                                                     <a href="{{ asset('upload/' . $file) }}"
@@ -1173,9 +1173,9 @@
                                                                             class="fa-solid fa-circle-xmark"
                                                                             style="color:red; font-size:20px;"></i></a>
                                                                 </h6>
-                                                         @endforeach 
+                                                         @endforeach
                                                              @endif
-                                                        </div> 
+                                                        </div>
                                                      <div class="add-btn">
                                                         <div>Add</div>
                                                         <input type="file" id="myfile"
@@ -1185,7 +1185,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>  
+                                        </div>
                                     </div>
                                     <div class="button-block">
                                         <button type="submit" class="saveButton">Save</button>
@@ -1195,8 +1195,8 @@
 
                                         <button type="button" class="nextButton" onclick="nextStep()">Next</button>
                                     </div>
-                                </div>  
-                            </div> 
+                                </div>
+                            </div>
                                <!-- Group Commentes-->
                              <div id="CCForm7" class="inner-block cctabcontent">
                                 <div class="inner-block-content">
@@ -1219,7 +1219,7 @@
                                                     <div class="file-attachment-list" id="cft_attchament_new">
                                                         {{-- @if (is_array($data->cft_attchament_new)) --}}
                                                                  @if ($data->cft_attchament_new)
-                                                                     @foreach (json_decode($data->cft_attchament_new) as $file) 
+                                                                     @foreach (json_decode($data->cft_attchament_new) as $file)
                                                                   <h6 type="button" class="file-container text-dark"
                                                                     style="background-color: rgb(243, 242, 240);">
                                                                     <b>{{ $file }}</b>
@@ -1231,8 +1231,8 @@
                                                                         data-file-name="{{ $file }}"><i
                                                                             class="fa-solid fa-circle-xmark"
                                                                             style="color:red; font-size:20px;"></i></a>
-                                                                </h6> 
-                                                             @endforeach 
+                                                                </h6>
+                                                             @endforeach
                                                                  @endif
                                                     </div>
                                                     <div class="add-btn">
@@ -1243,8 +1243,8 @@
                                                     </div>
                                                 </div>
 
-                                            </div> 
-                                        </div> 
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="sub-head">
@@ -1300,17 +1300,17 @@
                                                 <textarea name="Group_comments_new"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->Group_comments_new}}</textarea>
                                             </div>
                                         </div>
-                                       
+
                                          <div class="col-12">
-                                    
+
                                             <div class="group-input">
                                                 <label for="group-attachments">Group Attachments</label>
                                                 <div class="file-attachment-field">
                                                     <div class="file-attachment-list" id="group_attachments_new">
-                                                       
+
                                                         {{-- @if (is_array($data->group_attachments_new)) --}}
                                                         @if ($data->group_attachments_new)
-                                                             @foreach (json_decode($data->group_attachments_new) as $file) 
+                                                             @foreach (json_decode($data->group_attachments_new) as $file)
                                                                 <h6 type="button" class="file-container text-dark"
                                                                     style="background-color: rgb(243, 242, 240);">
                                                                     <b>{{ $file}}</b>
@@ -1323,8 +1323,8 @@
                                                                             class="fa-solid fa-circle-xmark"
                                                                             style="color:red; font-size:20px;"></i></a>
                                                                 </h6>
-                                                             @endforeach 
-                                                       
+                                                             @endforeach
+
                                                         @endif
                                                     </div>
                                                     <div class="add-btn">
@@ -1336,7 +1336,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
                                     <div class="button-block">
                                         <button type="submit" class="saveButton">Save</button>
@@ -1363,19 +1363,19 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-lg-12" id="rootCauseGroup" style="{{ $data->effectiveness_verification_capa === 'YES' ? 'display: block;' : 'display: none;' }}">
                                             <div class="group-input">
                                                 <label for="RootCause">Remark</label>
                                                 <textarea name="effectivenessRemark" id="rootCauseTextarea" rows="4" placeholder="Describe the root cause here">{{ $data->effectivenessRemark }}</textarea>
                                             </div>
                                         </div>
-                                        
+
                                         <script>
                                             function toggleRootCauseInput() {
                                                 var selectValue = document.getElementById("assignableSelect").value;
                                                 var rootCauseGroup = document.getElementById("rootCauseGroup");
-                                        
+
                                                 if (selectValue === "YES") {
                                                     rootCauseGroup.style.display = "block"; // Show the textarea if "YES" is selected
                                                 } else {
@@ -1501,8 +1501,8 @@
                                                 <label for="Effect.Check Creation Date">Effect.Check Creation
                                                     Date</label>
                                                 <input type="date" name="effect_check_date"
-                                                    value="{{ $data->effect_check_date }}"> 
-                                                    <div class="calenderauditee">                                     
+                                                    value="{{ $data->effect_check_date }}">
+                                                    <div class="calenderauditee">
                                                         <input type="text"  value="{{ $data->effect_check_date }}" id="effect_check_date"  readonly placeholder="DD-MMM-YYYY" />
                                                         <input type="date" name="effect_check_date" value=""
                                                         class="hide-input"
@@ -1670,7 +1670,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="button-block">
                                         <button type="submit" class="saveButton"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>Save</button>
                                         {{-- <button type="button" class="backButton" onclick="previousStep()">Back</button> --}}
@@ -1679,7 +1679,7 @@
                                     </div>
                                 </div>
                             </div>
-                             
+
                         </div>
                     </form>
 
@@ -1742,7 +1742,7 @@
 
                                         </label>
                                          <label for="major">
-                                            <input type="radio" name="child_type" value="Change_control">
+                                            <input type="radio" name="child_type" value="change_control">
                                             Change Control
                                         </label>
                                         <label for="major">
@@ -1754,7 +1754,7 @@
                                             Extension
                                         </label> -->
                                     @endif
-                                    
+
                                     @if ($data->stage == 6)
                                         <label for="major">
                                             <input type="radio" name="child_type" value="effectiveness_check">
@@ -2099,12 +2099,12 @@
                  <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         const removeButtons = document.querySelectorAll('.remove-file');
-        
+
                         removeButtons.forEach(button => {
                             button.addEventListener('click', function () {
                                 const fileName = this.getAttribute('data-file-name');
                                 const fileContainer = this.closest('.file-container');
-        
+
                                 // Hide the file container
                                 if (fileContainer) {
                                     fileContainer.style.display = 'none';
@@ -2112,12 +2112,12 @@
                             });
                         });
                     });
-                </script> 
+                </script>
                 <script>
                     var maxLength = 255;
                     $('#docname').keyup(function() {
                         var textlen = maxLength - $(this).val().length;
                         $('#rchars').text(textlen);});
                 </script>
-                
+
         @endsection

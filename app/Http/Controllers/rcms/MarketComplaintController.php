@@ -854,7 +854,7 @@ public static function auditReport($id)
         $doc->originator = User::where('id', $doc->initiator_id)->value('name');
         $data = MarketComplaintAuditTrial::where('market_id', $id)->get();
 
- 
+
         $pdf = App::make('dompdf.wrapper');
         $time = Carbon::now();
         $pdf = PDF::loadview('frontend.marketcomplaint.auditReport', compact('data', 'doc'))
@@ -1001,6 +1001,46 @@ public function child_capa_devtion(Request $request, $id)
 
     }
 
+    public function child_changecontrol(Request $request, $id)
+    {
+        $cft = [];
+        $parent_id = $id;
+        $parent_type = "Market Complaint";
+        $record = ((RecordNumber::first()->value('counter')) + 1);
+        $record = str_pad($record, 4, '0', STR_PAD_LEFT);
+        $currentDate = Carbon::now();
+        $formattedDate = $currentDate->addDays(30);
+        $due_date = $formattedDate->format('d-M-Y');
+        $parent_record = MarketComplaint::where('id', $id)->value('record');
+        $parent_record = str_pad($parent_record, 4, '0', STR_PAD_LEFT);
+        $parent_division_id = MarketComplaint::where('id', $id)->value('division_id');
+        $parent_initiator_id = MarketComplaint::where('id', $id)->value('initiator_id');
+        $parent_intiation_date = MarketComplaint::where('id', $id)->value('intiation_date');
+        $parent_short_description = MarketComplaint::where('id', $id)->value('short_description');
+        $hod = User::where('role', 4)->get();
+        $pre = CC::all();
+        $changeControl = OpenStage::find(1);
+        if (!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
+        // return $capa_data;
+        // if ($request->child_type == "Change_control") {
+        //     $record_number = $record;
+        //     return view('frontend.change-control.new-change-control', compact('cft', 'pre', 'hod', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
+        // }
+// dd( $parent_record );
+        $old_record = MarketComplaint::select('id', 'division_id', 'record')->get();
+        if ($request->child_type == "change_control") {
+            $parent_name = "MarketComplaint";
+            $parent_record = MarketComplaint::where('id', $id)->value('record');
+            $parent_record = str_pad($parent_record, 4, '0', STR_PAD_LEFT);
+            $data = MarketComplaint::find($id);
+            $record_number = $record;
+            // $p_record = OutOfCalibration::find($id);
+            $data_record = Helpers::getDivisionName($data->division_id) . '/' . 'CAPA' . '/' . date('Y') . '/' . str_pad($data->record, 4, '0', STR_PAD_LEFT);
+            $expectedParenRecord = Helpers::getDivisionName(session()->get('division')) . "/CAPA/" . date('Y') . "/" . $data->record . "";
+            return view('frontend.change-control.new-change-control', compact('cft','expectedParenRecord', 'old_record', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_name', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type', 'data_record', 'data','pre'));
+        }
+
+    }
 
 
 }

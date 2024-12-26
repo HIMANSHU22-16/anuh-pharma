@@ -56,6 +56,7 @@ class CapaController extends Controller
         $capa->division_id = $request->division_id;
         $capa->parent_id = $request->parent_id;
         $capa->parent_type = $request->parent_type;
+        $capa->parent_record = $request->parent_record;
         $capa->division_code = $request->division_code;
         $capa->intiation_date = $request->intiation_date;
         $capa->general_initiator_group = $request->initiator_group;
@@ -230,7 +231,7 @@ class CapaController extends Controller
 
         // -------audit trrail show start update -----------
         $fields = [
-           
+
             'short_description' => 'Short Description',
             'initiator_group' => 'Department',
             'initiator_group_code' => 'Department Group Code',
@@ -242,14 +243,14 @@ class CapaController extends Controller
             'justification' => 'Justification',
             'effectiveness_verification_capa' => 'Effectiveness Verification of CAPA',
             'effectivenessRemark' => 'Remark',
-        
+
 
 
         ];
         foreach ($fields as $field => $activity_type) {
             $previous = $lastDocument->$field ?? '';
             $current = $capa->$field ?? '';
-        
+
             if (trim($previous) !== trim($current) || !empty($request->comment)) {
                 $history = new CapaAuditTrial;
                 $history->capa_id = $id;
@@ -267,7 +268,7 @@ class CapaController extends Controller
                 $history->save();
             }
         }
-        
+
 
 
         // =============================Capa grid update==============
@@ -381,7 +382,7 @@ class CapaController extends Controller
                                     }
                                 );
                             } catch (\Exception $e) {
-                                // 
+                                //
                             }
                         }
                     }
@@ -427,7 +428,7 @@ class CapaController extends Controller
                                     }
                                 );
                             } catch (\Exception $e) {
-                                // 
+                                //
                             }
                         }
                     }
@@ -483,7 +484,7 @@ class CapaController extends Controller
                 toastr()->success('Document Sent');
                 return back();
             }
-           
+
             if ($capa->stage == 6) {
                 $capa->stage = "7";
                 $capa->status = "Closed - Done";
@@ -562,7 +563,7 @@ class CapaController extends Controller
                                 }
                             );
                         } catch (\Exception $e) {
-                            // 
+                            //
                         }
                     }
                 }
@@ -626,7 +627,7 @@ class CapaController extends Controller
                                     }
                                 );
                             } catch (\Exception $e) {
-                                // 
+                                //
                             }
                         }
                     }
@@ -706,7 +707,7 @@ class CapaController extends Controller
                                     }
                                 );
                             } catch (\Exception $e) {
-                                // 
+                                //
                             }
                         }
                     }
@@ -818,53 +819,19 @@ class CapaController extends Controller
         $changeControl = OpenStage::find(1);
         if (!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
         // return $capa_data;
-        if ($request->child_type == "Change_control") {
-            $record_number = ((RecordNumber::first()->value('counter')) + 1);
-            $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
-            $parent_name = "CAPA";
-            $Changecontrolchild = Deviation::find($id);
-            $Changecontrolchild->Changecontrolchild = $record_number;
-            $parent_id = $id;
-
-            $Changecontrolchild->save();
-
-            return view('frontend.change-control.new-change-control', compact('cft', 'parent_record', 'parent_record', 'pre', 'hod', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
+        if ($request->child_type == "change_control") {
+            $parent_name = "Capa";
+            $parent_record = Capa::where('id', $id)->value('record');
+            $parent_record = str_pad($parent_record, 4, '0', STR_PAD_LEFT);
+            $data = Capa::find($id);
+            // $record_number = $record;
+            // $p_record = OutOfCalibration::find($id);
+            $data_record = Helpers::getDivisionName($data->division_id) . '/' . 'CAPA' . '/' . date('Y') . '/' . str_pad($data->record, 4, '0', STR_PAD_LEFT);
+            $expectedParenRecord = Helpers::getDivisionName(session()->get('division')) . "/CAPA/" . date('Y') . "/" . $data->record . "";
+            return view('frontend.change-control.new-change-control', compact('cft','expectedParenRecord', 'old_record', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_name', 'parent_division_id', 'parent_record', 'record', 'due_date', 'parent_id', 'parent_type', 'data_record', 'data','pre'));
         }
-        if ($request->child_type == "extension") {
-            $parent_due_date = "";
-            $parent_id = $id;
-            $parent_name = $request->parent_name;
-            if ($request->due_date) {
-                $parent_due_date = $request->due_date;
-            }
-            $parent_id = $id;
 
-            $record_number = ((RecordNumber::first()->value('counter')) + 1);
-            $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
-            return view('frontend.forms.extension', compact('parent_id', 'parent_record', 'parent_name', 'record_number', 'parent_due_date'));
-        }
-        $old_record = Capa::select('id', 'division_id', 'record')->get();
-        if ($request->child_type == "Action_Item") {
-            $record_number = ((RecordNumber::first()->value('counter')) + 1);
-            $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
-            $parent_name = "CAPA";
-            $actionchild = Deviation::find($id);
-            $actionchild->actionchild = $record_number;
-            $parent_id = $id;
 
-            $actionchild->save();
-            return view('frontend.forms.action-item', compact('old_record', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_name', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
-        } else {
-            $record_number = ((RecordNumber::first()->value('counter')) + 1);
-            $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
-            $parent_name = "CAPA";
-            $effectivenesschild = Deviation::find($id);
-            $effectivenesschild->effectivenesschild = $record_number;
-            $parent_id = $id;
-            $effectivenesschild->save();
-            //  dd($effectivenesschild);
-            return view('frontend.forms.effectiveness-check', compact('old_record', 'parent_short_description', 'parent_initiator_id', 'parent_intiation_date', 'parent_division_id', 'parent_record', 'record_number', 'due_date', 'parent_id', 'parent_type'));
-        }
     }
 
     public function effectiveness_check(Request $request, $id)
@@ -917,7 +884,7 @@ class CapaController extends Controller
                 // If the data is already an array, use it as it is
                 $preventiveActions = $proposedPreventiveActionData->data;
             }
-
+                
             // $implementationcorrectiveActions = [];
             // if ($implementationCorrectiveActionData && is_string($implementationCorrectiveActionData->data)) {
             //     // Decode if it is a string
