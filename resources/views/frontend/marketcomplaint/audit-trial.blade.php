@@ -297,7 +297,6 @@
                         <h4 class="modal-title">Audit Reviewers</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form action="" method="POST">
                         <form action="{{ route('store_audit_review', $document->id) }}" method="POST">
                         @csrf
                         <!-- Modal body -->
@@ -337,7 +336,7 @@
             <div style="margin-bottom: 5px;  font-weight: bold;"> Originator :{{ $document->record_initiator ? $document->record_initiator->name : '' }}</div>
             <div style="margin-bottom: 5px; font-weight: bold;">Short Description : {{$document->short_description}}</div>
             <div style="margin-bottom: 5px;  font-weight: bold;">Due Date :  {{$document->due_date}}</div>
-         
+
 
        </div>
         </div>
@@ -374,7 +373,7 @@
                             {{-- <td>1</td> --}}
                             {{-- {{ dd($dataDemo->activity_type) }} --}}
 
-                       
+
                         <td>
                             <div><strong>Changed From :</strong>{!! $dataDemo->change_from !!}</div>
                         </td>
@@ -387,7 +386,7 @@
                         <!-- ------Record Is send by Hod Review----------- -->
                         <td>
                         <div>
-                            
+
                      <strong> Data Field Name :</strong>{{ $dataDemo->activity_type ? $dataDemo->activity_type  : "Not Applicable" }}</a> </div>
                       <div style="margin-top: 5px;">
                       <strong>Change From :</strong>{!!$dataDemo->previous ? $dataDemo->previous  : "NULL"!!}</div>

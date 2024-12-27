@@ -1852,7 +1852,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -1861,7 +1861,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6">
                                             <div class="group-input">
                                                 <label for="Quality Control Person">Quality Control Person</label>
@@ -1965,7 +1965,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -1974,7 +1974,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 quality_assurance">
                                             <div class="group-input">
                                                 <label for="Quality Assurance Person">Quality Assurance Person</label>
@@ -2082,7 +2082,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2091,7 +2091,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 engineering">
                                             <div class="group-input">
                                                 <label for="Engineering Person">Engineering Person</label>
@@ -2197,7 +2197,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2206,7 +2206,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 analytical_development">
                                             <div class="group-input">
                                                 <label for="Analytical Development Laboratory Person">Analytical
@@ -2325,7 +2325,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2334,7 +2334,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 kilo_lab">
                                             <div class="group-input">
                                                 <label for="Process Development Laboratory"> Process Development Laboratory
@@ -2445,7 +2445,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2454,7 +2454,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 technology_transfer">
                                             <div class="group-input">
                                                 <label for="Design Person"> Technology Transfer / Design Person</label>
@@ -2566,7 +2566,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2575,7 +2575,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 environmental_health">
                                             <div class="group-input">
                                                 <label for="Safety Person"> Environment, Health & Safety Person</label>
@@ -2688,7 +2688,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2697,7 +2697,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 human_resources">
                                             <div class="group-input">
                                                 <label for="Administration Person"> Human Resource & Administration
@@ -2808,7 +2808,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2817,7 +2817,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 information_technology">
                                             <div class="group-input">
                                                 <label for="Information Technology Person"> Information Technology
@@ -2926,7 +2926,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -2935,7 +2935,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 project_management">
                                             <div class="group-input">
                                                 <label for="Project management Person"> Project management Person</label>
@@ -3042,7 +3042,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -3051,7 +3051,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 other1_reviews">
                                             <div class="group-input">
                                                 <label for="Customer notification"> Other's 1 Person</label>
@@ -3176,7 +3176,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -3185,7 +3185,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 Other2_reviews">
                                             <div class="group-input">
                                                 <label for="Customer notification"> Other's 2 Person</label>
@@ -3312,7 +3312,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -3321,7 +3321,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 Other3_reviews">
                                             <div class="group-input">
                                                 <label for="Customer notification"> Other's 3 Person</label>
@@ -3448,7 +3448,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -3457,7 +3457,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 Other4_reviews">
                                             <div class="group-input">
                                                 <label for="Person4"> Other's 4 Person</label>
@@ -3585,7 +3585,7 @@
 
                                             </div>
                                         </div>
-                                        @php
+                                        {{-- @php
                                             $division = DB::table('q_m_s_divisions')
                                                 ->where('name', Helpers::getDivisionName(session()->get('division')))
                                                 ->first();
@@ -3594,7 +3594,7 @@
                                                 ->get();
                                             $userRoleIds = $userRoles->pluck('user_id')->toArray();
                                             $users = DB::table('users')->whereIn('id', $userRoleIds)->get(); // Fetch user data based on user IDs
-                                        @endphp
+                                        @endphp --}}
                                         <div class="col-lg-6 Other5_reviews">
                                             <div class="group-input">
                                                 <label for="Person5">Other's 5 Person</label>
