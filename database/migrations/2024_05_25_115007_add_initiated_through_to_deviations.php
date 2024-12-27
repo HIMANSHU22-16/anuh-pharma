@@ -14,11 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('deviations', function (Blueprint $table) {
-            $table->string('qa_more_info_required_email')->nullable();
-            $table->string('rejected_email')->nullable();
-            $table->string('qa_head_more_info_required_email')->nullable();
-            $table->string('cft_more_info_required_email')->nullable();
-            $table->string('hod_final_more_info_required_email')->nullable();
+            $table->string('initiated_through')->nullable();
         });
     }
 

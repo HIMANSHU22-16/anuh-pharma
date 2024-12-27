@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('deviations', function (Blueprint $table) {
-            
-            $table->longtext('summary')->nullable();
-            $table->longtext('Root')->nullable();
-            $table->longtext('Impact')->nullable();
-            $table->longtext('comments_closure')->nullable();
+        Schema::table('external_audit_trail_suppliers', function (Blueprint $table) {
+            $table->longText('mailUserId')->nullable();
+            $table->text('role_name')->nullable();
         });
     }
 
@@ -29,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('deviations', function (Blueprint $table) {
+        Schema::table('external_audit_trail_suppliers', function (Blueprint $table) {
             //
         });
     }

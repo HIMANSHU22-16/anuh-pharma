@@ -356,11 +356,11 @@ Route::view('QMSDashboardFormat', 'frontend.rcms.QMSDashboardFormat');
 //! ============================================ 
 
 
-Route::view('deviation', 'frontend.forms.deviation');
-Route::post('deviation_child/{id}', [DeviationController::class, 'deviation_child_1'])->name('deviation_child_1');
-Route::get('DeviationAuditTrial/{id}', [DeviationController::class, 'DeviationAuditTrial']);
-Route::post('DeviationAuditTrial/{id}', [DeviationController::class, 'store_audit_review'])->name('store_audit_review');
-Route::get('DeviationAuditTrialDetails/{id}', [DeviationController::class, 'DeviationAuditTrialDetails']);
+// Route::view('deviation', 'frontend.forms.deviation');
+// Route::post('deviation_child/{id}', [DeviationController::class, 'deviation_child_1'])->name('deviation_child_1');
+// Route::get('DeviationAuditTrial/{id}', [DeviationController::class, 'DeviationAuditTrial']);
+// Route::post('DeviationAuditTrial/{id}', [DeviationController::class, 'store_audit_review'])->name('store_audit_review');
+// Route::get('DeviationAuditTrialDetails/{id}', [DeviationController::class, 'DeviationAuditTrialDetails']);
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 
@@ -439,7 +439,16 @@ Route::get('extension', [ExtensionController::class, 'extension_child']);
 
 //Route::view('observation', 'frontend.forms.observation'); 
 Route::get('observation', [ObservationController::class, 'observation']);
-Route::get('deviation', [DeviationController::class, 'deviation']);
+// Route::get('deviation', [DeviationController::class, 'deviation']);
+
+
+Route::post('deviation_child/{id}', [DeviationController::class, 'deviation_child_1'])->name('deviation_child_1');
+
+Route::get('DeviationAuditTrial/{id}', [DeviationController::class, 'DeviationAuditTrial']);
+Route::post('DeviationAuditTrial/{id}', [DeviationController::class, 'store_audit_review'])->name('store_audit_review');
+
+
+
 
 Route::view('new-root-cause-analysis', 'frontend.forms.new-root-cause-analysis');
 

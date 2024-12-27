@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('deviations', function (Blueprint $table) {
-            $table->longtext('addendum_objective')->nullable();
-            $table->longtext('investigation_attachment_need')->nullable();
-
+        Schema::table('external_audit_trail_suppliers', function (Blueprint $table) {
+            $table->text('action')->nullable();
         });
     }
 
@@ -27,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('deviations', function (Blueprint $table) {
-      
+        Schema::table('external_audit_trail_suppliers', function (Blueprint $table) {
+            //
         });
     }
 };

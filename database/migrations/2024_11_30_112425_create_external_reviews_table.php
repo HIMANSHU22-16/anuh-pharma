@@ -13,20 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('deviation_logs', function (Blueprint $table) {
+        Schema::create('external_reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('identifier');
-            $table->json('data'); // Store JSON data
-            $table->unsignedBigInteger('deviation_id');
-            $table->foreign('deviation_id')->references('id')->on('deviations')->onDelete('cascade');
+            $table->integer('cc_id')->nullable();
+            $table->longText('external_review_comment')->nullable();
+            $table->longText('external_review_attachment')->nullable();
             $table->timestamps();
         });
     }
-    
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('deviation_logs');
+        Schema::dropIfExists('external_reviews');
     }
-    
-
 };

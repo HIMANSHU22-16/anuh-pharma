@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('deviations', function (Blueprint $table) {
-            $table->string('departments_other')->nullable();
-            //
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->integer('notification_status')->default(0);
         });
     }
 
@@ -26,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('deviations', function (Blueprint $table) {
+        Schema::table('notifications', function (Blueprint $table) {
             //
         });
     }

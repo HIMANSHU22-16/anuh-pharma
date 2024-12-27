@@ -159,35 +159,41 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::get('internalSingleReport/{id}', [InternalauditController::class, 'singleReport'])->name('internalSingleReport');
             Route::get('internalauditReport/{id}', [InternalauditController::class, 'auditReport'])->name('internalauditReport');
 
-            //Route::resource('deviation', DeviationController::class);
-            Route::get('devshow/{id}', [DeviationController::class, 'devshow'])->name('devshow');
-            Route::post('deviation/stage/{id}', [DeviationController::class, 'deviation_send_stage'])->name('deviation_send_stage');
-            Route::post('deviation/update/{id}', [DeviationController::class, 'updateStage'])->name('update_stage');
-            Route::post('deviation/cancel/{id}', [DeviationController::class, 'deviationCancel'])->name('deviationCancel');
-            // Route::post('deviation/cftnotrequired/{id}', [DeviationController::class, 'deviationIsCFTRequired'])->name('deviationIsCFTRequired');
-            Route::post('deviation/reject/{id}', [DeviationController::class, 'deviation_reject'])->name('deviation_reject');
-            Route::post('deviation/check/{id}', [DeviationController::class, 'check'])->name('check');
-            Route::post('deviation/pending_initiator_update/{id}', [DeviationController::class, 'pending_initiator_update'])->name('pending_initiator_update');
-            Route::post('deviation/check2/{id}', [DeviationController::class, 'check2'])->name('check2');
-            Route::post('deviation/check3/{id}', [DeviationController::class, 'check3'])->name('check3');
-            Route::post('deviation/cftnotreqired/{id}', [DeviationController::class, 'cftnotreqired'])->name('cftnotreqired');
-            Route::post('deviation/checkcft/{id}', [DeviationController::class, 'checkcft'])->name('checkcft');
-            Route::post('deviation/Qa/{id}', [DeviationController::class, 'deviation_qa_more_info'])->name('deviation_qa_more_info');
-            Route::post('deviationstore', [DeviationController::class, 'store'])->name('deviationstore');
-            Route::post('deviationupdate/{id}', [DeviationController::class, 'update'])->name('deviationupdate');
+           
+             /********************* Deviation Routes Starts *******************/
 
-            Route::post('launch-extension-deviation/{id}', [DeviationController::class, 'launchExtensionDeviation'])->name('launch-extension-deviation');
-            Route::post('launch-extension-capa/{id}', [DeviationController::class, 'launchExtensionCapa'])->name('launch-extension-capa');
-            Route::post('launch-extension-qrm/{id}', [DeviationController::class, 'launchExtensionQrm'])->name('launch-extension-qrm');
-            Route::post('launch-extension-investigation/{id}', [DeviationController::class, 'launchExtensionInvestigation'])->name('launch-extension-investigation');
-
-             Route::get('deviation', [DeviationController::class, 'deviation']);
-             Route::get('deviationSingleReport/{id}/show', [PDFController::class, 'singleReport'])->name('deviationSingleReport.show');
+             Route::get('deviation', [DeviationController::class, 'deviation'])->name('deviation');
+             Route::get('DeviationAuditTrialPdf/{id}', [DeviationController::class, 'deviationAuditTrailPdf']);
+             Route::post('deviationstore', [DeviationController::class, 'store'])->name('deviationstore');
+             Route::get('devshow/{id}', [DeviationController::class, 'devshow'])->name('devshow');
+             Route::post('deviationupdate/{id}', [DeviationController::class, 'update'])->name('deviationupdate');
+             Route::post('deviation/reject/{id}', [DeviationController::class, 'deviation_reject'])->name('deviation_reject');
+             Route::post('deviation/cancel/{id}', [DeviationController::class, 'deviationCancel'])->name('deviationCancel');
+             Route::post('deviation/cftnotrequired/{id}', [DeviationController::class, 'deviationIsCFTRequired'])->name('deviationIsCFTRequired');
+             Route::post('deviation/check/{id}', [DeviationController::class, 'check'])->name('check');
+             Route::post('deviation/check2/{id}', [DeviationController::class, 'check2'])->name('check2');
+             Route::post('deviation/check3/{id}', [DeviationController::class, 'check3'])->name('check3');
+             Route::post('deviation/pending_initiator_update/{id}', [DeviationController::class, 'pending_initiator_update'])->name('pending_initiator_update');
+             Route::post('deviation/stage/{id}', [DeviationController::class, 'deviation_send_stage'])->name('deviation_send_stage');
+             Route::post('deviation/cftnotreqired/{id}', [DeviationController::class, 'cftnotreqired'])->name('cftnotreqired');
+             Route::post('deviation/Qa/{id}', [DeviationController::class, 'deviation_qa_more_info'])->name('deviation_qa_more_info');
              Route::get('deviationSingleReport/{id}', [DeviationController::class, 'singleReport'])->name('deviationSingleReport');
-             Route::get('deviationAuditReport/{id}', [DeviationController::class, 'auditReport'])->name('deviationAuditReport');
-             Route::get('deviationparentchildReport/{id}', [DeviationController::class, 'parentchildReport'])->name('deviationparentchildReport');
-             Route::get('DeviationFamily/{id}', [DeviationController::class, 'deviationfamilyReport'])->name('DeviationFamily');
-             
+             Route::get('deviation_showpdf/{id}', [DeviationController::class, 'singleReportShow'])->name('deviation_showpdf');
+ 
+             Route::get('activityLog/{id}', [DeviationController::class, 'activityLog'])->name('deviation_activityLog');
+ 
+ 
+             Route::get('deviationFamilyReport/{id}', [DeviationController::class, 'familyReport'])->name('deviationFamilyReport');
+ 
+             Route::post('dev-launch-extension-deviation/{id}', [DeviationController::class, 'launchExtensionDeviation'])->name('dev-launch-extension-deviation');
+             Route::post('dev-launch-extension-capa/{id}', [DeviationController::class, 'launchExtensionCapa'])->name('dev-launch-extension-capa');
+             Route::post('dev-launch-extension-qrm/{id}', [DeviationController::class, 'launchExtensionQrm'])->name('dev-launch-extension-qrm');
+             Route::post('dev-launch-extension-investigation/{id}', [DeviationController::class, 'launchExtensionInvestigation'])->name('dev-launch-extension-investigation');
+ 
+             /********************* Deviation Routes Ends *******************/
+
+
+
 //=======================market complaint START =======
 // Route::view('marketcomplaintkp', 'frontend.marketcomplaint.marketcomplaint');
         Route::get('marketcomplaintcreate', [MarketComplaintController::class, 'marketcomplaint']);
