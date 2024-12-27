@@ -663,13 +663,13 @@
                                         <tr>
                                             <th style="width: 4%">Row#</th>
                                             <th style="width: 8%"> Batch No*.</th>
-                                            <th style="width: 12%">AR No.</th>
+                                            <th style="width: 10%">AR No.</th>
                                             <th style="width: 10%">Stage</th>
                                             <th style="width: 12% pt-3">Reference Specification No.</th>
                                             <th style="width: 16% pt-2"> Test</th>
-                                            <th style="width: 8%">Results Obtained</th>
-                                            <th style="width: 8%">Specification limit</th>
-                                            <th style="width: 15%">Action</th>
+                                            <th style="width: 10%">Results Obtained</th>
+                                            <th style="width: 12%">Specification limit</th>
+                                            <th style="width: 8%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -34,8 +34,8 @@ class OOSService
             $input['status'] = 'Opened';
             $input['stage'] = 1;
             $input['record_number'] = ((RecordNumber::first()->value('counter')) + 1);
-            $input['proposal_for_hypothesis_IB'] = implode(',', $request->proposal_for_hypothesis_IB);
-            $input['checklists'] = implode(',', $request->checklists);
+            // $input['proposal_for_hypothesis_IB'] = implode(',', $request->proposal_for_hypothesis_IB);
+            // $input['checklists'] = implode(',', $request->checklists);
 
 
             $file_input_names = [
