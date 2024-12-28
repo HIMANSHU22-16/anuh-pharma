@@ -1489,6 +1489,49 @@
                                 </select>
                             </div>
                         </div>
+                        <br>
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">If applicable: Yes/No</label>
+                                <p style="font-size:0.9rem">
+                                    Approval of allocation for repeat analysis to other analyst since Analyst-1
+                                    <select name="approval_1" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_1 == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_1 == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>  <br>
+                                    is absent, hence repeat analysis to be performed by another analyst 
+                                    <select name="approval_2" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_2 == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_2 == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                    as Analyst-1.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Phase-I (B) test results:</label>
+                                <input type="text" name="phase_1_result" value="{{$data->phase_1_result}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Test Result</label>
+                                <input type="text" name="phase_1_test_result" value="{{$data->phase_1_test_result}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit" value="{{$data->phase_1_limit}}">
+                            </div>
+                        </div>
+
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
@@ -1638,6 +1681,63 @@
                                     <option value="yes" {{ $data->hypothesis_root_cause_phase2 == 'yes' ? 'selected' : '' }}>Yes</option>
                                     <option value="no" {{ $data->hypothesis_root_cause_phase2 == 'no' ? 'selected' : '' }}>No</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Investigator</label>
+                                <textarea class="summernote" name="hypothesis_investigator_01" id="summernote-1">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">If applicable: Yes/No</label>
+                                <p style="font-size:0.9rem">
+                                    Approval of allocation for repeat analysis to other analyst since Analyst-1 
+                                    <select name="approval_two" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_two == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_two == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                    is absent, hence repeat analysis to be performed by another analyst 
+                                    <select name="approval_three" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_three == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_three == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                    as Analyst-1.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Phase-I (B) test results:</label>
+                                <input type="text" name="phase_1_result_01" value="{{$data->phase_1_result_01}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Test Result</label>
+                                <input type="text" name="phase_1_test_result_01" value="{{$data->phase_1_test_result_01}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit_01" value="{{$data->phase_1_limit_01}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Conclusion</label>
+                                <input type="text" name="phase_1_conclusion_01" value="{{$data->phase_1_conclusion_01}}">
                             </div>
                         </div>
 
