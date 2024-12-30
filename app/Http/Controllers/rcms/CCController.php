@@ -31,6 +31,7 @@ use App\Models\Extension;
 use App\Models\GroupComments;
 use App\Models\QaApprovalComments;
 use App\Models\NotificationUser;
+use App\Models\ActionsPlan;
 use App\Models\Qareview;
 use App\Models\QMSDivision;
 use App\Models\RiskAssessment;
@@ -73,7 +74,7 @@ class CCController extends Controller
         $cft = User::get();
         $pre = CC::all();
 
-        return view('frontend.change-control.new-change-control', compact("riskData", "preRiskAssessment", "due_date", "hod", "cft", "pre"));
+        return view('frontend.change-control.new-change-control', compact("riskData", "preRiskAssessment", "due_date", "hod", "cft", "pre","record_number"));
     }
 
     public function store(Request $request)
@@ -150,6 +151,27 @@ class CCController extends Controller
         $openState->effective_check_plan = $request->effective_check_plan;
         $openState->due_date_extension = $request->due_date_extension;
 
+        // New added columns data here 
+        $openState->title = $request->title;
+        $openState->doc_no = $request->doc_no;
+        $openState->Existing_Stage = implode(',', $request->Existing_Stage);
+        $openState->Proposed_changes = implode(',', $request->Proposed_changes);
+        $openState->justification_changes = implode(',', $request->justification_changes);
+        $openState->review_initiating = implode(',', $request->review_initiating);
+        $openState->identification_cross_funct = $request->identification_cross_funct;
+        $openState->evaluation = implode(',', $request->review_initiating);
+        $openState->outcome_risk = implode(',', $request->outcome_risk);
+        $openState->proposal_change = $request->proposal_change;
+        $openState->change_category = $request->change_category;
+        $openState->reason_categorization = $request->reason_categorization;
+        $openState->intimation = $request->intimation;
+        $openState->acknowledgement = implode(',', $request->acknowledgement);
+        $openState->justification_extension = implode(',', $request->justification_extension);
+        $openState->closure_remark = implode(',', $request->closure_remark);
+        $openState->effectiveness = $request->effectiveness;
+        $openState->remark = implode(',', $request->remark);
+        $openState->closure_conclusion = implode(',', $request->closure_conclusion);
+
         if (!empty ($request->initial_update_attach)) {
             $files = [];
             if ($request->hasfile('initial_update_attach')) {
@@ -205,6 +227,35 @@ class CCController extends Controller
 
 
         $openState->save();
+
+        $actionsPlanData = [];
+        if ($request->has('action_description')) {
+            foreach ($request->action_description as $key => $description) {
+                $actionsPlanData[] = [
+                    'action_description' => $description,
+                    'responsible_department' => $request->responsible_department[$key],
+                    'planned_date' => $request->planned_date[$key],
+                    'actual_date' => $request->actual_date[$key],
+                    'evidence_attached' => $request->evidence_attached[$key],
+                    'hod_sign_date' => $request->hod_sign_date[$key],
+                    'qa_verification' => $request->qa_verification[$key],
+                    'reference_annexures' => $request->reference_annexures[$key],
+                ];
+            }
+        }
+
+        // Store the data as JSON in the database
+        $actionsPlanGridData = ActionsPlan::where([
+            'action_id' => $openState->id,  
+            'identifier' => "ActionsPlan",
+        ])->firstOrCreate();
+
+        $actionsPlanGridData->action_id = $openState->id;
+        $actionsPlanGridData->identifier = "ActionsPlan";
+        $actionsPlanGridData->data = $actionsPlanData; // Storing data as JSON
+        $actionsPlanGridData->save();
+
+
         $getId = $openState->id;
 
         if(!empty($getId)){
@@ -2520,6 +2571,15 @@ class CCController extends Controller
             $rows[] = $userReview;
         }
 
+        $actionsplangridData = ActionsPlan::where([
+            'action_id' => $id, 
+            'identifier' => 'ActionsPlan'
+        ])->first();
+
+        $actionsplanData = $actionsplangridData && is_string($actionsplangridData->data)
+        ? json_decode($actionsplangridData->data, true) 
+        : ($actionsplangridData->data ?? []);
+
         $getImpactData  = CCImpactAssessment::where('cc_id' , $id)->first();
         $getExternalData = ExternalReview::where(['cc_id' => $id, "process_name" => "Change Control"])->first();
         $cftReviewerIds = explode(',', $data->reviewer_person_value);
@@ -2570,8 +2630,8 @@ class CCController extends Controller
             'division',
             'cc_cfts',
             'comments',
-            // 'impactassement',
-            // 'assessment',
+            'actionsplanData',
+            'actionsplangridData',
             'approcomments',
             'closure',
             "hod",
@@ -2714,7 +2774,7 @@ class CCController extends Controller
             $initiationDate = Carbon::createFromFormat('Y-m-d', $lastDocument->intiation_date);
             $daysToAdd = $request->due_days;
             $dueDate = $initiationDate->addDays($daysToAdd);
-            $openState->record_number = $request->record_number;
+            // $openState->record_numbers = $request->record_number;
         }
 
         $openState->external_users = implode(',',$request->external_users);
@@ -2780,7 +2840,35 @@ class CCController extends Controller
                 }
             }
         }
-        
+
+         //grid data
+         $actionsPlanData = [];
+         if ($request->has('action_description')) {
+             foreach ($request->action_description as $key => $description) {
+                 $actionsPlanData[] = [
+                     'action_description' => $description,
+                     'responsible_department' => $request->responsible_department[$key],
+                     'planned_date' => $request->planned_date[$key],
+                     'actual_date' => $request->actual_date[$key],
+                     'evidence_attached' => $request->evidence_attached[$key],
+                     'hod_sign_date' => $request->hod_sign_date[$key],
+                     'qa_verification' => $request->qa_verification[$key],
+                     'reference_annexures' => $request->reference_annexures[$key],
+                 ];
+             }
+         }
+         
+         // Store the data as JSON in the database
+         $actionsPlanGridData = ActionsPlan::where([
+             'action_id' => $openState->id,  
+             'identifier' => "ActionsPlan",
+         ])->firstOrCreate();
+ 
+         $actionsPlanGridData->action_id = $openState->id;
+         $actionsPlanGridData->identifier = "ActionsPlan";
+         $actionsPlanGridData->data = $actionsPlanData; // Storing data as JSON
+         $actionsPlanGridData->save();
+ 
 
         $openState->doc_change = $request->doc_change;
         $openState->hod_person = $request->hod_person;
@@ -2828,6 +2916,28 @@ class CCController extends Controller
 
         $openState->due_date_extension = $request->due_date_extension;
         // $openState->HOD_Remarks = $request->HOD_Remarks;
+
+
+         // New added columns data here 
+         $openState->title = $request->title;
+         $openState->doc_no = $request->doc_no;
+         $openState->Existing_Stage = implode(',', $request->Existing_Stage);
+         $openState->Proposed_changes = implode(',', $request->Proposed_changes);
+         $openState->justification_changes = implode(',', $request->justification_changes);
+         $openState->review_initiating = implode(',', $request->review_initiating);
+         $openState->identification_cross_funct = $request->identification_cross_funct;
+         $openState->evaluation = implode(',', $request->review_initiating);
+         $openState->outcome_risk = implode(',', $request->outcome_risk);
+         $openState->proposal_change = $request->proposal_change;
+         $openState->change_category = $request->change_category;
+         $openState->reason_categorization = $request->reason_categorization;
+         $openState->intimation = $request->intimation;
+         $openState->acknowledgement = implode(',', $request->acknowledgement);
+         $openState->justification_extension = implode(',', $request->justification_extension);
+         $openState->closure_remark = implode(',', $request->closure_remark);
+         $openState->effectiveness = $request->effectiveness;
+         $openState->remark = implode(',', $request->remark);
+         $openState->closure_conclusion = implode(',', $request->closure_conclusion); 
 
         $files = is_array($request->existinHodFile) ? $request->existinHodFile : null;
         if (!empty($request->HOD_attachment)) {
@@ -9169,7 +9279,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
 
     public function reject(Request $request, $id)
     {
-        if ($request->username == Auth::user()->Username && Hash::check($request->password, Auth::user()->password)) {
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changeControl = CC::find($id);
             $lastDocument = CC::find($id);
             $evaluation = Evaluation::where('cc_id', $id)->first();
@@ -10216,7 +10326,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
 
     public function stagereject(Request $request, $id)
     {
-        if ($request->username == Auth::user()->Username && Hash::check($request->password, Auth::user()->password)) {
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changeControl = CC::find($id);
             $lastDocument = CC::find($id);
             $lastdata = ChangeControlComment::where('cc_id', $id)->first();
@@ -11082,7 +11192,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
 
     public function sendToInitiator(Request $request, $id)
     {
-        if ($request->username == Auth::user()->Username && Hash::check($request->password, Auth::user()->password)) {
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changeControl = CC::find($id);
             $lastDocument = CC::find($id);
             $cftResponse = ChangeControlCftResponse::withoutTrashed()->where(['cc_id' => $id])->get();
@@ -11164,7 +11274,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
 
     public function sendToHod(Request $request, $id)
     {
-        if ($request->username == Auth::user()->Username && Hash::check($request->password, Auth::user()->password)) {
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changeControl = CC::find($id);
             $lastDocument = CC::find($id);
             $cftResponse = ChangeControlCftResponse::withoutTrashed()->where(['cc_id' => $id])->get();
@@ -11247,7 +11357,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
 
     public function sendToInitialQA(Request $request, $id)
     {
-        if ($request->username == Auth::user()->Username && Hash::check($request->password, Auth::user()->password)) {
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changeControl = CC::find($id);
             $lastDocument = CC::find($id);
             $cftResponse = ChangeControlCftResponse::withoutTrashed()->where(['cc_id' => $id])->get();
@@ -11331,7 +11441,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
 
     public function stagecancel(Request $request, $id)
     {
-        if ($request->username == Auth::user()->Username && Hash::check($request->password, Auth::user()->password)) {
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
             $changeControl = CC::find($id);
             $openState = CC::find($id);
             $lastDocument = CC::find($id);
@@ -11517,13 +11627,13 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
     public function auditTrial($id)
     {
         $audit = RcmDocHistory::where('cc_id', $id)->orderByDESC('id')->paginate(500);
-        // dd($audit);
+    
         $today = Carbon::now()->format('d-m-y');
         $document = CC::where('id', $id)->first();
         $document->originator = User::where('id', $document->initiator_id)->value('name');
 
         $users = User::all();
-        return view('frontend.rcms.CC.audit-trial', compact('audit', 'document', 'today','users'));
+        return view('frontend.change-control.audit-trial', compact('audit', 'document', 'today','users'));
     }
 
 
@@ -11828,7 +11938,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
             $approcomments = QaApprovalComments::where('cc_id', $data->id)->first();
             $closure = ChangeClosure::where('cc_id', $data->id)->first();
             $json_decode = Docdetail::where(['cc_id' => $data->id, 'identifier' =>'AffectedDocDetail'])->first();
-            $affectedDoc = json_decode($json_decode->data, true);
+            // $affectedDoc = json_decode($json_decode->data, true);
             $commnetData = DB::table('change_control_comments')->where('cc_id', $id)->first();
             $fields = DB::table('change_control_fields')->where('cc_id', $id)->first();
 
@@ -11849,7 +11959,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                 'assessment',
                 'approcomments',
                 'closure',
-                'affectedDoc',
+                // 'affectedDoc',
                 'commnetData',
                 'fields'
             ))

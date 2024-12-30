@@ -19,7 +19,7 @@
     }
 
     .w-5 {
-        width: 5%;
+        width: 7%;
     }
 
     .w-10 {
@@ -170,7 +170,7 @@
                 </td>
                 <td class="w-30">
                     <div class="logo">
-                       <img src="https://www.cphi-online.com/Medicef%20Logo-comp306798.jpg" alt="" class="w-80">
+                       <img src="" alt="logo" class="w-80">
 
                     </div>
                 </td>

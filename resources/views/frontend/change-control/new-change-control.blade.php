@@ -217,13 +217,11 @@
                     <div id="CCForm1" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="row">
-                            <div class="col-12">
-                                    <div class="sub-head">General Information</div>
-                                </div>
                                 <div class="col-6">
                                     <div class="group-input">
-                                        <label for="RLS Record Number"><b>Record Number</b></label>
-                                        <input disabled type="text" placeholder="Record Number" readonly>
+                                        <label for="RLS Record Number"><b>CC No.</b></label>
+                                    <input disabled type="text" name="record_number"
+                                            value="{{ Helpers::getDivisionName(session()->get('division')) }}/CC/{{ date('Y') }}/{{ $record_number }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -234,7 +232,6 @@
                                         <input type="hidden" name="division_id" value="{{ session()->get('division') }}">
                                     </div>
                                 </div>
-
                                 <div class="col-lg-6">
                                     <div class="group-input">
                                         <label for="Initiator"><b>Initiator</b></label>
@@ -251,486 +248,608 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="col-md-6">
-                                            <div class="group-input">
-                                                <label for="search">
-                                                    Assigned To <span class="text-danger">*</span>
-                                                </label>
-                                                <select id="select-state" placeholder="Select..." name="assign_to">
-                                                    <option value="">Select a value</option>
-                                                    @foreach ($hod as $data)
-    @if (Helpers::checkUserRolesassign_to($data))
-    <option @if (old('assign_to') == $data->id) selected @endif
-                                                                value="{{ $data->id }}">{{ $data->name }}</option>
-    @endif
-    @endforeach
-                                                </select>
-                                                @error('assign_to')
-        <p class="text-danger">{{ $message }}</p>
-    @enderror
-                                            </div>
+                                <div class="col-md-6 new-date-data-field">
+                                    <div class="group-input input-date ">
+                                        <label for="due-date">Due Date<span class="text-danger"></span></label>
+                                        <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="group-input">
-                                                <label for="Microbiology">CFT Reviewer</label>
-                                                <select name="Microbiology">
-                                                    <option value="" selected>-- Select --</option>
-                                                    <option value="yes">Yes</option>
-                                                    <option value="no">No</option>
-                                                </select>
-                                            </div>
-                                        </div> -->
-
-                                <!-- <div class="col-lg-6">
-                                            <div class="group-input">
-                                                <label for="Microbiology-Person">CFT Reviewer Person</label>
-                                                <select multiple name="Microbiology_Person[]" placeholder="Select CFT Reviewers"
-                                                    data-search="false" data-silent-initial-value-set="true" id="cft_reviewer">
-                                                    {{-- <option value="">-- Select --</option>  --}}
-                                                    @foreach ($cft as $data)
-    @if (Helpers::checkUserRolesMicrobiology_Person($data))
-    <option value="{{ $data->id }}">{{ $data->name }}</option>
-    @endif
-    @endforeach
-                                                </select>
-                                            </div>
-                                        </div> -->
-
-                                <div class="col-lg-6 new-date-data-field">
-                                    <div class="group-input input-date">
-                                        <label for="Due Date"> Due Date <span class="text-danger">*</span></label>
-                                        <div><small class="text-primary">If revising Due Date, kindly mention revision
-                                                reason in "Due Date Extension Justification" data field.</small></div>
                                         <div class="calenderauditee">
-                                            <input disabled type="text" id="due_date" readonly
-                                                placeholder="DD-MMM-YYYY"  />
-                                            <input type="date" name="due_date" required
-                                                min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
+                                            <input type="text" name="due_date" id="due_date" readonly
+                                                placeholder="DD-MMM-YYYY" />
+                                            <input type="date" name="due_date" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
                                                 oninput="handleDateInput(this, 'due_date')" />
                                         </div>
-
-
                                     </div>
                                 </div>
 
-
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="initiator-group">Initiation Department <span
+                                        <label for="Initiator Group"><b>Department</b><span
                                                 class="text-danger">*</span></label>
-                                        <select name="Initiator_Group" id="initiator_group">
-                                                <optio value="">Select Initiation Department</option>
-                                                <option value="CQA">Corporate Quality Assurance</option>
-                                                <option value="QA">Quality Assurance</option>
-                                                <option value="QC">Quality Control</option>
-                                                <option value="QM">Quality Control (Microbiology department)</option>
-                                                <option value="PG">Production General</option>
-                                                <option value="PL">Production Liquid Orals</option>
-                                                <option value="PT">Production Tablet and Powder</option>
-                                                <option value="PE">Production External (Ointment, Gels, Creams and
-                                                    Liquid)</option>
-                                                <option value="PC">Production Capsules</option>
-                                                <option value="PI">Production Injectable</option>
-                                                <option value="EN">Engineering</option>
-                                                <option value="HR">Human Resource</option>
-                                                <option value="ST">Store</option>
-                                                <option value="IT">Electronic Data Processing</option>
-                                                <option value="FD">Formulation Development</option>
-                                                <option value="AL">Analytical research and Development Laboratory
-                                                </option>
-                                                <option value="PD">Packaging Development</option>
-                                                <option value="PU">Purchase Department</option>
-                                                <option value="DC">Document Cell</option>
-                                                <option value="RA">Regulatory Affairs</option>
-                                                <option value="PV">Pharmacovigilance</option>
+                                        <select name="Initiator_Group" id="initiator_group" required
+                                            onchange="showOtherInput()">
+                                            <option value="">-- Select --</option>
+                                            <option value="Production" @if (old('Initiator_Group') == 'Production') selected @endif>
+                                                Production</option>
+                                            <option value="Warehouse" @if (old('Initiator_Group') == 'Warehouse') selected @endif>
+                                                Warehouse</option>
+                                            <option value="Quality Control"
+                                                @if (old('Initiator_Group') == 'Quality Control') selected @endif>Quality Control</option>
+                                            <option value="Engineering" @if (old('Initiator_Group') == 'Engineering') selected @endif>
+                                                Engineering</option>
+                                            <option value="Information Technology"
+                                                @if (old('Initiator_Group') == 'Information Technology') selected @endif>Information Technology
+                                            </option>
+                                            <option value="Project Management"
+                                                @if (old('Initiator_Group') == 'Project Management') selected @endif>Project Management
+                                            </option>
+                                            <option value="Environment Health & Safety"
+                                                @if (old('Initiator_Group') == 'Environment Health & Safety') selected @endif>Environment Health &
+                                                Safety</option>
+                                            <option value="Human Resource & Administration"
+                                                @if (old('Initiator_Group') == 'Human Resource & Administration') selected @endif>Human Resource &
+                                                Administration</option>
+                                            <option value="Quality Assurance"
+                                                @if (old('Initiator_Group') == 'Quality Assurance') selected @endif>Quality Assurance
+                                            </option>
+                                            <option value="Analytical Development Library"
+                                                @if (old('Initiator_Group') == 'Analytical Development Library') selected @endif>Analytical Development
+                                                Library</option>
+                                            <option value="Process Development Laboratory / Kilo Lab"
+                                                @if (old('Initiator_Group') == 'Process Development Laboratory / Kilo Lab') selected @endif>Process Development
+                                                Laboratory / Kilo Lab</option>
+                                            <option value="Technology transfer/design"
+                                                @if (old('Initiator_Group') == 'Technology transfer/design') selected @endif>Technology
+                                                transfer/design</option>
+                                            <option value="Any Other" @if (old('Initiator_Group') == 'Any Other') selected @endif>
+                                                Any Other</option>
                                         </select>
-                                        {{-- @error('Initiator_Group')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror --}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Initiator Group Code">Initiation Department Code</label>
-                                        <input type="text" name="initiator_group_code" id="initiator_group_code"
-                                            placeholder="Initiator Group Code" value="" readonly>
-                                    </div>
-                                </div>
-                                {{-- <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="short-desc">Short Description <span
-                                                class="text-danger">*</span></label>
-                                        <div><small class="text-primary">Please mention brief summary</small></div>
-                                        <textarea name="short_description" id="short_description">{{ old('short_description') }}</textarea>
-                                        @error('short_description')
-                                            <p class="text-danger">{{ $message }}</p>
+                                        @error('Initiator_Group')
+                                            <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>  --}}
+                                    <div class="group-input" id="other_input_group" style="display: none;">
+                                        <label for="Other Department"><b>Department (Any Other)</b></label>
+                                        <input type="text" name="departments_other" id="other_department" />
+                                    </div>
+                                </div>
 
                                 <script>
-                                    $(document).ready(function() {
-                                        function toggleRiskAssessmentAndJustification() {
-                                            var riskAssessmentRequired = $('#risk_assessment_required').val();
+                                    function showOtherInput() {
+                                        var selectElement = document.getElementById("initiator_group");
+                                        var otherInputGroup = document.getElementById("other_input_group");
 
-                                            // Toggle Risk Assessment Button
-                                            if (riskAssessmentRequired === 'yes') {
-                                                $('#riskAssessmentButton').show();
-                                                $('#justification_div').hide(); // Hide justification when "Yes" is selected
-                                            } else if (riskAssessmentRequired === 'no') {
-                                                $('#riskAssessmentButton').hide();
-                                                $('#justification_div').show(); // Show justification when "No" is selected
-                                            } else {
-                                                $('#riskAssessmentButton').hide();
-                                                $('#justification_div').hide(); // Hide everything if nothing is selected
-                                            }
+                                        if (selectElement.value === "Any Other") {
+                                            otherInputGroup.style.display = "block";
+                                        } else {
+                                            otherInputGroup.style.display = "none";
                                         }
-
-                                        toggleRiskAssessmentAndJustification(); // Initial call to set the correct state
-
-                                        // Call the function on dropdown change
-                                        $('#risk_assessment_required').change(function() {
-                                            toggleRiskAssessmentAndJustification();
-                                        });
-                                    });
+                                    }
                                 </script>
-
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Risk Assessment Required">Risk Assessment Required? </label>
-                                        <select name="risk_assessment_required" id="risk_assessment_required">
-                                            <option value="">-- Select --</option>
-                                            <option @if ($data->risk_assessment_required == 'yes') selected @endif value='yes'>Yes
-                                            </option>
-                                            <option @if ($data->risk_assessment_required == 'no') selected @endif value='no'>No
-                                            </option>
-                                        </select>
-                                        <!-- @error('capa_required')
-        <div class="text-danger">{{ $message }}</div>
-    @enderror -->
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6" id="justification_div" style="display:none;">
-                                    <div class="group-input">
-                                        <label for="Justification">Justification</label>
-                                        <div class="relative-container">
-                                            <textarea name="risk_identification" id="justification" rows="4"
-                                                placeholder="Provide justification if risk assessment is not required."></textarea>
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
-                                        <!-- @error('justification')
-        <div class="text-danger">{{ $message }}</div>
-    @enderror -->
-                                    </div>
-                                </div>
-
-                                @php
-                                    $division = DB::table('q_m_s_divisions')
-                                        ->where('name', Helpers::getDivisionName(session()->get('division')))
-                                        ->first();
-                                    $userRoles = DB::table('user_roles')
-                                        ->where([
-                                            'q_m_s_roles_id' => 4,
-                                            'q_m_s_divisions_id' => $division->id,
-                                        ])
-                                        ->get();
-                                    $userRoleIds = $userRoles->pluck('user_id')->toArray();
-                                    $hodRoles = DB::table('users')->whereIn('id', $userRoleIds)->get();
-                                @endphp
-
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="hod_person">HOD Person</label>
-                                        <select name="hod_person" id="hod_person">
-                                            <option value="">Select HOD Person</option>
-                                            @if ($hodRoles)
-                                                @foreach ($hodRoles as $user)
-                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                </div>
-
 
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Short Description">Short Description<span
-                                                class="text-danger">*</span></label><span id="rchars"
-                                            class="text-primary">255 </span><span class="text-primary"> characters
-                                            remaining</span>
-                                        <div class="relative-container">
-                                            <input id="docname" type="text" name="short_description"
-                                                maxlength="255" required>
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
+                                                class="text-danger">*</span></label><span id="rchars" class="text-primary">255 </span><span class="text-primary"> characters remaining</span>
+                                      
+                                        <input id="docname" type="text" name="short_description" maxlength="255" required>
                                     </div>
                                 </div>
-
-                                {{-- <div class="col-lg-12">
-                                    <div class="group-input" id="type_of_change">
-                                        <label for="type_of_change">Type of Change</label>
-                                        <textarea name="type_of_change"></textarea>
-                                    </div>
-                                </div> --}}
-
-                                <div class="col-lg-12">
-                                    <div class="group-input" id="validation_requirment">
-                                        <label for="validation_requirment">Validation Requirement</label>
-                                        <div class="relative-container">
-                                            <textarea name="validation_requirment"></textarea>
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="priority_data Department">Priority</label>
-                                        <select name="priority_data" id="priority_data">
-                                            <option value="">--Select--</option>
-                                            <option value="High">High</option>
-                                            <option value="Medium">Medium</option>
-                                            <option value="Low">Low</option>
+                                        <label for="audit type">Type of Change Requested</label>
+                                        <select multiple name="audit_type[]" id="audit_type">
+                                           {{-- <option value="">Enter Your Selection Here</option> --}}
+                                            <option value="Facilities">Facilities</option>
+                                            <option value="Equipment/utilities/Instrument">Equipment/Utilities/Instrument</option>
+                                            <option value="Environmental">Environmental</option>
+                                            <option value="Statutory Compliances">Statutory Compliances</option>
+                                            <option value="Manufacturing formula/process optimization">Manufacturing Formula/Process Optimization</option>
+                                            <option value="Change in Batch size">Change in Batch Size</option>
+                                            <option value="Yield Improvement">Yield Improvement</option>
+                                            <option value="Time Reduction">Time Reduction</option>
+                                            <option value="Better Quality/Impurity Profile">Better Quality/Impurity Profile</option>
+                                            <option value="Documentation">Documentation</option>
+                                            <option value="Specifications, Test Procedures">Specifications, Test Procedures</option>
+                                            <option value="Introduction of new vendor/supplier">Introduction of New Vendor/Supplier</option>
+                                            <option value="Introduction of new product">Introduction of New Product</option>
+                                            <option value="Raw and Packaging Materials">Raw and Packaging Materials</option>
+                                            <option value="Others(Specify)">Others (Specify)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Title">Title</label>
+                                        <span id="rchars" class="text-primary">(Brief description for Type of Change)</span>
+                                        <input id="docname" type="text" name="title">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="group-input">
+                                        <label for="Title">Document Number</label>
+                                        <input id="docname" type="text" name="doc_no">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">Existing Stage / System</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="Existing_Stage[]" id="summernote-1" >
+                                    </textarea>
+                                    </div>
+                                    @error('Existing_Stage')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">Proposed changes</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="Proposed_changes[]" id="summernote-1" >
+                                    </textarea>
+                                    </div>
+                                    @error('Proposed_changes')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">Justification for change</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="justification_changes[]" id="summernote-1" >
+                                    </textarea>
+                                    </div>
+                                    @error('justification_changes')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">Review by-Initiating Department Head</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="review_initiating[]" id="summernote-1" >
+                                    </textarea>
+                                    </div>
+                                    @error('review_initiating')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">
+                                            Impact Assessment By QA Executive / Designee in consultation with Head Quality
+                                        </label>
+                                
+                                        <!-- Impact on Qualification -->
+                                        <div class="mb-3" style="display: flex; align-items: center; gap: 15px;">
+                                            <label style="margin: 0;"><strong>i) Impact on:</strong></label>
+                                            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                                @foreach(['Qualification', 'Calibration', 'Validation', 'Stability'] as $item)
+                                                <span style="display: inline-flex; align-items: center; gap: 5px;">
+                                                    <input type="checkbox" id="impact_{{ $item }}" name="impact_on[]" value="{{ $item }}" style="vertical-align: middle; position: relative; bottom: 1px;">
+                                                    <label for="impact_{{ $item }}" style="margin: 0; display: block;">{{ $item }}</label>
+                                                </span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                
+                                        <!-- Impact on Facility -->
+                                        <div class="mb-3" style="display: flex; align-items: center; gap: 15px;">
+                                            <label style="margin: 0;"><strong>ii) Impact on:</strong></label>
+                                            <div style="display: flex; gap: 10px;">
+                                                @foreach(['Facility', 'Equipment', 'Instrument'] as $item)
+                                                <span style="display: inline-flex; align-items: center; gap: 5px;">
+                                                    <input type="checkbox" id="impact_facility_{{ $item }}" name="impact_on_facility[]" value="{{ $item }}">
+                                                    <label for="impact_facility_{{ $item }}">{{ $item }}</label>
+                                                </span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                
+                                        <!-- Impact on Documents -->
+                                        <div class="mb-3" style="display: flex; align-items: flex-start; gap: 15px;">
+                                            <label style="margin: 0; white-space: nowrap;"><strong>iii) Impact on Documents:</strong></label>
+                                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                                @foreach(['SOP', 'Specification', 'AMV', 'Protocols', 'Train', 'BMCR/BPCR'] as $item)
+                                                <span style="display: inline-flex; align-items: center; gap: 5px; margin-bottom: 5px;">
+                                                    <input type="checkbox" id="impact_documents_{{ $item }}" name="impact_on_documents[]" value="{{ $item }}">
+                                                    <label for="impact_documents_{{ $item }}">{{ $item }}</label>
+                                                </span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                
+                                        <!-- Risk Assessment -->
+                                        <div class="mb-3">
+                                            <label><strong>iv) Risk Assessment:</strong></label>
+                                            <div style="display: inline-flex; gap: 15px; align-items: center; margin-left: 10px;">
+                                                <div>
+                                                    <input type="radio" id="risk_yes" name="risk_assessment" value="Yes">
+                                                    <label for="risk_yes">Yes</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" id="risk_no" name="risk_assessment" value="No">
+                                                    <label for="risk_no">No</label>
+                                                </div>
+                                            </div>
+                                            <textarea 
+                                                name="risk_justification" 
+                                                id="risk_justification" 
+                                                placeholder="If No, provide justification" 
+                                                style="display: none; margin-top: 10px;" 
+                                                aria-describedby="risk_help">
+                                            </textarea>
+                                        </div>
+                                        <script>
+                                            // Show/Hide the justification textarea based on the radio button selection
+                                            document.querySelectorAll('input[name="risk_assessment"]').forEach((elem) => {
+                                                elem.addEventListener("change", function() {
+                                                    var justificationField = document.getElementById('risk_justification');
+                                                    if (document.getElementById('risk_no').checked) {
+                                                        justificationField.style.display = 'block';  // Show textarea if 'No' is selected
+                                                    } else {
+                                                        justificationField.style.display = 'none';  // Hide textarea if 'Yes' is selected
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                
+                                        <!-- Others -->
+                                        <div class="mb-3">
+                                            <label><strong>v) Others (Please specify):</strong></label>
+                                            <textarea 
+                                                name="others" 
+                                                class="form-control mt-2" 
+                                                placeholder="Specify other impacts" 
+                                                rows="3" 
+                                                style="resize: vertical;">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                                                                                
+                                <div class="col-lg-6">
+                                    <div class="group-input">
+                                        <label for="audit type">Identification of Cross functional departments by QA for review of change proposal & Impact</label>
+                                        <select name="identification_cross_funct" id="risk_assessment">
+                                            <option value=" ">Select</option>
+                                            <option value="Stores">Stores</option>
+                                            <option value="Production">Production</option>
+                                            <option value="Maintenance">Maintenance</option>
+                                            <option value="Administration">Administration</option>
+                                            <option value="QA">QA</option>
+                                            <option value="QC">QC</option>
+                                            <option value="EHS">EHS</option>
+                                            <option value="IT">IT</option>
+                                            <option value="GM Works/VP Technical">GM Works/VP Technical</option>
+                                            <option value="Regulatory Affairs">Regulatory Affairs</option>
+                                            <option value="R & D">R & D</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12" id="actionsPlanGroup">
+                                    <div class="group-input">
+                                        <label for="ActionsPlan">
+                                            Actions Plan, tracking, verification, and closure
+                                            <button type="button" name="addRow" id="addProductRowButton">+</button>
+                                        </label>
+                                        <table class="table table-bordered" id="productDetailsTable">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2" class="text-center">Sr. No.</th>
+                                                    <th rowspan="2" class="text-center">Description of Action</th>
+                                                    <th rowspan="2" class="text-center">Responsible Department</th>
+                                                    <th colspan="2" class="text-center">Date of Completion</th>
+                                                    <th colspan="2" class="text-center">Verification by-Initiator HOD</th>
+                                                    <th rowspan="2" class="text-center">Closure Verification by QA (sign & date)</th>
+                                                    <th rowspan="2" class="text-center">Reference Annexures</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center">Planned</th>
+                                                    <th class="text-center">Actual</th>
+                                                    <th class="text-center">Evidence Attached (Y/N)</th>
+                                                    <th class="text-center">Sign & Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">1</td>
+                                                    <td><input type="text" name="action_description[]" class="form-control"></td>
+                                                    <td><input type="text" name="responsible_department[]" class="form-control"></td>
+                                                    <td><input type="date" name="planned_date[]" class="form-control"></td>
+                                                    <td><input type="date" name="actual_date[]" class="form-control"></td>
+                                                    <td>
+                                                        <select name="evidence_attached[]" class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" name="hod_sign_date[]" class="form-control"></td>
+                                                    <td><input type="text" name="qa_verification[]" class="form-control"></td>
+                                                    <td><input type="text" name="reference_annexures[]" class="form-control"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script>
+                                  $(document).ready(function() {
+                                        // Function to add a new row
+                                        $('#addProductRowButton').click(function() {
+                                            const rowCount = $('#productDetailsTable tbody tr').length + 1;
+
+                                            const newRow = `
+                                                <tr>
+                                                    <td class="text-center">${rowCount}</td>
+                                                    <td><input type="text" name="action_description[]" class="form-control"></td>
+                                                    <td><input type="text" name="responsible_department[]" class="form-control"></td>
+                                                    <td><input type="date" name="planned_date[]" class="form-control"></td>
+                                                    <td><input type="date" name="actual_date[]" class="form-control"></td>
+                                                    <td>
+                                                        <select name="evidence_attached[]" class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" name="hod_sign_date[]" class="form-control"></td>
+                                                    <td><input type="text" name="qa_verification[]" class="form-control"></td>
+                                                    <td><input type="text" name="reference_annexures[]" class="form-control"></td>
+                                                </tr>
+                                            `;
+
+                                            $('#productDetailsTable tbody').append(newRow);
+                                        });
+
+                                        // Function to update row numbers after adding a new row
+                                        function updateRowNumbers() {
+                                            $('#productDetailsTable tbody tr').each(function(index) {
+                                                $(this).find('td:first').text(index + 1);
+                                            });
+                                        }
+                                    });
+
+                                </script>
+
+<script>
+                                    VirtualSelect.init({
+                                        ele: '#related_records, #cft_reviewer, #audit_type'
+                                    });
+
+                                    function openCity(evt, cityName) {
+                                        var i, cctabcontent, cctablinks;
+                                        cctabcontent = document.getElementsByClassName("cctabcontent");
+                                        for (i = 0; i < cctabcontent.length; i++) {
+                                            cctabcontent[i].style.display = "none";
+                                        }
+                                        cctablinks = document.getElementsByClassName("cctablinks");
+                                        for (i = 0; i < cctablinks.length; i++) {
+                                            cctablinks[i].className = cctablinks[i].className.replace(" active", "");
+                                        }
+                                        document.getElementById(cityName).style.display = "block";
+                                        evt.currentTarget.className += " active";
+
+                                        // Find the index of the clicked tab button
+                                        const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
+
+                                        // Update the currentStep to the index of the clicked tab
+                                        currentStep = index;
+                                    }
+
+                                    const saveButtons = document.querySelectorAll(".saveButton");
+                                    const nextButtons = document.querySelectorAll(".nextButton");
+                                    const form = document.getElementById("step-form");
+                                    const stepButtons = document.querySelectorAll(".cctablinks");
+                                    const steps = document.querySelectorAll(".cctabcontent");
+                                    let currentStep = 0;
+
+                                    function nextStep() {
+                                        // Check if there is a next step
+                                        if (currentStep < steps.length - 1) {
+                                            // Hide current step
+                                            steps[currentStep].style.display = "none";
+
+                                            // Show next step
+                                            steps[currentStep + 1].style.display = "block";
+
+                                            // Add active class to next button
+                                            stepButtons[currentStep + 1].classList.add("active");
+
+                                            // Remove active class from current button
+                                            stepButtons[currentStep].classList.remove("active");
+
+                                            // Update current step
+                                            currentStep++;
+                                        }
+                                    }
+
+                                    function previousStep() {
+                                        // Check if there is a previous step
+                                        if (currentStep > 0) {
+                                            // Hide current step
+                                            steps[currentStep].style.display = "none";
+
+                                            // Show previous step
+                                            steps[currentStep - 1].style.display = "block";
+
+                                            // Add active class to previous button
+                                            stepButtons[currentStep - 1].classList.add("active");
+
+                                            // Remove active class from current button
+                                            stepButtons[currentStep].classList.remove("active");
+
+                                            // Update current step
+                                            currentStep--;
+                                        }
+                                    }
+                                </script>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">Evaluation and Approval by Head Quality / Designee</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="evaluation[]" id="summernote-1" >
+                                    </textarea>
+                                    </div>
+                                    @error('evaluation')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">Outcome of Risk Assessment(if Applicable)</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="outcome_risk[]" id="summernote-1" >
+                                    </textarea>
+                                    </div>
+                                    @error('outcome_risk')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="group-input">
+                                        <label for="Initiator Group">Change Proposal Request</label>
+                                        <select name="proposal_change" id="proposal">
+                                            <option value="">Select</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="Rejected">Rejected</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="priority_data Department">Post Categorization</label>
-                                        <select name="bd_domestic" id="bd_domestic">
-                                            <option value="">--Select--</option>
-                                            <option value="major">Major</option>
-                                            <option value="minor">Minor</option>
-                                            <option value="critical">Critical</option>
+                                        <label for="Initiator Group">Category of Change</label>
+                                        <select name="change_category" id="change">
+                                            <option value="">Select</option>
+                                            <option value="Major">Major</option>
+                                            <option value="Minor">Minor</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="col-12">
                                     <div class="group-input">
-                                        <label for="Product">Product/Material</label>
-                                        <div class="relative-container">
-                                            <input type="text" name="product_name">
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
+                                        <label for="Reason">Reason for Categorization</label>
+                                        <input id="reason" type="text" name="reason_categorization">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="change_related_to">Change Related To</label>
-                                        <select name="severity" id="change_related_to">
-                                            <option value="">-- Select --</option>
-                                            <option value="process"
-                                                {{ old('severity', $data->severity ?? '') == 'process' ? 'selected' : '' }}>
-                                                Process</option>
-                                            <option value="facility"
-                                                {{ old('severity', $data->severity ?? '') == 'facility' ? 'selected' : '' }}>
-                                                Facility</option>
-                                            <option value="utility"
-                                                {{ old('severity', $data->severity ?? '') == 'utility' ? 'selected' : '' }}>
-                                                Utility</option>
-                                            <option value="equipment"
-                                                {{ old('severity', $data->severity ?? '') == 'equipment' ? 'selected' : '' }}>
-                                                Equipment</option>
-                                            <option value="document"
-                                                {{ old('severity', $data->severity ?? '') == 'document' ? 'selected' : '' }}>
-                                                Document</option>
-                                            <option value="other"
-                                                {{ old('severity', $data->severity ?? '') == 'other' ? 'selected' : '' }}>
-                                                Other</option>
-                                        </select>
-                                        <!-- @error('severity')
-        <div class="text-danger">{{ $message }}</div>
-    @enderror -->
-                                    </div>
-                                </div>
-
-                                <!-- Textbox for 'Other' option -->
-                                <div class="col-lg-6" id="other_specify_div" style="display:none;">
-                                    <div class="group-input">
-                                        <label for="other_specify">Please specify</label>
-                                        <div class="relative-container">
-                                            <input type="text" name="Occurance" id="other_specify"
-                                                value="{{ $data->Occurance ?? '' }}"
-                                                placeholder="Specify if Other is selected">
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
-                                        <!-- @error('other_specify')
-        <div class="text-danger">{{ $message }}</div>
-    @enderror -->
-                                    </div>
-                                </div>
-
-                                <script>
-                                    $(document).ready(function() {
-                                        function toggleOtherSpecifyField() {
-                                            var changeRelatedTo = $('#change_related_to').val();
-                                            if (changeRelatedTo === 'other') {
-                                                $('#other_specify_div').show();
-                                            } else {
-                                                $('#other_specify_div').hide();
-                                            }
-                                        }
-
-                                        toggleOtherSpecifyField(); // Initial check
-
-                                        // Update field visibility on dropdown change
-                                        $('#change_related_to').change(function() {
-                                            toggleOtherSpecifyField();
-                                        });
-                                    });
-                                </script>
-
-
-                                <!-- <div class="col-12">
-                                            <div class="group-input">
-                                                <label for="severity-level">Severity Level</label>
-                                                <span class="text-primary">Severity levels in a QMS record gauge issue seriousness,
-                                                    guiding priority for corrective actions. Ranging from low to high, they ensure
-                                                    quality standards and mitigate critical risks.</span>
-                                                <select name="severity_level1">
-                                                    <option value="">-- Select --</option>
-                                                    <option value="minor">Minor</option>
-                                                    <option value="major">Major</option>
-                                                    <option value="critical">Critical</option>
-                                                </select>
-                                            </div>
-                                        </div> -->
-
-                                <div class="col-lg-6">
-                                    <div class="group-input">
-                                        <label for="Initiator Group">Initiated Through</label>
-                                        <div><small class="text-primary">Please select related information</small></div>
-                                        <select name="initiated_through"
-                                            onchange="otherController(this.value, 'others', 'initiated_through_req')">
-                                            <option value="">Enter Your Selection Here</option>
-                                            <option value="recall">Recall</option>
-                                            <option value="return">Return</option>
-                                            <option value="deviation">Deviation</option>
-                                            <option value="complaint">Complaint</option>
-                                            <option value="regulatory">Regulatory</option>
-                                            <option value="lab-incident">Lab Incident</option>
-                                            <option value="improvement">Improvement</option>
-                                            <option value="others">Others</option>
+                                        <label for="Initiator Group">Intimation to be sent to Customer/Regulatory</label>
+                                        <select name="intimation" id="change">
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input" id="initiated_through_req">
-                                        <label for="initiated_through">Others<span
-                                                class="text-danger d-none">*</span></label>
-                                        <div class="relative-container">
-                                            <textarea name="initiated_through_req"></textarea>
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
+
+                                <div class="col-md-12 mb-3">
                                     <div class="group-input">
-                                        <label for="repeat">Repeat</label>
-                                        <div><small class="text-primary">Please select yes if it is has recurred in past
-                                                six months</small></div>
-                                        <select name="repeat"
-                                            onchange="otherController(this.value, 'yes', 'repeat_nature')">
-                                            <option value="">Enter Your Selection Here</option>
-                                            <option value="yes">Yes</option>
-                                            <option value="no">No</option>
-                                            <option value="na">NA</option>
-                                        </select>
+                                        <label for="Description Deviation">Acknowledgement by HOD of change proposal initiator</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="acknowledgement[]" id="summernote-1" >
+                                    </textarea>
                                     </div>
+                                    @error('acknowledgement')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="group-input" id="repeat_nature">
-                                        <label for="repeat_nature">Repeat Nature<span
-                                                class="text-danger d-none">*</span></label>
-                                        <div class="relative-container">
-                                            <textarea name="repeat_nature"></textarea>
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- <div class="col-lg-6">
+
+                                <div class="col-md-12 mb-3">
                                     <div class="group-input">
-                                        <label for="risk_level">Risk Level</label>
-                                        <select name="risk_level" id="risk_level" class="mb-0">
-                                            <option value="">-- Select --</option>
-                                            <option value="critical">Critical</option>
-                                            <option value="minor">Minor</option>
-                                            <option value="major">Major</option>
-                                        </select>
-                                        <div class="ai_text">AI Suggested option</div>
+                                        <label for="Description Deviation">Justification for Extension(if required) for completion of identified actions with new Target Completion Date</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="justification_extension[]" id="summernote-1" >
+                                    </textarea>
                                     </div>
-                                </div> --}}
+                                    @error('justification_extension')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label for="Description Deviation">Closure Remark</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="closure_remark[]" id="summernote-1" >
+                                    </textarea>
+                                    </div>
+                                    @error('closure_remark')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="nature-change">Nature Of Change</label>
-                                        <select name="doc_change">
-                                            <option value="">-- Select --</option>
-                                            <option value="Temporary">Temporary</option>
-                                            <option value="Permanent">Permanent</option>
+                                        <label for="Initiator Group">Effectiveness verification is required</label>
+                                        <select name="effectiveness" id="change">
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+
+                                <div class="col-md-12 mb-3">
                                     <div class="group-input">
-                                        <label for="others">If Others</label>
-                                        <div class="relative-container">
-                                            <textarea name="others"></textarea>
-                                            @component('frontend.forms.language-model')
-                                            @endcomponent
-                                        </div>
+                                        <label for="Description Deviation">Remark</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="remark[]" id="summernote-1" >
+                                    </textarea>
                                     </div>
+                                    @error('remark')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <!-- <div class="col-md-6">
-                                            <div class="group-input">
-                                                <label for="div_code">Division Code</label>
-                                                <select name="div_code">
-                                                    <option value="">-- Select --</option>
-                                                    <option value="Instrumental Lab">Instrumental Lab</option>
-                                                    <option value="Microbiology Lab">Microbiology Lab</option>
-                                                    <option value="Molecular lab">Molecular lab</option>
-                                                    <option value="Physical Lab">Physical Lab</option>
-                                                    <option value="Stability Lab">Stability Lab</option>
-                                                    <option value="Wet Chemistry">Wet Chemistry</option>
-                                                    <option value="Quality Department">Quality Department</option>
-                                                    <option value="Administration Department">Administration Department</option>
-                                                </select>
-                                            </div>
-                                        </div> -->
-                                <div class="col-lg-12">
+
+                                <div class="col-md-12 mb-3">
                                     <div class="group-input">
-                                        <label for="others">Initial attachment</label>
-                                        <div><small class="text-primary">Please Attach all relevant or supporting
-                                                documents</small></div>
-                                        <div class="file-attachment-field">
-                                            <div class="file-attachment-list" id="in_attachment"></div>
-                                            <div class="add-btn">
-                                                <div>Add</div>
-                                                <input type="file" id="myfile" name="in_attachment[]"
-                                                    oninput="addMultipleFiles(this, 'in_attachment')" multiple>
-
-                                            </div>
-                                        </div>
-
+                                        <label for="Description Deviation">Closure Conclusion by Head Quality / Designee</label>
+                                        <div><small class="text-primary">Please insert "NA" in the data field if it does
+                                                not require completion</small></div>
+                                        <textarea  name="closure_conclusion[]" id="summernote-1" >
+                                    </textarea>
                                     </div>
+                                    @error('closure_conclusion')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="button-block">
                                 <button type="submit" class="saveButton">Save</button>
                                 <button type="button" class="nextButton" onclick="nextStep()">Next</button>
-                                <button type="button"> <a class="text-white"
-                                        href="{{ url('rcms/qms-dashboard') }}">Exit</a> </button>
+                                <button type="button"> <a class="text-white" href="{{ url('rcms/qms-dashboard') }}">Exit</a> </button>
                             </div>
                         </div>
                     </div>
