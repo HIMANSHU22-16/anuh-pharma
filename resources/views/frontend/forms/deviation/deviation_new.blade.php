@@ -673,7 +673,7 @@
                                 @endif
                                 <div class="col-lg-6">
                                     <div class="group-input">
-                                        <label for="RLS Record Number"><b>Deviation No.</b></label>
+                                        <label for="RLS Record Number"><b>Record No.</b></label>
                                         <input disabled type="text" name="record_number"
                                         value="{{ Helpers::getDivisionName(session()->get('division')) }}/DEV/{{ date('Y') }}/{{ $record_number }}"> 
                                         {{-- <div class="static">QMS-EMEA/CAPA/{{ date('Y') }}/{{ $record_number }}</div> --}}
@@ -701,7 +701,7 @@
                                 @php
                                     // Calculate the due date (30 days from the initiation date)
                                     $initiationDate = date('Y-m-d'); // Current date as initiation date
-                                    $dueDate = date('Y-m-d', strtotime($initiationDate . '+30 days')); // Due date in DD/MM/YYYY format
+                                    $dueDate = date('Y-m-d', strtotime($initiationDate . '+30 days')); 
                                 @endphp
 
                                 <div class="col-lg-6">

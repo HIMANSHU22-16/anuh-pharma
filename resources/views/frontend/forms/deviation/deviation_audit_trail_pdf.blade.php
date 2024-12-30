@@ -19,7 +19,7 @@
     }
 
     .w-5 {
-        width: 5%;
+        width: 8%;
     }
 
     .w-10 {
@@ -168,7 +168,7 @@
                 </td>
                 <td class="w-30">
                     <div class="logo">
-                        <img src="https://www.cphi-online.com/Medicef%20Logo-comp306798.jpg" alt="" class="w-60">
+                        <img src="https://vidyagxp.com/vidyaGxp_logo.png" alt="" class="w-100">
                     </div>
                 </td>
             </tr>
@@ -287,7 +287,7 @@
                             {{ $dataDemo->user_name ? $dataDemo->user_name : 'Not Applicable' }}</div>
                         <div style="margin-top: 5px;">
                             <strong>Performed On :</strong>
-                            {{ $dataDemo->created_at ? \Carbon\Carbon::parse($dataDemo->created_at)->format('j F Y H:i') : 'Not Applicable' }}
+                            {{ $dataDemo->created_at ? \Carbon\Carbon::parse($dataDemo->created_at)->format('d-M-Y H:i:s') : 'Not Applicable' }}
                         </div>
                         <div style="margin-top: 5px;">
                             <strong>Comments :</strong>

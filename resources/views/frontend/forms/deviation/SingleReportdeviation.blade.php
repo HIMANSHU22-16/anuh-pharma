@@ -165,7 +165,8 @@
                 </td>
                 <td class="w-20" >
                     <div class="logo">
-                        <img src="https://www.cphi-online.com/Medicef%20Logo-comp306798.jpg" alt="" class="w-80">
+                        <img src="https://navin.mydemosoftware.com/public/user/images/logo.png" alt=""
+                            class="w-100">
                     </div>
                 </td>
             </tr>
@@ -192,37 +193,43 @@
                     General Information
                 </div>
                 <table>
-                    <tr> {{ $data->created_at }} added by {{ $data->originator }}
+                    <tr>
+                        <th class="w-20">Record No.</th>
+                        <td class="w-30"> {{ Helpers::getDivisionName($data->division_id) }}/DEV/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}</td>
                         <th class="w-20">Site/Location Code</th>
                         <td class="w-30"> {{ Helpers::getDivisionName(session()->get('division')) }}</td>
-                        <th class="w-20">Initiator</th>
-                        <td class="w-30">{{ Helpers::getInitiatorName($data->initiator_id) }}</td>
                         </td>
                     </tr>
-                    <tr>
-                        <th class="w-20">Date of Initiation</th>
-                        {{-- <td class="w-30">@if{{ Helpers::getdateFormat($data->intiation_date) }} @else Not Applicable @endif</td> --}}
-                        {{-- <td class="w-30">@if (Helpers::getdateFormat($data->intiation_date)) {{ Helpers::getdateFormat($data->intiation_date) }} @else Not Applicable @endif</td> --}}
-                        <td class="w-30">{{ $data->created_at ? $data->created_at->format('d-M-Y') : '' }} </td>
+                    
+                    <tr> {{ $data->created_at }} added by {{ $data->originator }}
 
+                        <th class="w-20">Initiator</th>
+                        <td class="w-30">{{ Helpers::getInitiatorName($data->initiator_id) }}</td>
+
+                        <th class="w-20">Date of Initiation</th>
+                        <td class="w-30">{{ $data->created_at ? $data->created_at->format('d-M-Y') : '' }} </td>
+                    </tr>
+                    <tr>
                         <th class="w-20">Due Date</th>
                         <td class="w-30">
                             @if ($data->due_date)
-                                {{ Helpers::getdateFormat($data->due_date) }}
+                                {{ \Carbon\Carbon::parse($data->due_date)->format('d-M-Y') }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+
+                        <th class="w-20">Department</th>
+                        <td class="w-30">
+                            @if ($data->Initiator_Group)
+                                {{ $data->Initiator_Group }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <th class="w-20">Department</th>
-                        <td class="w-30">
-                            @if ($data->Initiator_Group)
-                                {{ Helpers::getFullDepartmentName($data->Initiator_Group) }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
+                        
                         <th class="w-20">Short Description</th>
                         <td class="w-30">
                             @if ($data->short_description)
@@ -232,81 +239,10 @@
                             @endif
                         </td>
 
-                        {{-- <th class="w-20">Department Code</th> --}}
-                        {{-- <td class="w-30">@if ($data->initiator_group_code){{ $data->initiator_group_code }} @else Not Applicable @endif</td> --}}
-                    </tr>
-                    <tr>
-                        <th class="w-20"> Repeat Deviation?</th>
-                        <td class="w-30">
-                            @if ($data->short_description_required)
-                                {{ $data->short_description_required }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                        <th class="w-20"> Repeat Nature</th>
-                        <td class="w-30">
-                            @if ($data->nature_of_repeat)
-                                {{ $data->nature_of_repeat }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
 
                     </tr>
                     <tr>
-                        <th class="w-20"> Deviation Observed On</th>
-                        <td class="w-30">
-                            @if ($data->Deviation_date)
-                                {{ \Carbon\Carbon::parse($data->Deviation_date)->format('d-M-Y')}}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                        <th class="w-20"> Deviation Observed On (Time)</th>
-                        <td class="w-30">
-                            @if ($data->deviation_time)
-                                {{ $data->deviation_time }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <th class="w-20"> Delay Justification</th>
-                        <td class="w-30">@if ($data->Delay_Justification){{ $data->Delay_Justification }} @else Not Applicable @endif</td>
-                        <th class="w-20">Deviation Observed by</th>
-                        {{-- @php
-                            $facilityIds = explode(',', $data->Facility);
-                            $users = $facilityIds ? DB::table('users')->whereIn('id', $facilityIds)->get() : [];
-                        @endphp
-
-                        <td>
-                            @if ($facilityIds && count($users) > 0)
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
-                                @endforeach
-                            @else
-                                Not Applicable
-                            @endif
-                        </td> --}}
-
-
-                        <td class="w-30">@if ($data->Facility){{ $data->Facility }} @else Not Applicable @endif</td>
-
-                    </tr>
-
-                    <tr>
-                        <th class="w-20">Deviation Reported On </th>
-                        <td class="w-30">
-                            @if ($data->Deviation_reported_date)
-                                {{ \Carbon\Carbon::parse($data->Deviation_reported_date)->format('d-M-Y') }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                        <th class="w-20">Deviation Related To</th>
+                        <th class="w-20">Deviation Requested For</th>
                         <td class="w-30">
                             @if ($data->audit_type)
                                 {{ $data->audit_type }}
@@ -314,75 +250,297 @@
                                 Not Applicable
                             @endif
                         </td>
-                    </tr>
-                    <tr>
-
-                        <th class="w-20"> Others</th>
+                        <th class="w-20">Name of Product</th>
                         <td class="w-30">
-                            @if ($data->others)
-                                {{ $data->others }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                        <th class="w-20">Facility/ Equipment/ Instrument/ System Details Required?</th>
-                        <td class="w-30">
-                            @if ($data->Facility_Equipment)
-                                {{ $data->Facility_Equipment }}
+                            @if ($data->name_product)
+                                {{ $data->name_product }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
 
                     </tr>
-                    <tr>
 
-                        <th class="w-20">Document Details Required?</th>
+                    <tr>
+                        <th class="w-20"> Stage of deviation</th>
                         <td class="w-30">
-                            @if ($data->Document_Details_Required)
-                                {{ $data->Document_Details_Required }}
+                            @if ($data->deviation_stage)
+                                {{ $data->deviation_stage }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <th class="w-20">Description of Deviation</th>
+                        <!-- <th class="w-20"> Deviation Observed On (Time)</th>
+                        <td class="w-30">
+                            @if ($data->deviation_time)
+                                {{ $data->deviation_time }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td> -->
+
+                    </tr>
+                    <tr>
+                        <th class="w-20"> Description of Deviation</th>
                         <td class="w-30">
                             @if ($data->Description_Deviation)
-                                {{ strip_tags($data->Description_Deviation) }}
-                            @else
-                                Not Applicable
+                            {{ $data->Description_Deviation }} 
+                            @else 
+                               Not Applicable 
                             @endif
                         </td>
-
-
+                       
                     </tr>
-
-
-                    {{-- <tr> --}}
-                    {{-- <th class="w-20">Name of Product & Batch No</th> --}}
-                    {{-- <td class="w-30">@if ($data->Product_Batch){{ ($data->Product_Batch) }} @else Not Applicable @endif</td> --}}
-                    {{-- </tr> --}}
 
                     <tr>
-                        <th class="w-20">Immediate Action (if any)</th>
+                        <th class="w-20">Date/shift of Deviation Occurrence/ Noticed</th>
                         <td class="w-30">
-                            @if ($data->Immediate_Action)
-                                {{ strip_tags($data->Immediate_Action) }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                        <th class="w-20">Preliminary Impact of Deviation</th>
-                        <td class="w-30">
-                            @if ($data->Preliminary_Impact)
-                                {{strip_tags($data->Preliminary_Impact) }}
+                            @if ($data->deviation_shift)
+                                {{ $data->deviation_shift}}
                             @else
                                 Not Applicable
                             @endif
                         </td>
                     </tr>
-      
-                    </table>
+
+                    <tr>
+                        <th class="w-20"> Existing Procedure (With References)</th>
+                        <td class="w-30">
+                            @if ($data->existing_procedure)
+                                {{ $data->existing_procedure }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Immediate Action taken if any (In consultation with Quality Head/Designee)</th>
+                        <td class="w-30">
+                            @if ($data->Immediate_Action)
+                                {{ $data->Immediate_Action }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <th class="w-20">Identification of Cross Functional Departments)</th>
+                        <td class="w-30">
+                            @if ($data->identification_cross_funct)
+                                {{ $data->identification_cross_funct }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Tools of Investigation and Root Cause Determination</th>
+                        <td class="w-30">
+                            @if ($data->investigation_tools)
+                                {{ $data->investigation_tools }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Summary of Investigation Findings</th>
+                        <td class="w-30">
+                            @if ($data->summary)
+                                {{ $data->summary }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Root Cause (Based on outcome of investigation)</th>
+                        <td class="w-30">
+                            @if ($data->Root)
+                                {{ $data->Root }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Impact Assessment (In coordination with Quality Head / Designee)<th>
+                        <td class="w-30">
+                            @if ($data->Impact)
+                                {{ $data->Impact }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Impact on Other Batches</th>
+                        <td class="w-30">
+                            @if ($data->Impact_other)
+                                {{ $data->Impact_other }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Batch No</th>
+                        <td class="w-30">
+                            @if ($data->batch_no)
+                                {{ $data->batch_no }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Type of Deviation</th>
+                        <td class="w-30">
+                            @if ($data->deviation_type)
+                                {{ $data->deviation_type }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Risk Assessment (If required)</th>
+                        <td class="w-30">
+                            @if ($data->risk_assessment)
+                                {{ $data->risk_assessment }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Corrective Action Taken (In coordination with QA)<th>
+                        <td class="w-30">
+                            @if ($data->Corrective_Action)
+                                {{ $data->Corrective_Action }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Deviation Approval<th>
+                        <td class="w-30">
+                            @if ($data->deviation_approval)
+                                {{ $data->deviation_approval }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="w-20">Deviation Approval<th>
+                        <td class="w-30">
+                            @if ($data->deviation_approval)
+                                {{ $data->deviation_approval }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="w-20">Comments<th>
+                        <td class="w-30">
+                            @if ($data->comments)
+                                {{ $data->comments }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Notification to Customer / Regulatory<th>
+                        <td class="w-30">
+                            @if ($data->notification)
+                                {{ $data->notification }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Verification of Closure<th>
+                        <td class="w-30">
+                            @if ($data->closure_verification)
+                                {{ $data->closure_verification }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Extension (if required) with justification from concerned department head<th>
+                        <td class="w-30">
+                            @if ($data->Extension_justification)
+                                {{ $data->Extension_justification }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="w-20">Feedback received from Customer / Regulatory<th>
+                        <td class="w-30">
+                            @if ($data->feedback)
+                                {{ $data->feedback }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="w-20">Comments (QA)<th>
+                        <td class="w-30">
+                            @if ($data->qa_comments)
+                                {{ $data->qa_comments }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Closure evidences attached<th>
+                        <td class="w-30">
+                            @if ($data->closure_evidences)
+                                {{ $data->closure_evidences }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+
+                        <th class="w-20">Closure evidence (pl. specify) enclosed<th>
+                        <td class="w-30">
+                            @if ($data->closure_enclosed)
+                                {{ $data->closure_enclosed }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                       <th class="w-20">Closure comments<th>
+                        <td class="w-30">
+                            @if ( $data->comments_closure )
+                                {{ $data->comments_closure }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+                </table>
    
         
         <div class="block">

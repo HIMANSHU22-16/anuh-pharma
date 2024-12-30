@@ -1142,7 +1142,7 @@
 
                                     <div class="col-lg-6">
                                         <div class="group-input">
-                                            <label for="RLS Record Number"><b>Deviation No.</b></label>
+                                            <label for="RLS Record Number"><b>Record No.</b></label>
                                             {{--@if ($data->stage >= 3) --}}
                                                 <input disabled type="text" name="record_number"
                                                     value="{{ Helpers::getDivisionName($data->division_id) }}/DEV/{{ Helpers::year($data->created_at) }}/{{ $data->record }}">
@@ -1205,7 +1205,7 @@
                                                     name="due_date" />
                                                 <input type="date" readonly name="due_date"
                                                     min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
-                                                    oninput="handleDateInput(this, 'due_date')" />
+                                                    oninput="handleDateInput(this, 'due_date')"/>
                                             </div>
                                         </div>
                                     </div>
