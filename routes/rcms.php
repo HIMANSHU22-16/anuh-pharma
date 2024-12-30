@@ -35,7 +35,17 @@ Route::group(['prefix' => 'rcms'], function () {
 
     Route::middleware(['rcms'])->group(
         function () {
+            // Route::resource('CC', CCController::class);
             Route::resource('CC', CCController::class);
+
+            Route::post('send-initiator/{id}', [CCController::class, 'sendToInitiator']);
+            Route::post('send-hod/{id}', [CCController::class, 'sendToHod']);
+            Route::post('send-initialQA/{id}', [CCController::class, 'sendToInitialQA']);
+            Route::post('send-cft-from-QA/{id}', [CCController::class, 'sendToCft']);
+            Route::get('/export-csv', [CCController::class, 'exportCsv'])->name('export.csv');
+            Route::get('/export-excel', [CCController::class, 'exportExcel'])->name('export.excel');
+
+
             Route::resource('actionItem', ActionItemController::class);
             Route::post('action-stage-cancel/{id}', [ActionItemController::class, 'actionStageCancel']);
             Route::get('action-item-audittrialshow/{id}', [ActionItemController::class, 'actionItemAuditTrialShow'])->name('showActionItemAuditTrial');
@@ -60,6 +70,8 @@ Route::group(['prefix' => 'rcms'], function () {
 
 
             Route::post('send-At/{id}', [ActionItemController::class, 'stageChange']);
+
+
             Route::post('send-rejection-field/{id}', [CCController::class, 'stagereject']);
             Route::post('send-cft-field/{id}', [CCController::class, 'stageCFTnotReq']);
 
@@ -69,19 +81,29 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::get('qms-dashboard', [DashboardController::class, 'index']);
             Route::get('qms-dashboard/{id}/{process}', [DashboardController::class, 'dashboard_child']);
             Route::get('qms-dashboard_new/{id}/{process}', [DashboardController::class, 'dashboard_child_new']);
+
             Route::get('audit-trial/{id}', [CCController::class, 'auditTrial']);
             Route::get('audit-detail/{id}', [CCController::class, 'auditDetails']);
             Route::get('summary/{id}', [CCController::class, 'summery_pdf']);
             Route::get('audit/{id}', [CCController::class, 'audit_pdf']);
 
+            Route::get('changeControlFamilyReport/{id}', [CCController::class, 'familyReport'])->name('changeControlFamilyReport');
+            
+            Route::post('send-qa-approval/{id}', [CCController::class, 'sentToQAHeadApproval'])->name('send-qa-approval');
+            Route::post('send-reject/{id}', [CCController::class, 'reject'])->name('send-reject');
+            Route::post('send-post-implementation/{id}', [CCController::class, 'sentoPostImplementation'])->name('send-post-implementation');
+
             Route::get('ccView/{id}/{type}', [DashboardController::class, 'ccView'])->name('ccView');
             Route::view('summary_pdf', 'frontend.change-control.summary_pdf');
             Route::view('audit_trial_pdf', 'frontend.change-control.audit_trial_pdf');
             Route::view('change_control_single_pdf', 'frontend.change-control.change_control_single_pdf');
-            Route::get('change_control_family_pdf', [CCController::class, 'parent_child']);
 
-            Route::get('change_control_single_pdf/{id}', [CCController::class, 'single_pdf']);
+            Route::get('change_control_family_pdf', [CCController::class, 'parent_child']);            
+            Route::get('changeControl-single-show/{id}', [CCController::class, 'singleReportShow'])->name('changeControl-single-show');
+
+            Route::get('change_control_single_pdf/{id}', [CCController::class, 'single_pdf'])->name('change_control_single_pdf');
             Route::get('eCheck/{id}', [CCController::class, 'eCheck']);
+
             Route::resource('effectiveness', EffectivenessCheckController::class);
             Route::post('send-effectiveness/{id}', [EffectivenessCheckController::class, 'stageChange']);
             Route::post('effectiveness-reject/{id}', [EffectivenessCheckController::class, 'reject']);
@@ -89,6 +111,7 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::view('helpdesk-personnel', 'frontend.rcms.helpdesk-personnel');
             Route::view('send-notification', 'frontend.rcms.send-notification');
             Route::get('new-change-control', [CCController::class, 'changecontrol']);
+
 
             //----------------------------------------------By Pankaj-----------------------
 
