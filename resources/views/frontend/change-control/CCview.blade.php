@@ -644,7 +644,7 @@
                             {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm18')">Impact Assessment</button> --}}
                             <button class="cctablinks" onclick="openCity(event, 'CCForm7')" style="display: none" id="riskAssessmentButton">Risk Assessment</button>
                             <button class="cctablinks" onclick="openCity(event, 'CCForm12')">Initial HOD Review</button>
-                            <button class="cctablinks" onclick="openCity(event, 'CCForm2')">Change Details</button>
+                            {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm2')">Change Details</button> --}}
                        
                       
                             {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm13')" style="display: {{ $data->hod_person == Auth::user()->id ? 'inline' : 'none' }}">HOD Review</button> --}}
@@ -2603,7 +2603,7 @@
                                         </div>
                                     </div>
                                 
-                                <div id="CCForm2" class="inner-block cctabcontent">
+                                {{-- <div id="CCForm2" class="inner-block cctabcontent">
                                     <div class="inner-block-content">
                                         <div class="sub-head">
                                             Change Details
@@ -2674,7 +2674,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                 <script>

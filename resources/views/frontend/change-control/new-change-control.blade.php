@@ -180,7 +180,7 @@
                 <button class="cctablinks" onclick="openCity(event, 'CCForm8')" style="display: none"
                     id="riskAssessmentButton">Risk Assessment</button>
                 <button class="cctablinks" onclick="openCity(event, 'CCForm3')">Initial HOD Review</button>
-                <button class="cctablinks" onclick="openCity(event, 'CCForm2')">Change Details</button>
+                {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm2')">Change Details</button> --}}
 
                 <!-- <button class="cctablinks" onclick="openCity(event, 'CCForm3')">Impact Assessment</button> -->
                 <button class="cctablinks" onclick="openCity(event, 'CCForm4')">QA/CQA Review</button>
@@ -1940,7 +1940,7 @@
 
                     </div>
 
-                    <div id="CCForm2" class="inner-block cctabcontent">
+                    {{-- <div id="CCForm2" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="sub-head">
                                 Change Details
@@ -2042,7 +2042,7 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div id="CCForm4" class="inner-block cctabcontent">
                         <div class="inner-block-content">
