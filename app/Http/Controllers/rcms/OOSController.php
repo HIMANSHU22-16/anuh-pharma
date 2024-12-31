@@ -102,16 +102,19 @@ class OOSController extends Controller
         $info_product_materials = $data->grids()->where('identifier', 'info_product_material')->first();
         $details_stability = $data->grids()->where('identifier', 'details_stability')->first();
         $oos_details = $data->grids()->where('identifier', 'oos_detail')->first();
+        $decodedData = is_string($oos_details->data) 
+        ? json_decode($oos_details->data, true) 
+        : $oos_details->data;
+
         $checklist_IB_invs = $data->grids()->where('identifier', 'checklist_IB_inv')->first();
         $instrument_detail = $data->grids()->where('identifier', 'instrument_detail')->first();
         $phase_two_invs = $data->grids()->where('identifier', 'phase_two_inv')->first();
         $oos_conclusions = $data->grids()->where('identifier', 'oos_conclusion')->first();
         $phase_iii_result = $data->grids()->where('identifier', 'phase_iii_result')->first();
         $phase_iii_result_i = $data->grids()->where('identifier', 'phase_iii_result_i')->first();
-
         $oos_conclusion_reviews = $data->grids()->where('identifier', 'oos_conclusion_review')->first();
         return view('frontend.OOS.oos_form_view', 
-        compact('data', 'old_record','revised_date','cft' , 'info_product_materials', 'details_stability', 'oos_details', 'checklist_IB_invs', 'instrument_detail', 'phase_two_invs', 'oos_conclusions', 'oos_conclusion_reviews','users','phase_iii_result','phase_iii_result_i'));
+        compact('data', 'old_record','revised_date','cft' , 'info_product_materials', 'details_stability', 'oos_details','decodedData', 'checklist_IB_invs', 'instrument_detail', 'phase_two_invs', 'oos_conclusions', 'oos_conclusion_reviews','users','phase_iii_result','phase_iii_result_i'));
 
     }
 

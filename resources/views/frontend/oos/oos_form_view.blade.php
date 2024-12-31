@@ -1423,7 +1423,7 @@
                         <div class="col-lg-12">
                             <div class="group-input">
                                 <label for="checklists">Outcome Of Phase I(A) Investigation</label>
-                                @php
+                            @php
                                 $ChecklistData = $data->outcome_phase_i_investigation;
 
                                 if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
@@ -1925,7 +1925,7 @@
 
                     <div class="col-12">
 
-                        <label style="font-weight: bold; for="Audit Attachments">Phase IB Investigation Checklist</label>
+                        <label style="font-weight: bold;" for="Audit Attachments">Phase IB Investigation Checklist</label>
                         @php
                             $categories = [
                                 '1.0 PERSONNEL' => [
@@ -1973,38 +1973,42 @@
                                 </thead>
                                 <tbody>
                                     @if($oos_details)
-                                    @php $srNo = 1; @endphp
-                                    @foreach ($categories as $category => $questions)
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold; background-color: #f0f0f0;">{{ $category }}</td>
-                                        </tr>
-                                        @foreach ($questions as $index => $question)
-                                            @php
-                                                $questionNumber = $srNo . '.' . ($index + 1); // Generate question numbers like 1.1, 1.2, etc.
-                                            @endphp
+                                        @php
+                                            $srNo = 1;
+                                            
+                                            $storedData = is_string($oos_details->data) ? json_decode($oos_details->data, true) : $oos_details->data;
+                                        @endphp
+                                        @foreach ($categories as $category => $questions)
                                             <tr>
-                                                <td class="text-center">{{ $questionNumber }}</td>
-                                                <td>
-                                                    <input type="text" readonly name="questions[{{ $questionNumber }}][question]" value="{{ $question }}" style="border: none; background: none; width: 100%;">
-                                                </td>
-
-                                                <td>
-                                                    <select name="oos_detail[{{ $questionNumber }}][response]" style="padding: 5px; width: 100%; border: 1px solid black; background-color: #f0f0f0;">
-                                                        <option value="">Select</option>
-                                                        <option value="Yes" {{ $oos_details->oos_detail == 'Yes' ? 'selected' : '' }}>Yes</option>
-                                                        <option value="No" {{ $oos_details->oos_detail == 'No' ? 'selected' : '' }}>No</option>
-                                                        <option value="N/A" {{ $oos_details->oos_detail == 'N/A' ? 'selected' : '' }}>N/A</option>
-                                                    </select>
-
-                                                </td>
-                                                <td>
-                                                    
-                                                    <textarea name="oos_detail[{{ $questionNumber }}][remark]" style="border-radius: 7px; border: 1px solid black; width: 100%;"></textarea>
-                                                </td>
+                                                <td colspan="4" style="font-weight: bold; background-color: #f0f0f0;">{{ $category }}</td>
                                             </tr>
+                                            @foreach ($questions as $index => $question)
+                                                @php
+                                                    $questionNumber = $srNo . '.' . ($index + 1);
+                                                    $response = isset($storedData[$questionNumber]['response']) ? $storedData[$questionNumber]['response'] : '';
+                                                    $remark = isset($storedData[$questionNumber]['remark']) ? $storedData[$questionNumber]['remark'] : '';
+                                                @endphp
+                                                <tr>
+                                                    <td class="text-center">{{ $questionNumber }}</td>
+                                                    <td>
+                                                        <input type="text" readonly name="questions[{{ $questionNumber }}][question]" value="{{ $question }}" style="border: none; background: none; width: 100%;">
+                                                    </td>
+
+                                                    <td>
+                                                        <select name="oos_detail[{{ $questionNumber }}][response]" style="padding: 5px; width: 100%; border: 1px solid black; background-color: #f0f0f0;">
+                                                            <option value="">Select</option>
+                                                            <option value="Yes" {{ $response == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                            <option value="No" {{ $response == 'No' ? 'selected' : '' }}>No</option>
+                                                            <option value="N/A" {{ $response == 'N/A' ? 'selected' : '' }}>N/A</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <textarea name="oos_detail[{{ $questionNumber }}][remark]" style="border-radius: 7px; border: 1px solid black; width: 100%;">{{ $remark }}</textarea>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            @php $srNo++; @endphp
                                         @endforeach
-                                        @php $srNo++; @endphp
-                                    @endforeach
                                     @endif
                                 </tbody>
                             </table>

@@ -2508,23 +2508,20 @@ class OOSService
         $res = Helpers::getDefaultResponse();
 
         try {
-            $data = OOS::findOrFail($id);
+            // $data = OOS::findOrFail($id);
+            // $input = $request->all();
+
+
+            $oos = OOS::findOrFail($id);
+            $lastOosRecod = OOS::where('id', $id)->first();
+
             $input = $request->all();
 
-            // Handle multi-select field
-        // if ($request->has('outcome_phase_ib_investigation2') && !empty($request->input('outcome_phase_ib_investigation2'))) {
-        //     $multiSelectValues = $request->input('outcome_phase_ib_investigation2');
-        //     $input['outcome_phase_ib_investigation2'] = json_encode($multiSelectValues); // Convert to JSON
-        // } else {
-        //     $input['outcome_phase_ib_investigation2'] = json_encode([]); // Save an empty array if no value is selected
-        // }
+            //  // Find the OOS record by ID
 
-        // Update the record
-        $data->update($input);
-            
-            
+            $oos->update($input);
 
-            $lastOosRecod = OOS::where('id', $id)->first();
+
 
             if ($lastOosRecod->description_gi != $request->description_gi) {
                 $validation2 = new OosAuditTrial();
@@ -5108,7 +5105,7 @@ class OOSService
                 'provide_attachment4',
                 'provide_attachment5',
             ];
-            $oos = OOS::findOrFail($id);
+            // $oos = OOS::findOrFail($id);
             foreach ($file_input_names as $file_input_name)
             {
                 // dd($input[$file_input_name]);
@@ -5123,9 +5120,9 @@ class OOSService
             }
 
 
-             // Find the OOS record by ID
+            //  // Find the OOS record by ID
 
-            $oos->update($input);
+            // $oos->update($input);
 
             $grid_inputs = [
                 'info_product_material',

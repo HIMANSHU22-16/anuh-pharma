@@ -287,7 +287,7 @@
                                                         class="text-danger">*</span></label>
                                                 <div><small class="text-primary">Please insert "NA" in the data field if it
                                                         does not require completion</small></div>
-                                                <textarea {{ $auditCollect ? 'disabled' : '' }} class="summernote w-100" name="reviewer_comment" id="summernote-17">{{ $auditCollect ? $auditCollect->reviewer_comment : '' }}</textarea>
+                                                <textarea class="summernote w-100" name="reviewer_comment" id="summernote-17">{{ $auditCollect ? $auditCollect->reviewer_comment : '' }}</textarea>
                                             </div>
                                             <div class="group-input">
                                                 <label for="Reviewer Completed By">Reviewer Completed By</label>
@@ -304,7 +304,7 @@
                                             <input type="hidden" id="type" name="type" value="OOS">
                                         </div>
                                         <div class="modal-footer">
-                                            {!! $auditCollect ? '' : '<button type="submit" >Submit</button>' !!}
+                                            <button type="submit" >Submit</button>
                                             <button type="button" data-bs-dismiss="modal">Close</button>
                                         </div>
                                     </form>

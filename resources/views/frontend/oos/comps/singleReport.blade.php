@@ -161,7 +161,7 @@
         <table>
             <tr>
                 <td class="w-70 head">
-                    OOS/OOT Report
+                    OOS Single Report
                 </td>
                 <td class="w-30">
                     <div class="logo">
@@ -280,7 +280,7 @@
                 </table>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Short Description</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->description_gi ){{ $data->description_gi  }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->description_gi ){{ $data->description_gi  }} @else Not Applicable @endif</span>
                 </div>
                     <div class="block">
                     <table>
@@ -296,22 +296,11 @@
                         <th class="w-20">Date Of OOS reporting</th>
                         <td class="w-80">@if($data->initiator_group_code){{ $data->initiator_group_code }}@else Not Applicable @endif</td>
                     </tr>
-                    {{-- <tr>
-                        <th class="w-20">If Others</th>
-                        <td class="w-80">@if($data->if_others_gi){{ $data->if_others_gi }}@else Not Applicable @endif</td>
-                        <th class="w-20">Is Repeat</th>
-                        <td class="w-80">@if($data->is_repeat_gi){{ $data->is_repeat_gi }}@else Not Applicable @endif</td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">Repeat Nature</th>
-                        <td class="w-80">@if($data->repeat_nature){{ $data->repeat_nature }}@else Not Applicable @endif</td>
-                        <th class="w-20">Source Document Type</th>
-                        <td class="w-80">@if($data->source_document_type_gi){{ $data->source_document_type_gi }}@else Not Applicable @endif</td>
-                    </tr> --}}
+
                     </table>
                     <!-- <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Reference System Document</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->reference_system_document_gi ){{ $data->reference_system_document_gi  }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->reference_system_document_gi ){{ $data->reference_system_document_gi  }} @else Not Applicable @endif</span>
                     </div> -->
 
                     <div class="block">
@@ -331,7 +320,7 @@
                     </table>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Delay Justification</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->delay_justification ){{ $data->delay_justification }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->delay_justification ){{ $data->delay_justification }} @else Not Applicable @endif</span>
                     </div>
                     <div class="block">
                     <table>
@@ -344,7 +333,7 @@
                 </table>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Immediate Action</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->immediate_action ){{ $data->immediate_action  }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->immediate_action ){{ $data->immediate_action  }} @else Not Applicable @endif</span>
                 </div>
                 <div class="block-head">Preliminary Information</div>
                 <!-- <table>
@@ -404,31 +393,32 @@
                 <div class="border-table">
                     <table>
                         <tr class="table_bg">
-                            <th style="width: 4%">Row#</th>
-                            <th style="width: 10%">Batch No*.</th>
+                            <th style="width: 3%">Row#</th>
+                            <th style="width: 8%">Batch No*.</th>
                             <th style="width: 8%"> AR No.</th>
                             <th style="width: 8%"> Stage</th>
                             <th style="width: 8%">Reference Specification No.</th>
                             <th style="width: 8%">Test</th>
                             <th style="width: 8%">Results Obtained</th>
-                            <th style="width: 8%">Specification limit</th>
+                            <th style="width: 3%">Specification limit</th>
                         </tr>
                         @if($data->info_product_materials && is_array($data->info_product_materials->data))
                             @foreach ($data->info_product_materials->data as $key => $datagridI)
                                 <tr>
-                                    <td class="w-15">{{ $datagridI ? $key + 1  : "Not Applicable" }}</td>
-                                    <td class="w-15">{{ $datagridI['info_batch_no'] ?? "Not Applicable" }}</td>
-                                    <td class="w-15">{{ $datagridI['info_ar_no'] ?? "Not Applicable" }}</td>
-                                    <td class="w-15">{{ $datagridI['info_stage'] ?? "Not Applicable" }}</td>
-                                    <td class="w-15">{{ $datagridI['info_reference_specification_no'] ?? "Not Applicable" }}</td>
-                                    <td class="w-15">{{ $datagridI['info_test'] ?? "Not Applicable" }}</td>
-                                    <td class="w-15">{{ $datagridI['info_results_obtained'] ?? "Not Applicable" }}</td>
-                                    <td class="w-15">{{ $datagridI['info_specification_limit'] ?? "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI ? $key + 1  : "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI['info_batch_no'] ?? "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI['info_ar_no'] ?? "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI['info_stage'] ?? "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI['info_reference_specification_no'] ?? "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI['info_test'] ?? "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI['info_results_obtained'] ?? "Not Applicable" }}</td>
+                                    <td class="w-10">{{ $datagridI['info_specification_limit'] ?? "Not Applicable" }}</td>
 
                                 </tr>
                             @endforeach
                         @else
                             <tr>
+                                <td>1</td>
                                 <td>Not Applicable</td>
                                 <td>Not Applicable</td>
                                 <td>Not Applicable</td>
@@ -634,12 +624,12 @@
             <div class="block-head">Preliminary Lab. Investigation</div>
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Summary Of Discussion with Analyst :</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->description_summary ){!! $data->description_summary !!} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->description_summary ){!! $data->description_summary !!} @else Not Applicable @endif</span>
             </div>
 
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Discussion Points :</label>
-                <span style="font-size:0.3rem; margin-left:10px">
+                <span style="font-size:0.9rem; margin-left:10px">
                     @if($data->Discussion_points )
                     {!! $data->Discussion_points !!} 
                     @else Not Applicable @endif</span>
@@ -647,22 +637,22 @@
 
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Remark Of QC investigator</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Remark_qc_investigator ){!! $data->Remark_qc_investigator !!} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Remark_qc_investigator ){!! $data->Remark_qc_investigator !!} @else Not Applicable @endif</span>
             </div>
 
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Conclusion On Preliminary Investigation Response :</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->preliminary_investigation_response ){!! $data->preliminary_investigation_response !!} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->preliminary_investigation_response ){!! $data->preliminary_investigation_response !!} @else Not Applicable @endif</span>
             </div>
 
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; 1remfont-size:1rem; display:inline;">Results Of Sample Analyzed in the same sequence :</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->simple_analyzed ){!! $data->simple_analyzed !!} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->simple_analyzed ){!! $data->simple_analyzed !!} @else Not Applicable @endif</span>
             </div>
             
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Investigator :</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->investigator ){!! $data->investigator !!} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->investigator ){!! $data->investigator !!} @else Not Applicable @endif</span>
             </div>
 
             <br>
@@ -697,7 +687,7 @@
 
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Comment Of Robustnes Of Previously Recommended CAPA :</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->review_comments_plir ){!! $data->review_comments_plir !!} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->review_comments_plir ){!! $data->review_comments_plir !!} @else Not Applicable @endif</span>
             </div>
 
 
@@ -706,36 +696,42 @@
                 <div class="block-head">PHASE -1(A) in case OBVIOUS ERROR is identified</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Root Cause</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->root_cause_identified_plic ){{ $data->root_cause_identified_plic }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->root_cause_identified_plic ){{ $data->root_cause_identified_plic }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Correct the Obvious error/cause and document:</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->summary_of_prelim_investiga_plic ){!! $data->summary_of_prelim_investiga_plic !!} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->summary_of_prelim_investiga_plic ){!! $data->summary_of_prelim_investiga_plic !!} @else Not Applicable @endif</span>
                 </div> 
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Impact assessment :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->re_sampling_ref_no_piii ){!! $data->re_sampling_ref_no_piii !!} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->re_sampling_ref_no_piii ){!! $data->re_sampling_ref_no_piii !!} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Corrective Action :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->corrective_action ){!! $data->corrective_action !!} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->corrective_action ){!! $data->corrective_action !!} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Preventive Action </label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->preventive_action1A ){!! $data->preventive_action1A !!} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->preventive_action1A ){!! $data->preventive_action1A !!} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Evaluation By Head Quality</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->evaluation_by_head_quality ){{ $data->evaluation_by_head_quality }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->evaluation_by_head_quality ){{ $data->evaluation_by_head_quality }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Outcome Of Phase I(A) Investigation</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->outcome_phase_i_investigation ){{ $data->outcome_phase_i_investigation }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">
+                        @if(is_array($data->outcome_phase_i_investigation))
+                            {{ $data->outcome_phase_i_investigation[0] ?? 'Not Applicable' }}
+                        @else
+                            {{ $data->outcome_phase_i_investigation ?? 'Not Applicable' }}
+                        @endif
+                    </span>
                 </div>
             </div>
             <!-- <div class="block">
@@ -767,48 +763,48 @@
                 <div class="block-head">PHASE II INVESTIGATION (Extended laboratory Investigation)</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Hypothesis Analysis :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->hypothesis_analysis ){{ $data->hypothesis_analysis }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->hypothesis_analysis ){{ $data->hypothesis_analysis }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Results of Hypothesis :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->results_hypothesis ){{ $data->results_hypothesis }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->results_hypothesis ){{ $data->results_hypothesis }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Evaluation Of Hypothesis & Comments :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->evaluation_of_hypothesis_comments ){{ $data->evaluation_of_hypothesis_comments }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->evaluation_of_hypothesis_comments ){{ $data->evaluation_of_hypothesis_comments }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Hypothesis Root Cause :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->hypothesis_root_cause ){{ $data->hypothesis_root_cause }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->hypothesis_root_cause ){{ $data->hypothesis_root_cause }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Impact assessment/Risk assessment :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->impact_assessment_risk ){{ $data->impact_assessment_risk }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->impact_assessment_risk ){{ $data->impact_assessment_risk }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Preventive action :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->preventive_action_phase1b ){{ $data->preventive_action_phase1b }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->preventive_action_phase1b ){{ $data->preventive_action_phase1b }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Evaluation By Head Quality / Designee :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->evaluation_by_head_quality ){{ $data->evaluation_by_head_quality }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->evaluation_by_head_quality ){{ $data->evaluation_by_head_quality }} @else Not Applicable @endif</span>
                 </div>
 
                 {{-- <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Outcome Of Phase II Extended Laboratory Investigation :</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->outcome_phase_ib_investigation2 ){{ $data->outcome_phase_ib_investigation2 }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->outcome_phase_ib_investigation2 ){{ $data->outcome_phase_ib_investigation2 }} @else Not Applicable @endif</span>
                 </div> --}}
 
 
                 <!-- <div class="inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Checklists</label>
-                    <span style="font-size:0.8rem; margin-left:10px">
+                    <span style="font-size:0.9rem; margin-left:10px">
                         @if($data->checklists)
                             {{ is_array($data->checklists) ? implode(', ', $data->checklists) : $data->checklists }}
                         @else
@@ -821,39 +817,39 @@
 
                 <!-- <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Checklist Outcome</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->justify_if_no_field_alert_pli ){{ $data->justify_if_no_field_alert_pli }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->justify_if_no_field_alert_pli ){{ $data->justify_if_no_field_alert_pli }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Immediate action taken</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->root_comment ){{ $data->root_comment }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->root_comment ){{ $data->root_comment }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Delay Justification For Investigation</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->justify_if_no_analyst_int_pli ){{ $data->justify_if_no_analyst_int_pli }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->justify_if_no_analyst_int_pli ){{ $data->justify_if_no_analyst_int_pli }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Analyst Interview Details</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->analyst_interview_pli ){{ $data->analyst_interview_pli }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->analyst_interview_pli ){{ $data->analyst_interview_pli }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Any Other Cause/Suspected Cause</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->Any_other_cause ){{ $data->Any_other_cause }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->Any_other_cause ){{ $data->Any_other_cause }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Any Other Batches Analyzed</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->Any_other_batches ){{ $data->Any_other_batches }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->Any_other_batches ){{ $data->Any_other_batches }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Details Of Trend</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->details_of_trend ){{ $data->details_of_trend }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->details_of_trend ){{ $data->details_of_trend }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Assignable Cause And Rational For Assignable Cause</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->rational_for_assingnable ){{ $data->rational_for_assingnable }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->rational_for_assingnable ){{ $data->rational_for_assingnable }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Summary of Investigation</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->summary_of_prelim_investiga_plic ){{ $data->summary_of_prelim_investiga_plic }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->summary_of_prelim_investiga_plic ){{ $data->summary_of_prelim_investiga_plic }} @else Not Applicable @endif</span>
                 </div> -->
             </div>
             <div class="block">
@@ -863,46 +859,66 @@
             </div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Brief Summary of Phase II Investigation</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->phase_ii_investigation ){! $data->phase_ii_investigation !} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">
+                            @if($data->phase_ii_investigation)
+                                {{ $data->phase_ii_investigation }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </span>
+
                     </div>
 
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Brief Summary of Root Cause</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->brief_summary_root_cause ){! $data->brief_summary_root_cause !} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">
+                            @if($data->brief_summary_root_cause)
+                                {{ $data->brief_summary_root_cause }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </span>
+
                     </div>
 
 
                     <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Brief Summary of Action taken/planned</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->brief_summary_taken_planned ){!$data->brief_summary_taken_planned !} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">
+                        @if($data->brief_summary_taken_planned)
+                            {{ $data->brief_summary_taken_planned }}
+                        @else
+                            Not Applicable
+                        @endif
+                    </span>
+
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Comment Of Head Quality/Designee</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->comment_of_head_qualiry ){! $data->comment_of_head_qualiry !} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->comment_of_head_qualiry ){! $data->comment_of_head_qualiry !} @else Not Applicable @endif</span>
                 </div>
 
                 {{-- <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Recommendation for Batch Disposition</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->recommendation_for_batch ){{ $data->recommendation_for_batch }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->recommendation_for_batch ){{ $data->recommendation_for_batch }} @else Not Applicable @endif</span>
                 </div> --}}
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Test Results</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phaseiii_results ){{ $data->phaseiii_results }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phaseiii_results ){{ $data->phaseiii_results }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Limit</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phaseiii_limit ){{ $data->phaseiii_limit }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phaseiii_limit ){{ $data->phaseiii_limit }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Conclusion</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->conclusion ){{ $data->conclusion }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->conclusion ){{ $data->conclusion }} @else Not Applicable @endif</span>
                 </div>
                 
-               
 
                 <!-- <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Impact Assessment</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->impact_assesment_pia ){{ $data->impact_assesment_pia }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->impact_assesment_pia ){{ $data->impact_assesment_pia }} @else Not Applicable @endif</span>
                 </div> -->
 
                 <!-- <div class="block-head">Analyst Interview Attachment</div>
@@ -959,7 +975,7 @@
                 <div class="block-head">Material Re-Sampling Authorization</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Reason/Justification for re-sampling</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->reason_justification ){{ $data->reason_justification }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->reason_justification ){{ $data->reason_justification }} @else Not Applicable @endif</span>
                 </div>
                </div>
                {{-- <div class="block">
@@ -1031,17 +1047,17 @@
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Material Re-Sampling Results</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->material_results ){{ $data->material_results }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->material_results ){{ $data->material_results }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Material Re-Sampling Conclusion</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->material_conclusion ){{ $data->material_conclusion }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->material_conclusion ){{ $data->material_conclusion }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Material Re-Sampling Evaluation by Quality Head/Designee</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->evaluation_by_quality_designee ){{ $data->evaluation_by_quality_designee }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->evaluation_by_quality_designee ){{ $data->evaluation_by_quality_designee }} @else Not Applicable @endif</span>
                 </div>
                </div>
                <div class="block">
@@ -1071,9 +1087,7 @@
                             <td>Not Applicable</td>
                             <td>Not Applicable</td>
                             <td>Not Applicable</td>
-                            <td>Not Applicable</td>
-                            <td>Not Applicable</td>
-                            <td>Not Applicable</td>
+                      
                         </tr>
                         @endif
                     </table>
@@ -1081,7 +1095,7 @@
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Phase-III Investigator</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phase_iii_investigator ){{ $data->phase_iii_investigator }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phase_iii_investigator ){{ $data->phase_iii_investigator }} @else Not Applicable @endif</span>
                 </div>
 
                 <p>Results from Analyst-1</p>
@@ -1109,9 +1123,7 @@
                             <td>Not Applicable</td>
                             <td>Not Applicable</td>
                             <td>Not Applicable</td>
-                            <td>Not Applicable</td>
-                            <td>Not Applicable</td>
-                            <td>Not Applicable</td>
+                     
                         </tr>
                         @endif
                     </table>
@@ -1119,17 +1131,17 @@
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Average of all six test results:</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->average_all_six_result ){! $data->average_all_six_result !} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->average_all_six_result ){! $data->average_all_six_result !} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Investigator</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phase_iii_investigator_result1 ){{ $data->phase_iii_investigator_result1 }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phase_iii_investigator_result1 ){{ $data->phase_iii_investigator_result1 }} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Conclusion By Head QC</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->conclusion_by_qc_head ){{ $data->conclusion_by_qc_head }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->conclusion_by_qc_head ){{ $data->conclusion_by_qc_head }} @else Not Applicable @endif</span>
                 </div>
 
                </div>
@@ -1138,28 +1150,28 @@
                 <div class="block-head">PHASE -III (ADDITIONAL INVESTIGATION)</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Impact assessment on other batches or product</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->impact_assessment_on_batches ){! $data->impact_assessment_on_batches !} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->impact_assessment_on_batches ){! $data->impact_assessment_on_batches !} @else Not Applicable @endif</span>
                 </div>
 
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Corrective Action</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phase_iii_corrective ){! $data->phase_iii_corrective !} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phase_iii_corrective ){! $data->phase_iii_corrective !} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Preventive Action</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phase_iii_preventive ){! $data->phase_iii_preventive !} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phase_iii_preventive ){! $data->phase_iii_preventive !} @else Not Applicable @endif</span>
                 </div>
 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Evaluation by Head Quality/Designee</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phase_iii_evaluation ){! $data->phase_iii_evaluation !} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phase_iii_evaluation ){! $data->phase_iii_evaluation !} @else Not Applicable @endif</span>
                 </div>
 
                 <!-- <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">OutCome Of Phase III (additional) Investigation</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->assign_cause_found ){{ $data->assign_cause_found }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->assign_cause_found ){{ $data->assign_cause_found }} @else Not Applicable @endif</span>
                 </div> -->
             </div>
 
@@ -1193,32 +1205,32 @@
                 <div class="block-head">JUSTIFICATION FOR DELAY IN CLOSING</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">OOS No. Product/Material</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->justification_delay_no ){{ $data->justification_delay_no }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->justification_delay_no ){{ $data->justification_delay_no }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Target closure date</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->justification_closure_date ){{ $data->justification_closure_date }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->justification_closure_date ){{ $data->justification_closure_date }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Extended date for closure</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->justification_extended_date ){{ $data->justification_extended_date }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->justification_extended_date ){{ $data->justification_extended_date }} @else Not Applicable @endif</span>
                 </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:1rem; display:inline;">Justification</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->justification_text ){{ $data->justification_text }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->justification_text ){{ $data->justification_text }} @else Not Applicable @endif</span>
                 </div>
               </div>
               <!-- <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Any Other Comments/ Probable Cause Evidence</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Any_other_Comments ){{ $data->Any_other_Comments }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Any_other_Comments ){{ $data->Any_other_Comments }} @else Not Applicable @endif</span>
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Proposal For Hypothesis Testing To Confirm Probable Cause Identified</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Proposal_for_Hypothesis ){{ $data->Proposal_for_Hypothesis }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Proposal_for_Hypothesis ){{ $data->Proposal_for_Hypothesis }} @else Not Applicable @endif</span>
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Summary Of Hypothesis</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Summary_of_Hypothesis ){{ $data->Summary_of_Hypothesis }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Summary_of_Hypothesis ){{ $data->Summary_of_Hypothesis }} @else Not Applicable @endif</span>
               </div>
               <div class="block">
                 <table>
@@ -1232,11 +1244,11 @@
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Others</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Types_of_assignable_others ){{ $data->Types_of_assignable_others }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Types_of_assignable_others ){{ $data->Types_of_assignable_others }} @else Not Applicable @endif</span>
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Evaluation Of Phase IB Investigation Timeline</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Evaluation_Timeline ){{ $data->Evaluation_Timeline }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Evaluation_Timeline ){{ $data->Evaluation_Timeline }} @else Not Applicable @endif</span>
               </div>
               <div class="block">
                 <table>
@@ -1248,11 +1260,11 @@
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">If No, Justify For Timeline Extension</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->timeline_extension ){{ $data->timeline_extension }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->timeline_extension ){{ $data->timeline_extension }} @else Not Applicable @endif</span>
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">CAPA Applicable</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->CAPA_applicable ){{ $data->CAPA_applicable }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->CAPA_applicable ){{ $data->CAPA_applicable }} @else Not Applicable @endif</span>
               </div>
               <div class="block">
                 <table>
@@ -1266,7 +1278,7 @@
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Repeat Testing Plan</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Repeat_testing_plan ){{ $data->Repeat_testing_plan }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Repeat_testing_plan ){{ $data->Repeat_testing_plan }} @else Not Applicable @endif</span>
               </div>
               <div class="block">
                 <table>
@@ -1280,19 +1292,19 @@
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Repeat Analysis Method/Resampling</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Repeat_analysis_method ){{ $data->Repeat_analysis_method }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Repeat_analysis_method ){{ $data->Repeat_analysis_method }} @else Not Applicable @endif</span>
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Details Of Repeat Analysis</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Details_repeat_analysis ){{ $data->Details_repeat_analysis }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Details_repeat_analysis ){{ $data->Details_repeat_analysis }} @else Not Applicable @endif</span>
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Impact Assessment</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Impact_assessment1 ){{ $data->Impact_assessment1 }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Impact_assessment1 ){{ $data->Impact_assessment1 }} @else Not Applicable @endif</span>
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Conclusion</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->Conclusion1 ){{ $data->Conclusion1 }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->Conclusion1 ){{ $data->Conclusion1 }} @else Not Applicable @endif</span>
               </div>
               </div>
 
@@ -1327,7 +1339,7 @@
                 <div class="block-head">Phase IB HOD Review</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Phase IB HOD Remark</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->hod_remark3 ){{ $data->hod_remark3 }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->hod_remark3 ){{ $data->hod_remark3 }} @else Not Applicable @endif</span>
                 </div>
               </div>
               <div class="block">
@@ -1361,7 +1373,7 @@
                 <div class="block-head">Phase IB CQA/QA Review</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Phase IB CQA/QA Remark</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->QA_Head_remark3 ){{ $data->QA_Head_remark3 }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->QA_Head_remark3 ){{ $data->QA_Head_remark3 }} @else Not Applicable @endif</span>
                 </div>
               </div>
               <div class="block">
@@ -1402,15 +1414,15 @@
               </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">If Yes, Notification</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->notification_ib ){{ $data->notification_ib }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->notification_ib ){{ $data->notification_ib }} @else Not Applicable @endif</span>
             </div>
             <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">If No, Justification</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->justification_ib ){{ $data->justification_ib }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->justification_ib ){{ $data->justification_ib }} @else Not Applicable @endif</span>
             </div>
               <div class = "inner-block">
                 <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">P-IB CQAH/QAH Remark</label>
-                <span style="font-size:0.8rem; margin-left:10px">@if($data->QA_Head_primary_remark3 ){{ $data->QA_Head_primary_remark3 }} @else Not Applicable @endif</span>
+                <span style="font-size:0.9rem; margin-left:10px">@if($data->QA_Head_primary_remark3 ){{ $data->QA_Head_primary_remark3 }} @else Not Applicable @endif</span>
             </div>
               <div class="block">
                 <div class="block-head">Phase IB CQAH/QAH Attachment</div>
@@ -1443,7 +1455,7 @@
                 <div class="block-head"> Phase II A Investigation </div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Checklist Outcome</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->checklist_outcome_iia ){{ $data->checklist_outcome_iia }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->checklist_outcome_iia ){{ $data->checklist_outcome_iia }} @else Not Applicable @endif</span>
                 </div>
                 <div class="block">
                     <table>
@@ -1455,19 +1467,19 @@
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Immediate Action Taken</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->qa_approver_comments_piii ){{ $data->qa_approver_comments_piii }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->qa_approver_comments_piii ){{ $data->qa_approver_comments_piii }} @else Not Applicable @endif</span>
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Delay Justification For Investigation</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->reason_manufacturing_delay ){{ $data->reason_manufacturing_delay }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->reason_manufacturing_delay ){{ $data->reason_manufacturing_delay }} @else Not Applicable @endif</span>
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Any Other Cause/Suspected Cause</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->audit_comments_piii ){{ $data->audit_comments_piii }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->audit_comments_piii ){{ $data->audit_comments_piii }} @else Not Applicable @endif</span>
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Summary Investigation</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->hypo_exp_reference_piii ){{ $data->hypo_exp_reference_piii }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->hypo_exp_reference_piii ){{ $data->hypo_exp_reference_piii }} @else Not Applicable @endif</span>
                   </div>
                   <div class="block">
                     <table>
@@ -1481,7 +1493,7 @@
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">OOS/OOT Category If Others</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->if_others_oos_category ){{ $data->if_others_oos_category }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->if_others_oos_category ){{ $data->if_others_oos_category }} @else Not Applicable @endif</span>
                   </div>
                   <div class="block">
                     <table>
@@ -1493,15 +1505,15 @@
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Reference CAPA No.</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->reference_capa_no_iia ){{ $data->reference_capa_no_iia }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->reference_capa_no_iia ){{ $data->reference_capa_no_iia }} @else Not Applicable @endif</span>
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">OOS/OOT Review For Similar Nature II A</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->OOS_review_similar ){{ $data->OOS_review_similar }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->OOS_review_similar ){{ $data->OOS_review_similar }} @else Not Applicable @endif</span>
                   </div>
                   <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Impact Assessment</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->impact_assessment_IIA ){{ $data->impact_assessment_IIA }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->impact_assessment_IIA ){{ $data->impact_assessment_IIA }} @else Not Applicable @endif</span>
                   </div>
                   <div class="block">
                     <table>
@@ -1597,7 +1609,7 @@
                 <div class="block-head">Phase II A HOD Review</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Phase II A HOD Remark</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->hod_remark4 ){{ $data->hod_remark4 }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->hod_remark4 ){{ $data->hod_remark4 }} @else Not Applicable @endif</span>
                 </div>
               </div>
               <div class="block">
@@ -1632,7 +1644,7 @@
                 <div class="block-head">Phase II A CQA/QA Review</div>
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Phase II A CQA/QA Remark</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->QA_Head_remark4 ){{ $data->QA_Head_remark4 }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->QA_Head_remark4 ){{ $data->QA_Head_remark4 }} @else Not Applicable @endif</span>
                 </div>
               </div>
               <div class="block">
@@ -1667,12 +1679,12 @@
                 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Phase II A Assinable Cause Found</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->phase_ii_a_assi_cause ){{ $data->phase_ii_a_assi_cause }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->phase_ii_a_assi_cause ){{ $data->phase_ii_a_assi_cause }} @else Not Applicable @endif</span>
                 </div>
                 
                 <div class = "inner-block">
                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">P-II A QAH/CQAH Remark</label>
-                    <span style="font-size:0.8rem; margin-left:10px">@if($data->QA_Head_primary_remark4 ){{ $data->QA_Head_primary_remark4 }} @else Not Applicable @endif</span>
+                    <span style="font-size:0.9rem; margin-left:10px">@if($data->QA_Head_primary_remark4 ){{ $data->QA_Head_primary_remark4 }} @else Not Applicable @endif</span>
                 </div>
               </div>
               <div class="block">
@@ -1706,7 +1718,7 @@
                     <div class="block-head">Phase II B Investigation</div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Summary Of Investigation</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->Summary_Of_Inv_IIB ){{ $data->Summary_Of_Inv_IIB }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->Summary_Of_Inv_IIB ){{ $data->Summary_Of_Inv_IIB }} @else Not Applicable @endif</span>
                     </div>
                     <div class="block">
                         <table>
@@ -1718,7 +1730,7 @@
                     </div>
                       <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Reference CAPA No.</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->reference_capa_IIB ){{ $data->reference_capa_IIB }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->reference_capa_IIB ){{ $data->reference_capa_IIB }} @else Not Applicable @endif</span>
                     </div>
                     <div class="block">
                         <table>
@@ -1732,19 +1744,19 @@
                     </div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Results Of Repeat Testing IIB Inv.</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->result_of_rep_test_IIB ){{ $data->result_of_rep_test_IIB }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->result_of_rep_test_IIB ){{ $data->result_of_rep_test_IIB }} @else Not Applicable @endif</span>
                     </div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Laboratory Investigation Hypothesis Details</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->Laboratory_Investigation_Hypothesis ){{ $data->Laboratory_Investigation_Hypothesis }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->Laboratory_Investigation_Hypothesis ){{ $data->Laboratory_Investigation_Hypothesis }} @else Not Applicable @endif</span>
                     </div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Outcome Of Laboratory Investigation</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->Outcome_of_Laboratory ){{ $data->Outcome_of_Laboratory }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->Outcome_of_Laboratory ){{ $data->Outcome_of_Laboratory }} @else Not Applicable @endif</span>
                     </div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Evaluation</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->Evaluation_IIB ){{ $data->Evaluation_IIB }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->Evaluation_IIB ){{ $data->Evaluation_IIB }} @else Not Applicable @endif</span>
                     </div>
                     <div class="block">
                         <table>
@@ -1756,11 +1768,11 @@
                     </div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">If Assignable Cause Identified Perform Re-testing</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->If_assignable_cause ){{ $data->If_assignable_cause }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->If_assignable_cause ){{ $data->If_assignable_cause }} @else Not Applicable @endif</span>
                     </div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">If Assignable Cause Is Not Identified Proceed As Per Phase III Investigation</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->If_assignable_error ){{ $data->If_assignable_error }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->If_assignable_error ){{ $data->If_assignable_error }} @else Not Applicable @endif</span>
                     </div>
                 </div> -->
 
@@ -1771,7 +1783,7 @@
                     <div class="block-head">Phase II B HOD Review</div>
                     <div class = "inner-block">
                         <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Phase II B HOD Remark</label>
-                        <span style="font-size:0.8rem; margin-left:10px">@if($data->hod_remark5 ){{ $data->hod_remark5 }} @else Not Applicable @endif</span>
+                        <span style="font-size:0.9rem; margin-left:10px">@if($data->hod_remark5 ){{ $data->hod_remark5 }} @else Not Applicable @endif</span>
                     </div>
                 </div>
                 <div class="block">
@@ -1805,7 +1817,7 @@
                         <div class="block-head">Phase II B CQA/QA Review</div>
                         <div class = "inner-block">
                             <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Phase II B CQA/QA Remark</label>
-                            <span style="font-size:0.8rem; margin-left:10px">@if($data->QA_Head_remark5 ){{ $data->QA_Head_remark5 }} @else Not Applicable @endif</span>
+                            <span style="font-size:0.9rem; margin-left:10px">@if($data->QA_Head_remark5 ){{ $data->QA_Head_remark5 }} @else Not Applicable @endif</span>
                         </div>
                     </div>
                     <div class="block">
@@ -1839,7 +1851,7 @@
                                 <div class="block-head">P-II A QAH/CQAH Review</div>
                                 <div class = "inner-block">
                                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">P-II A QAH/CQAH Remark</label>
-                                    <span style="font-size:0.8rem; margin-left:10px">@if($data->QA_Head_primary_remark4 ){{ $data->QA_Head_primary_remark4 }} @else Not Applicable @endif</span>
+                                    <span style="font-size:0.9rem; margin-left:10px">@if($data->QA_Head_primary_remark4 ){{ $data->QA_Head_primary_remark4 }} @else Not Applicable @endif</span>
                                 </div>
                             </div>
                             <div class="block">
@@ -1871,7 +1883,7 @@
                                 <div class="block-head">Phase II B QAH/CQAH Review</div>
                                 <div class = "inner-block">
                                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Approval Comment</label>
-                                    <span style="font-size:0.8rem; margin-left:10px">@if($data->reopen_approval_comments_uaa ){{ $data->reopen_approval_comments_uaa }} @else Not Applicable @endif</span>
+                                    <span style="font-size:0.9rem; margin-left:10px">@if($data->reopen_approval_comments_uaa ){{ $data->reopen_approval_comments_uaa }} @else Not Applicable @endif</span>
                                 </div>
                                 <div class="block">
                                     <div class="block-head"> Approval Attachment</div>
@@ -1904,19 +1916,19 @@
                                 </div>
                                 <div class = "inner-block">
                                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Other's</label>
-                                    <span style="font-size:0.8rem; margin-left:10px">@if($data->others_bd ){{ $data->others_bd }} @else Not Applicable @endif</span>
+                                    <span style="font-size:0.9rem; margin-left:10px">@if($data->others_bd ){{ $data->others_bd }} @else Not Applicable @endif</span>
                                 </div>
                                 <div class = "inner-block">
                                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Other Action (Specify)</label>
-                                    <span style="font-size:0.8rem; margin-left:10px">@if($data->other_action_bd ){{ $data->other_action_bd }} @else Not Applicable @endif</span>
+                                    <span style="font-size:0.9rem; margin-left:10px">@if($data->other_action_bd ){{ $data->other_action_bd }} @else Not Applicable @endif</span>
                                 </div>
                                 <div class = "inner-block">
                                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Other Parameters Results</label>
-                                    <span style="font-size:0.8rem; margin-left:10px">@if($data->other_parameters_results_bd ){{ $data->other_parameters_results_bd }} @else Not Applicable @endif</span>
+                                    <span style="font-size:0.9rem; margin-left:10px">@if($data->other_parameters_results_bd ){{ $data->other_parameters_results_bd }} @else Not Applicable @endif</span>
                                 </div>
                                 <div class = "inner-block">
                                     <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Justify for Delay in Activity</label>
-                                    <span style="font-size:0.8rem; margin-left:10px">@if($data->justify_for_delay_in_activity_bd ){{ $data->justify_for_delay_in_activity_bd }} @else Not Applicable @endif</span>
+                                    <span style="font-size:0.9rem; margin-left:10px">@if($data->justify_for_delay_in_activity_bd ){{ $data->justify_for_delay_in_activity_bd }} @else Not Applicable @endif</span>
                                 </div>
                                     <table>
                                     <div class="block-head"> Disposition Attachment</div>
@@ -1987,11 +1999,11 @@
                                         <div class="block-head"> OOS/OOT Conclusion </div>
                                         <div class = "inner-block">
                                             <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Conclusion Comments</label>
-                                            <span style="font-size:0.8rem; margin-left:10px">@if($data->conclusion_comments_oosc ){{ $data->conclusion_comments_oosc }} @else Not Applicable @endif</span>
+                                            <span style="font-size:0.9rem; margin-left:10px">@if($data->conclusion_comments_oosc ){{ $data->conclusion_comments_oosc }} @else Not Applicable @endif</span>
                                         </div>
                                         <div class = "inner-block">
                                             <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Specification Limit</label>
-                                            <span style="font-size:0.8rem; margin-left:10px">@if($data->specification_limit_oosc ){{ $data->specification_limit_oosc }} @else Not Applicable @endif</span>
+                                            <span style="font-size:0.9rem; margin-left:10px">@if($data->specification_limit_oosc ){{ $data->specification_limit_oosc }} @else Not Applicable @endif</span>
                                         </div>
                                         <div class="block">
                                             <table>
@@ -2003,11 +2015,11 @@
                                         </div>
                                         <div class = "inner-block">
                                             <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Final Reportable Results</label>
-                                            <span style="font-size:0.8rem; margin-left:10px">@if($data->final_reportable_results_oosc ){{ $data->final_reportable_results_oosc }} @else Not Applicable @endif</span>
+                                            <span style="font-size:0.9rem; margin-left:10px">@if($data->final_reportable_results_oosc ){{ $data->final_reportable_results_oosc }} @else Not Applicable @endif</span>
                                         </div>
                                         <div class = "inner-block">
                                             <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Justifi. for Averaging Results</label>
-                                            <span style="font-size:0.8rem; margin-left:10px">@if($data->justifi_for_averaging_results_oosc ){{ $data->justifi_for_averaging_results_oosc }} @else Not Applicable @endif</span>
+                                            <span style="font-size:0.9rem; margin-left:10px">@if($data->justifi_for_averaging_results_oosc ){{ $data->justifi_for_averaging_results_oosc }} @else Not Applicable @endif</span>
                                         </div>
                                         <div class="block">
                                             <table>
@@ -2029,7 +2041,7 @@
                                         </div>
                                         <div class = "inner-block">
                                             <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Justify If CAPA Not Required</label>
-                                            <span style="font-size:0.8rem; margin-left:10px">@if($data->justify_if_capa_not_required_oosc ){{ $data->justify_if_capa_not_required_oosc }} @else Not Applicable @endif</span>
+                                            <span style="font-size:0.9rem; margin-left:10px">@if($data->justify_if_capa_not_required_oosc ){{ $data->justify_if_capa_not_required_oosc }} @else Not Applicable @endif</span>
                                         </div> -->
                                             {{-- <div class="block">
                                                 <div class="block-head"> Summary of OOS Test Results </div>
@@ -2094,7 +2106,7 @@
                                         <div class="block-head"> Conclusion Review Comments </div>
                                         <div class = "inner-block">
                                             <label class="summer" style="font-weight: bold; font-size:13px; display:inline;">Action On Affected Batches</label>
-                                            <span style="font-size:0.8rem; margin-left:10px">@if($data->action_on_affected_batch ){{ $data->action_on_affected_batch }} @else Not Applicable @endif</span>
+                                            <span style="font-size:0.9rem; margin-left:10px">@if($data->action_on_affected_batch ){{ $data->action_on_affected_batch }} @else Not Applicable @endif</span>
                                         </div>
                                         <table>
                                             <div class="block-head">Conclusion Attachment </div>

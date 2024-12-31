@@ -14,10 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('o_o_s', function (Blueprint $table) {
-            // $table->text('oos_occurrence_date')->nullable();
-            // $table->text('Remark_qc_investigator')->nullable();
-            // $table->text('preliminary_investigation_response')->nullable();
-            // $table->text('Discussion_points')->nullable();
+            $table->longText('hypothesis_investigator_01')->nullable();
+            $table->longText('approval_two')->nullable();
+            $table->longText('approval_three')->nullable();
+            $table->longText('phase_1_result_01')->nullable();
+            $table->longText('phase_1_test_result_01')->nullable();
+            $table->longText('phase_1_limit_01')->nullable();
+            $table->longText('phase_1_conclusion_01')->nullable();
 
         });
     }
