@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('deviations', function (Blueprint $table) {
             //
-            $table->string('Product_name')->nullable();
+            $table->longtext('Product_name')->nullable();
 
         });
     }

@@ -1113,13 +1113,13 @@
                     <button class="cctablinks" onclick="openCity(event, 'CCForm8')">HOD Review</button>
                     <button class="cctablinks" onclick="openCity(event, 'CCForm2')">QA Initial Review</button>
                     <button class="cctablinks " onclick="openCity(event, 'CCForm7')">CFT</button>
-                    <button class="cctablinks " onclick="openCity(event, 'CCForm13')">External Review</button>
+                    {{-- <button class="cctablinks " onclick="openCity(event, 'CCForm13')">External Review</button> --}}
                     <button class="cctablinks " id="Investigation_button" onclick="openCity(event, 'CCForm9')" style="display: none">Investigation</button>
                     <button class="cctablinks " id="QRM_button" onclick="openCity(event, 'CCForm11')" style="display: none">QRM</button>
                     <button class="cctablinks " id="CAPA_button" onclick="openCity(event, 'CCForm10')" style="display: none">CAPA</button>
                     <button class="cctablinks" onclick="openCity(event, 'CCForm4')">QA Final Review</button>
                     <button class="cctablinks" onclick="openCity(event, 'CCForm5')">QAH/Designee Approval</button>
-                    <button class="cctablinks" onclick="openCity(event, 'CCForm12')">Extension</button>
+                   {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm12')">Extension</button> --}}
 
                     <button class="cctablinks" onclick="openCity(event, 'CCForm6')">Activity Log</button>
                 </div>
@@ -4971,7 +4971,7 @@
                                 $data1 = DB::table('deviationcfts')->where('deviation_id', $data->id)->first();
                                 $userRoles = DB::table('user_roles')
                                     ->where([
-                                        'q_m_s_roles_id' => 55,
+                                        'q_m_s_roles_id' => 25,
                                         'q_m_s_divisions_id' => $data->division_id,
                                     ])->get();
                                 $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -5209,7 +5209,7 @@
                                 @php
                                     $userRoles = DB::table('user_roles')
                                         ->where([
-                                            'q_m_s_roles_id' => 57,
+                                            'q_m_s_roles_id' => 25,
                                             'q_m_s_divisions_id' => $data->division_id,
                                         ])->get();
                                     $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -5425,7 +5425,7 @@
                                 @php
                                     $userRoles = DB::table('user_roles')
                                         ->where([
-                                            'q_m_s_roles_id' => 58,
+                                            'q_m_s_roles_id' => 25,
                                             'q_m_s_divisions_id' => $data->division_id,
                                         ])->get();
                                     $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -5648,7 +5648,7 @@
                             @php
                                 $userRoles = DB::table('user_roles')
                                     ->where([
-                                        'q_m_s_roles_id' => 56,
+                                        'q_m_s_roles_id' => 25,
                                         'q_m_s_divisions_id' => $data->division_id,
                                     ])->get();
                                 $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -5835,19 +5835,22 @@
                             <div class="sub-head">
                                 System IT
                             </div>
+
                             <script>
                                 $(document).ready(function() {
-                                    $('.systemit_person').hide();
+                                    @if($data1->SystemIT_Review !== 'yes')
+                                        $('.systemit_person').hide();
+                                        $('[name="SystemIT_Review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.systemit_person').show();
+                                                $('.systemit_person span').show();
+                                            } else {
+                                                $('.systemit_person').hide();
+                                                $('.systemit_person span').hide();
+                                            }
+                                        });
+                                    @endif
 
-                                    $('[name="SystemIT_Review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.systemit_person').show();
-                                            $('.systemit_person span').show();
-                                        } else {
-                                            $('.systemit_person').hide();
-                                            $('.systemit_person span').hide();
-                                        }
-                                    });
                                 });
                             </script>
                             @if($data->stage == 3 || $data->stage == 4)
@@ -6036,17 +6039,19 @@
                             </div>
                             <script>
                                 $(document).ready(function() {
-                                    $('.quality_assurance').hide();
-
-                                    $('[name="Quality_Assurance_Review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.quality_assurance').show();
-                                            $('.quality_assurance span').show();
-                                        } else {
-                                            $('.quality_assurance').hide();
-                                            $('.quality_assurance span').hide();
-                                        }
-                                    });
+                                    @if($data1->Quality_Assurance_Review !== 'yes')
+                                       $('.quality_assurance').hide();
+                                       
+                                       $('[name="Quality_Assurance_Review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.quality_assurance').show();
+                                                $('.quality_assurance span').show();
+                                            } else {
+                                                $('.quality_assurance').hide();
+                                                $('.quality_assurance span').hide();
+                                            }
+                                        });
+                                    @endif
                                 });
                             </script>
 
@@ -6257,17 +6262,19 @@
                             </div>
                             <script>
                                 $(document).ready(function() {
-                                    $('.human_resources').hide();
+                                    @if($data1->Human_Resource_review !== 'yes')
+                                        $('.human_resources').hide();
 
-                                    $('[name="Human_Resource_review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.human_resources').show();
-                                            $('.human_resources span').show();
-                                        } else {
-                                            $('.human_resources').hide();
-                                            $('.human_resources span').hide();
-                                        }
-                                    });
+                                        $('[name="Human_Resource_review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.human_resources').show();
+                                                $('.human_resources span').show();
+                                            } else {
+                                                $('.human_resources').hide();
+                                                $('.human_resources span').hide();
+                                            }
+                                        });
+                                    @endif
                                 });
                             </script>
 
@@ -6478,17 +6485,19 @@
                             </div>
                             <script>
                                 $(document).ready(function() {
-                                    $('.other1_reviews').hide();
+                                    @if($data1->Other1_review !== 'yes')
+                                        $('.other1_reviews').hide();
 
-                                    $('[name="Other1_review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.other1_reviews').show();
-                                            $('.other1_reviews span').show();
-                                        } else {
-                                            $('.other1_reviews').hide();
-                                            $('.other1_reviews span').hide();
-                                        }
-                                    });
+                                        $('[name="Other1_review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.other1_reviews').show();
+                                                $('.other1_reviews span').show();
+                                            } else {
+                                                $('.other1_reviews').hide();
+                                                $('.other1_reviews span').hide();
+                                            }
+                                        });
+                                    @endif
                                 });
                             </script>
                             @if($data->stage == 3 || $data->stage == 4)
@@ -6727,17 +6736,20 @@
                             </div>
                             <script>
                                 $(document).ready(function() {
-                                    $('.Other2_reviews').hide();
 
-                                    $('[name="Other2_review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.Other2_reviews').show();
-                                            $('.Other2_reviews span').show();
-                                        } else {
-                                            $('.Other2_reviews').hide();
-                                            $('.Other2_reviews span').hide();
-                                        }
-                                    });
+                                    @if($data1->Other2_review !== 'yes')
+                                        $('.Other2_reviews').hide();
+
+                                        $('[name="Other2_review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.Other2_reviews').show();
+                                                $('.Other2_reviews span').show();
+                                            } else {
+                                                $('.Other2_reviews').hide();
+                                                $('.Other2_reviews span').hide();
+                                            }
+                                        });
+                                    @endif
                                 });
                             </script>
                             @php
@@ -6982,17 +6994,18 @@
                             </div>
                             <script>
                                 $(document).ready(function() {
-                                    $('.Other3_reviews').hide();
-
-                                    $('[name="Other3_review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.Other3_reviews').show();
-                                            $('.Other3_reviews span').show();
-                                        } else {
-                                            $('.Other3_reviews').hide();
-                                            $('.Other3_reviews span').hide();
-                                        }
-                                    });
+                                    @if($data1->Other3_review !== 'yes')
+                                        $('.Other3_reviews').hide();
+                                        $('[name="Other3_review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.Other3_reviews').show();
+                                                $('.Other3_reviews span').show();
+                                            } else {
+                                                $('.Other3_reviews').hide();
+                                                $('.Other3_reviews span').hide();
+                                            }
+                                        });
+                                    @endif
                                 });
                             </script>
                             @php
@@ -7258,17 +7271,19 @@
                             </div>
                             <script>
                                 $(document).ready(function() {
-                                    $('.Other4_reviews').hide();
+                                    @if($data1->Other4_review !== 'yes')
+                                        $('.Other4_reviews').hide();
 
-                                    $('[name="Other4_review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.Other4_reviews').show();
-                                            $('.Other4_reviews span').show();
-                                        } else {
-                                            $('.Other4_reviews').hide();
-                                            $('.Other4_reviews span').hide();
-                                        }
-                                    });
+                                        $('[name="Other4_review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.Other4_reviews').show();
+                                                $('.Other4_reviews span').show();
+                                            } else {
+                                                $('.Other4_reviews').hide();
+                                                $('.Other4_reviews span').hide();
+                                            }
+                                        });
+                                    @endif
                                 });
                             </script>
                             @php
@@ -7532,17 +7547,19 @@
                             </div>
                             <script>
                                 $(document).ready(function() {
-                                    $('.Other5_reviews').hide();
+                                    @if($data1->Other5_review !== 'yes')
+                                        $('.Other5_reviews').hide();
 
-                                    $('[name="Other5_review"]').change(function() {
-                                        if ($(this).val() === 'yes') {
-                                            $('.Other5_reviews').show();
-                                            $('.Other5_reviews span').show();
-                                        } else {
-                                            $('.Other5_reviews').hide();
-                                            $('.Other5_reviews span').hide();
-                                        }
-                                    });
+                                        $('[name="Other5_review"]').change(function() {
+                                            if ($(this).val() === 'yes') {
+                                                $('.Other5_reviews').show();
+                                                $('.Other5_reviews span').show();
+                                            } else {
+                                                $('.Other5_reviews').hide();
+                                                $('.Other5_reviews span').hide();
+                                            }
+                                        });
+                                    @endif
                                 });
                             </script>
                             @php
@@ -10192,7 +10209,6 @@
 
 
                 </div>
-            </div>
 
             <div class="button-block">
             <button  style=" justify-content: center; width: 4rem; margin-left: 1px;;" type="submit"{{ $data->stage == 0 || $data->stage == 7 || $data->stage == 9 ? 'disabled' : '' }} id="ChangesaveButton04" class=" saveAuditFormBtn d-flex" style="align-items: center;">
@@ -10223,6 +10239,7 @@
         </div>
     </div>
     </div>
+                        </div>
         <!-- investigation and capa -->
          <!-- <div id="CCForm3" class="inner-block cctabcontent">
                         <div class="inner-block-content">

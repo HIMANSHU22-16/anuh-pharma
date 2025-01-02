@@ -136,26 +136,22 @@
         });
     </script>
 
-    <div id="rcms_form-head">
-        <div class="container-fluid">
-            <div class="inner-block">
-
-
-                <div class="slogan">
-                    <strong>Site Division / Project </strong>:
-                    {{ Helpers::getDivisionName(session()->get('division')) }} / Change Control
-                </div>
+        <div class="form-field-head">
+            <div class="division-bar">
+                <strong>Site Division/Project</strong>:
+                {{ Helpers::getDivisionName(session()->get('division')) }}/Change Control
             </div>
         </div>
-    </div>
+
+
+   
     @php
         $users = DB::table('users')->get();
     @endphp
     <div id="change-control-fields">
         <div class="container-fluid">
-
-
-        <script type="text/javascript">
+            
+            <!-- <script type="text/javascript">
                 function googleTranslateElementInit() {
                     new google.translate.TranslateElement({
                         pageLanguage: 'en',
@@ -171,8 +167,7 @@
                         $('body').css('top', '0');
                     }, 5000);
                 })
-            </script>
-
+            </script> -->
             <!-- Tab links -->
             <div class="cctab">
                 <button class="cctablinks active" onclick="openCity(event, 'CCForm1')">General Information</button>
@@ -200,10 +195,10 @@
                 <button class="cctablinks" onclick="openCity(event, 'CCForm9')">Implementation Verification</button>
                 <button class="cctablinks" onclick="openCity(event, 'CCForm11')">Activity Log</button>
             </div>
-            <div class="language-sleect d-flex align-items-center" style="margin-left: 2px;">
-                <div>Select Language</div>
-             <div class="main-head" id="google_translate_element"></div>
-            </div>
+            <!-- <div class="language-sleect d-flex" style="align-items: center; gap: 20px; margin-left: 20px;">
+                <div>Select Language </div>
+            <div class="main-head" id="google_translate_element"></div>
+            </div> -->
             <form action="{{ route('CC.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- Tab content -->

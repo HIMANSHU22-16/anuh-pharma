@@ -200,75 +200,26 @@
         <table>
             <tr>
                 <td class="w-70 head">
-                    Medicef Pharma <br>
-                    <span style="font-size: 15px !important;"> Plot No. 28,29,48 EPIP, Phase-I, Jharmajri, Baddi, Dist. Solan (HP)</span>
+                    Change Control Single Report
                 </td>
-                <td class="w-30">
+                <td class="w-20" >
                     <div class="logo">
-                       <img src="https://www.cphi-online.com/Medicef%20Logo-comp306798.jpg" alt="" class="w-80">
+                        <img src="https://navin.mydemosoftware.com/public/user/images/logo.png" alt=""
+                            class="w-100">
                     </div>
                 </td>
             </tr>
         </table>
         <table>
             <tr>
-                <td class="w-100 head">
-                    STANDARD OPERATING PROCEDURE
+                <td class="w-30">
+                    <strong> CC No.</strong>
                 </td>
-            </tr>
-            <tr>
-                <td class="w-100 head">
-                    Change Control
-                </td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td class="w-25">
-                    <strong>Department</strong>
-                </td>
-                <td class="w-25">
-                    <strong>SOP No.</strong>
-                </td>
-                <td class="w-25">
-                    <strong>Supersedes</strong>
-                </td>
-                <td class="w-25">
-                    <strong>Page No.</strong>
-                </td>
-            </tr>
-
-            <tr>
                 <td class="w-40">
-                    @if ($data->Initiator_Group)
-                        {{ Helpers::getFullDepartmentName($data->Initiator_Group) }}
-                    @else
-                        Not Applicable
-                    @endif
-                </td>
-                <td class="w-20">
-                    QA/003-03
-                </td>
-                <td class="w-20">
-                    QA/003-02
-                </td>
-                <td class="w-20">
-
-                </td>
-            </tr>
-
-            <tr>
-                <td class="w-30">
-                    <strong>Effective Date</strong>
-                </td>
-                <td class="w-20">
-                    20-Dec-2024
+                    {{ Helpers::divisionNameForQMS($data->division_id) }}/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
                 </td>
                 <td class="w-30">
-                    <strong>Review Date</strong>
-                </td>
-                <td class="w-20">
-                    20-Dec-2024
+                    <strong>Record No.</strong> {{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
                 </td>
             </tr>
         </table>

@@ -10729,6 +10729,45 @@ class DeviationController extends Controller
             $grid_data_qrms = DeviationGridQrms::where(['deviation_id' => $id, 'identifier' => 'failure_mode_qrms'])->first();
             $grid_data_matrix_qrms = DeviationGridQrms::where(['deviation_id' => $id, 'identifier' => 'matrix_qrms'])->first();
 
+            $trackingplangridData = DeviationNewGridData::where([
+                'deviation_id' => $id, 
+                'identifier' => 'TrackingActionPlan'
+            ])->first();
+            
+            $trackingplanData = $trackingplangridData && is_string($trackingplangridData->data)
+                ? json_decode($trackingplangridData->data, true) 
+                : ($trackingplangridData->data ?? []);
+    
+            // $actionsplangridData = DeviationNewGridData::where(['deviation_id' => $id, 'identifier' => 'ActionsPlan'])->first();
+            $actionsplangridData = DeviationNewGridData::where([
+                'deviation_id' => $id, 
+                'identifier' => 'ActionsPlan'
+            ])->first();
+            
+            $actionsplanData = $actionsplangridData && is_string($actionsplangridData->data)
+                ? json_decode($actionsplangridData->data, true) 
+                : ($actionsplangridData->data ?? []);
+    
+            // $previousHistoryData = DeviationNewGridData::where(['deviation_id' => $id, 'identifier' => 'PreviousHistory'])->first();
+            $previousHistoryGridData = DeviationNewGridData::where([
+                'deviation_id' => $id, 
+                'identifier' => 'PreviousHistory'
+            ])->first();
+            
+            $previousHistoryData = $previousHistoryGridData && is_string($previousHistoryGridData->data)
+                ? json_decode($previousHistoryGridData->data, true) 
+                : ($previousHistoryGridData->data ?? []);
+    
+            $productDetailsGridData = DeviationNewGridData::where([
+                'deviation_id' => $id, 
+                'identifier' => 'ProductDetails'
+            ])->first();
+            
+            $productDetailsData = $productDetailsGridData && is_string($productDetailsGridData->data)
+                ? json_decode($productDetailsGridData->data, true) 
+                : ($productDetailsGridData->data ?? []);
+    
+
             $pdf = App::make('dompdf.wrapper');
             $time = Carbon::now();
             // foreach($investigation_data as $invest)
@@ -10737,7 +10776,7 @@ class DeviationController extends Controller
             // }
 
 
-            $pdf = PDF::loadview('frontend.forms.deviation.SingleReportdeviation', compact('data','grid_data_qrms','grid_data_matrix_qrms','capaExtension','qrmExtension','investigationExtension','root_cause_data','why_data','investigation_data','grid_data','grid_data1', 'data1'))
+            $pdf = PDF::loadview('frontend.forms.deviation.SingleReportdeviation', compact('data','grid_data_qrms','grid_data_matrix_qrms','capaExtension','qrmExtension','investigationExtension','root_cause_data','why_data','investigation_data','grid_data','grid_data1', 'data1','productDetailsData','previousHistoryData','actionsplanData','trackingplanData'))
                 ->setOptions([
                 'defaultFont' => 'sans-serif',
                 'isHtml5ParserEnabled' => true,

@@ -2777,7 +2777,7 @@ class CCController extends Controller
             // $openState->record_numbers = $request->record_number;
         }
 
-        $openState->external_users = implode(',',$request->external_users);
+        $openState->external_users = json_decode($request->external_users);
         $userIds = explode(',', $openState->external_users);
         if (empty($userIds) || !is_array($userIds)) {
             throw new \Exception("No valid user IDs provided.");
@@ -9146,23 +9146,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                 // }
 
 
-                // foreach ($list as $u) {
-                //     $email = Helpers::getUserEmail($u->user_id);
-                //         if ($email !== null) {
-                //         try {
-                //             Mail::send(
-                //                 'mail.view-mail',
-                //                 ['data' => $changeControl, 'site' => "CC", 'history' => "RA Approval Complete", 'process' => 'Change Control', 'comment' => $request->comments, 'user' => Auth::user()->name],
-                //                 function ($message) use ($email, $changeControl) {
-                //                     $message->to($email)
-                //                     ->subject("Medicef Notification: Change Control, Record #" . str_pad($changeControl->record, 4, '0', STR_PAD_LEFT) . " - Activity: RA Approval Complete Performed");
-                //                 }
-                //             );
-                //         } catch(\Exception $e) {
-                //             info('Error sending mail', [$e]);
-                //         }
-                //     }
-                // }
+            
 
 
                 $changeControl->update();
@@ -9190,79 +9174,6 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                 //     $history->action_name = 'New';
                 // } else {
                 //     $history->action_name = 'Update';
-                // }
-
-                $history->action = 'RA Review Completed';
-                $history->comment = $request->comments;
-                $history->user_id = Auth::user()->id;
-                $history->user_name = Auth::user()->name;
-                $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
-                $history->origin_state = $lastDocument->status;
-                $history->change_to = "QA/CQA Head/Manager Designee Approval";
-                $history->change_from = $lastDocument->status;
-                $history->stage = 'Plan Proposed';
-                $history->save();
-                
-                
-                $list = Helpers::getInitiatorUserList($changeControl->division_id);
-                $userIds = collect($list)->pluck('user_id')->toArray();
-                $users = User::whereIn('id', $userIds)->select('id', 'name', 'email')->get();
-                $userIds = $users->pluck('id');
-                
-                foreach ($users as $userValue) {
-                    DB::table('notifications')->insert([
-                        'activity_id' => $changeControl->id,
-                        'activity_type' => "Notification",
-                        'from_id' => Auth::user()->id,
-                        'user_name' => $userValue->name,
-                        'to_id' => $userValue->id,
-                        'process_name' => "Change Control",
-                        'division_id' => $changeControl->division_id,
-                        'short_description' => $changeControl->short_description,
-                        'initiator_id' => $changeControl->initiator_id,
-                        'due_date' => $changeControl->due_date,
-                        'record' => $changeControl->record,
-                        'site' => "CC",
-                        'comment' => $request->comments,
-                        'status' => $changeControl->status,
-                        'stage' => $changeControl->stage,
-                        'created_at' => Carbon::now(),
-                    ]);
-                }
-
-
-                foreach ($list as $u) {
-                    $email = Helpers::getUserEmail($u->user_id);
-                        if ($email !== null) {
-                        try {
-                            Mail::send(
-                                'mail.view-mail',
-                                ['data' => $changeControl, 'site' => "CC", 'history' => "RA Review Completed", 'process' => 'Change Control', 'comment' => $request->comments, 'user' => Auth::user()->name],
-                                function ($message) use ($email, $changeControl) {
-                                    $message->to($email)
-                                    ->subject("Medicef Notification: Change Control, Record #" . str_pad($changeControl->record, 4, '0', STR_PAD_LEFT) . " - Activity: RA Review Performed");
-                                }
-                            );
-                        } catch(\Exception $e) {
-                            info('Error sending mail', [$e]);
-                        }
-                    }
-                }
-
-                // if ($userIds->isNotEmpty()) {
-                //     try {
-                //         foreach ($userIds as $userId) {
-                //             DB::table('notification_users')->insert([
-                //                 'record_id' => $changeControl->id,
-                //                 'record_type' => "CC",
-                //                 'from_id' => Auth::user()->id,
-                //                 'to_id' => $userId,
-                //                 'roles_id' => 4,
-                //             ]);
-                //         }
-                //     } catch (\Throwable $e) {
-                //         \Log::error('Notification creation failed: ' . $e->getMessage());
-                //     }
                 // }
 
 
@@ -9479,66 +9390,8 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                     $history->stage = 'Plan Proposed';
                     $history->save();
                     
-                    $list = Helpers::getInitiatorUserList($changeControl->division_id);
-                    $userIds = collect($list)->pluck('user_id')->toArray();
-                    $users = User::whereIn('id', $userIds)->select('id', 'name', 'email')->get();
-                    $userIds = $users->pluck('id');
+                   
                     
-                    foreach ($users as $userValue) {
-                        DB::table('notifications')->insert([
-                            'activity_id' => $changeControl->id,
-                            'activity_type' => "Notification",
-                            'from_id' => Auth::user()->id,
-                            'user_name' => $userValue->name,
-                            'to_id' => $userValue->id,
-                            'process_name' => "Change Control",
-                            'division_id' => $changeControl->division_id,
-                            'short_description' => $changeControl->short_description,
-                            'initiator_id' => $changeControl->initiator_id,
-                            'due_date' => $changeControl->due_date,
-                            'record' => $changeControl->record,
-                            'site' => "CC",
-                            'comment' => $request->comments,
-                            'status' => $changeControl->status,
-                            'stage' => $changeControl->stage,
-                            'created_at' => Carbon::now(),
-                        ]);
-                    }
-
-
-                    foreach ($list as $u) {
-                        $email = Helpers::getUserEmail($u->user_id);
-                            if ($email !== null) {
-                            try {
-                                Mail::send(
-                                    'mail.view-mail',
-                                    ['data' => $changeControl, 'site' => "CC", 'history' => "Approved", 'process' => 'Change Control', 'comment' => $request->comments, 'user' => Auth::user()->name],
-                                    function ($message) use ($email, $changeControl) {
-                                        $message->to($email)
-                                        ->subject("Medicef Notification: Change Control, Record #" . str_pad($changeControl->record, 4, '0', STR_PAD_LEFT) . " - Activity: Approved Performed");
-                                    }
-                                );
-                            } catch(\Exception $e) {
-                                info('Error sending mail', [$e]);
-                            }
-                        }
-                    }
-
-                    // if ($userIds->isNotEmpty()) {
-                    //     try {
-                    //         foreach ($userIds as $userId) {
-                    //             DB::table('notification_users')->insert([
-                    //                 'record_id' => $changeControl->id,
-                    //                 'record_type' => "CC",
-                    //                 'from_id' => Auth::user()->id,
-                    //                 'to_id' => $userId,
-                    //                 'roles_id' => 4,
-                    //             ]);
-                    //         }
-                    //     } catch (\Throwable $e) {
-                    //         \Log::error('Notification creation failed: ' . $e->getMessage());
-                    //     }
-                    // }
 
                     $changeControl->update();
                     toastr()->success('Sent to Pending Initiator Update');
@@ -9582,66 +9435,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                 $history->save();
 
 
-                $list = Helpers::getInitiatorUserList($changeControl->division_id);
-                $userIds = collect($list)->pluck('user_id')->toArray();
-                $users = User::whereIn('id', $userIds)->select('id', 'name', 'email')->get();
-                $userIds = $users->pluck('id');
-                    
-                foreach ($users as $userValue) {
-                    DB::table('notifications')->insert([
-                        'activity_id' => $changeControl->id,
-                        'activity_type' => "Notification",
-                        'from_id' => Auth::user()->id,
-                        'user_name' => $userValue->name,
-                        'to_id' => $userValue->id,
-                        'process_name' => "Change Control",
-                        'division_id' => $changeControl->division_id,
-                        'short_description' => $changeControl->short_description,
-                        'initiator_id' => $changeControl->initiator_id,
-                        'due_date' => $changeControl->due_date,
-                        'record' => $changeControl->record,
-                        'site' => "CC",
-                        'comment' => $request->comments,
-                        'status' => $changeControl->status,
-                        'stage' => $changeControl->stage,
-                        'created_at' => Carbon::now(),
-                    ]);
-                }
 
-
-                foreach ($list as $u) {
-                    $email = Helpers::getUserEmail($u->user_id);
-                        if ($email !== null) {
-                        try {
-                            Mail::send(
-                                'mail.view-mail',
-                                ['data' => $changeControl, 'site' => "CC", 'history' => "Approved", 'process' => 'Change Control', 'comment' => $request->comments, 'user' => Auth::user()->name],
-                                function ($message) use ($email, $changeControl) {
-                                    $message->to($email)
-                                    ->subject("Medicef Notification: Change Control, Record #" . str_pad($changeControl->record, 4, '0', STR_PAD_LEFT) . " - Activity: Approved Performed");
-                                }
-                            );
-                        } catch(\Exception $e) {
-                            info('Error sending mail', [$e]);
-                        }
-                    }
-                }
-
-                // if ($userIds->isNotEmpty()) {
-                //     try {
-                //         foreach ($userIds as $userId) {
-                //             DB::table('notification_users')->insert([
-                //                 'record_id' => $changeControl->id,
-                //                 'record_type' => "CC",
-                //                 'from_id' => Auth::user()->id,
-                //                 'to_id' => $userId,
-                //                 'roles_id' => 4,
-                //             ]);
-                //         }
-                //     } catch (\Throwable $e) {
-                //         \Log::error('Notification creation failed: ' . $e->getMessage());
-                //     }
-                // }
     
                 $changeControl->update();    
                 toastr()->success('Sent to HOD Final Review');
@@ -9687,67 +9481,6 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                 $history->stage = 'Plan Proposed';
                 $history->save();
 
-                $list = Helpers::getHodUserList($changeControl->division_id);
-                $userIds = collect($list)->pluck('user_id')->toArray();
-                $users = User::whereIn('id', $userIds)->select('id', 'name', 'email')->get();
-                $userIds = $users->pluck('id');
-                    
-                foreach ($users as $userValue) {
-                    DB::table('notifications')->insert([
-                        'activity_id' => $changeControl->id,
-                        'activity_type' => "Notification",
-                        'from_id' => Auth::user()->id,
-                        'user_name' => $userValue->name,
-                        'to_id' => $userValue->id,
-                        'process_name' => "Change Control",
-                        'division_id' => $changeControl->division_id,
-                        'short_description' => $changeControl->short_description,
-                        'initiator_id' => $changeControl->initiator_id,
-                        'due_date' => $changeControl->due_date,
-                        'record' => $changeControl->record,
-                        'site' => "CC",
-                        'comment' => $request->comments,
-                        'status' => $changeControl->status,
-                        'stage' => $changeControl->stage,
-                        'created_at' => Carbon::now(),
-                    ]);
-                }
-
-
-                foreach ($list as $u) {
-                    $email = Helpers::getUserEmail($u->user_id);
-                        if ($email !== null) {
-                        try {
-                            Mail::send(
-                                'mail.view-mail',
-                                ['data' => $changeControl, 'site' => "CC", 'history' => "Initiator Updated Complete", 'process' => 'Change Control', 'comment' => $request->comments, 'user' => Auth::user()->name],
-                                function ($message) use ($email, $changeControl) {
-                                    $message->to($email)
-                                    ->subject("Medicef Notification: Change Control, Record #" . str_pad($changeControl->record, 4, '0', STR_PAD_LEFT) . " - Activity: Initiator Updated Performed");
-                                }
-                            );
-                        } catch(\Exception $e) {
-                            info('Error sending mail', [$e]);
-                        }
-                    }
-                }
-
-                // if ($userIds->isNotEmpty()) {
-                //     try {
-                //         foreach ($userIds as $userId) {
-                //             DB::table('notification_users')->insert([
-                //                 'record_id' => $changeControl->id,
-                //                 'record_type' => "CC",
-                //                 'from_id' => Auth::user()->id,
-                //                 'to_id' => $userId,
-                //                 'roles_id' => 4,
-                //             ]);
-                //         }
-                //     } catch (\Throwable $e) {
-                //         \Log::error('Notification creation failed: ' . $e->getMessage());
-                //     }
-                // }
-
                 $comment->update();
                 $changeControl->update();
                 toastr()->success('Sent to HOD Final Review');
@@ -9792,66 +9525,7 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                 $history->stage = 'Plan Proposed';
                 $history->save();
                 
-                $list = Helpers::getQAUserList($changeControl->division_id);
-                $userIds = collect($list)->pluck('user_id')->toArray();
-                $users = User::whereIn('id', $userIds)->select('id', 'name', 'email')->get();
-                $userIds = $users->pluck('id');
-                    
-                foreach ($users as $userValue) {
-                    DB::table('notifications')->insert([
-                        'activity_id' => $changeControl->id,
-                        'activity_type' => "Notification",
-                        'from_id' => Auth::user()->id,
-                        'user_name' => $userValue->name,
-                        'to_id' => $userValue->id,
-                        'process_name' => "Change Control",
-                        'division_id' => $changeControl->division_id,
-                        'short_description' => $changeControl->short_description,
-                        'initiator_id' => $changeControl->initiator_id,
-                        'due_date' => $changeControl->due_date,
-                        'record' => $changeControl->record,
-                        'site' => "CC",
-                        'comment' => $request->comments,
-                        'status' => $changeControl->status,
-                        'stage' => $changeControl->stage,
-                        'created_at' => Carbon::now(),
-                    ]);
-                }
-
-
-                foreach ($list as $u) {
-                    $email = Helpers::getUserEmail($u->user_id);
-                        if ($email !== null) {
-                        try {
-                            Mail::send(
-                                'mail.view-mail',
-                                ['data' => $changeControl, 'site' => "CC", 'history' => "HOD Final Review Complete", 'process' => 'Change Control', 'comment' => $request->comments, 'user' => Auth::user()->name],
-                                function ($message) use ($email, $changeControl) {
-                                    $message->to($email)
-                                    ->subject("Medicef Notification: Change Control, Record #" . str_pad($changeControl->record, 4, '0', STR_PAD_LEFT) . " - Activity: HOD Final Review Complete Performed");
-                                }
-                            );
-                        } catch(\Exception $e) {
-                            info('Error sending mail', [$e]);
-                        }
-                    }
-                }
-
-                // if ($userIds->isNotEmpty()) {
-                //     try {
-                //         foreach ($userIds as $userId) {
-                //             DB::table('notification_users')->insert([
-                //                 'record_id' => $changeControl->id,
-                //                 'record_type' => "CC",
-                //                 'from_id' => Auth::user()->id,
-                //                 'to_id' => $userId,
-                //                 'roles_id' => 4,
-                //             ]);
-                //         }
-                //     } catch (\Throwable $e) {
-                //         \Log::error('Notification creation failed: ' . $e->getMessage());
-                //     }
-                // }
+              
 
                 $changeControl->update();
                 toastr()->success('Sent to Implementation Verification by QA');
@@ -9896,67 +9570,6 @@ if ($lastCft->Other3_on != $request->Other3_on && $request->Other3_on != null) {
                 $history->stage = 'Plan Proposed';
                 $history->save();
                 
-                
-                $list = Helpers::getQAHeadUserList($changeControl->division_id);
-                $userIds = collect($list)->pluck('user_id')->toArray();
-                $users = User::whereIn('id', $userIds)->select('id', 'name', 'email')->get();
-                $userIds = $users->pluck('id');
-                    
-                foreach ($users as $userValue) {
-                    DB::table('notifications')->insert([
-                        'activity_id' => $changeControl->id,
-                        'activity_type' => "Notification",
-                        'from_id' => Auth::user()->id,
-                        'user_name' => $userValue->name,
-                        'to_id' => $userValue->id,
-                        'process_name' => "Change Control",
-                        'division_id' => $changeControl->division_id,
-                        'short_description' => $changeControl->short_description,
-                        'initiator_id' => $changeControl->initiator_id,
-                        'due_date' => $changeControl->due_date,
-                        'record' => $changeControl->record,
-                        'site' => "CC",
-                        'comment' => $request->comments,
-                        'status' => $changeControl->status,
-                        'stage' => $changeControl->stage,
-                        'created_at' => Carbon::now(),
-                    ]);
-                }
-
-
-                foreach ($list as $u) {
-                    $email = Helpers::getUserEmail($u->user_id);
-                        if ($email !== null) {
-                        try {
-                            Mail::send(
-                                'mail.view-mail',
-                                ['data' => $changeControl, 'site' => "CC", 'history' => "Send For Final QA/CQA Head Approval", 'process' => 'Change Control', 'comment' => $request->comments, 'user' => Auth::user()->name],
-                                function ($message) use ($email, $changeControl) {
-                                    $message->to($email)
-                                    ->subject("Medicef Notification: Change Control, Record #" . str_pad($changeControl->record, 4, '0', STR_PAD_LEFT) . " - Activity: Send For Final QA/CQA Head Approval Performed");
-                                }
-                            );
-                        } catch(\Exception $e) {
-                            info('Error sending mail', [$e]);
-                        }
-                    }
-                }
-
-                // if ($userIds->isNotEmpty()) {
-                //     try {
-                //         foreach ($userIds as $userId) {
-                //             DB::table('notification_users')->insert([
-                //                 'record_id' => $changeControl->id,
-                //                 'record_type' => "CC",
-                //                 'from_id' => Auth::user()->id,
-                //                 'to_id' => $userId,
-                //                 'roles_id' => 4,
-                //             ]);
-                //         }
-                //     } catch (\Throwable $e) {
-                //         \Log::error('Notification creation failed: ' . $e->getMessage());
-                //     }
-                // }
 
                 $changeControl->update();
                 toastr()->success('Sent to Implementation Verification by QA/CQA');

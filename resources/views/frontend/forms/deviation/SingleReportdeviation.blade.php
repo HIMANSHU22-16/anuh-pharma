@@ -764,7 +764,7 @@
                         <th class="w-20">Investigation Details</th>
                         <td class="w-30">
                             @if ($data->Investigation_Details)
-                                {{ $data->Investigation_Details }}
+                                {{ strip_tags($data->Investigation_Details) }}
                             @else
                                 Not Applicable
                             @endif
@@ -909,12 +909,13 @@
                                 <td class="w-30">
                                     <div>
                                         @if ($data1->production_on)
-                                            {{ $data1->production_on }}
+                                            {{ \Carbon\Carbon::parse($data1->production_on)->format('d-m-Y') }}
                                         @else
                                             Not Applicable
                                         @endif
                                     </div>
                                 </td>
+
                             </tr>
 
                         </table>
@@ -1018,10 +1019,11 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Warehouse_Review_Completed_On)
-                                                {{ $data1->Warehouse_Review_Completed_On }}
+                                                {{ \Carbon\Carbon::parse($data1->Warehouse_Review_Completed_On)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
+
                                         </div>
                                     </td>
                                 </tr>
@@ -1126,12 +1128,13 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Quality_Control_on)
-                                                {{ $data1->Quality_Control_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Quality_Control_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1236,12 +1239,13 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->QualityAssurance_on)
-                                                {{ $data1->QualityAssurance_on }}
+                                                {{ \Carbon\Carbon::parse($data1->QualityAssurance_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1340,16 +1344,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Engineering Review Completed On</th>
+                                    <th class="w-20">Engineering Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Engineering_on)
-                                                {{ $data1->Engineering_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Engineering_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1452,12 +1457,13 @@
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Analytical_Development_on)
-                                                {{ $data1->Analytical_Development_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Analytical_Development_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1558,17 +1564,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20">Process Development Laboratory / Kilo Lab Review Completed On
-                                    </th>
+                                    <th class="w-20">Process Development Laboratory / Kilo Lab Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Kilo_Lab_attachment_on)
-                                                {{ $data1->Kilo_Lab_attachment_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Kilo_Lab_attachment_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1668,16 +1674,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Technology Transfer / Design Review Completed On</th>
+                                    <th class="w-20">Technology Transfer / Design Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Technology_transfer_on)
-                                                {{ $data1->Technology_transfer_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Technology_transfer_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1777,16 +1784,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Environment, Health & Safety Review Completed On</th>
+                                    <th class="w-20">Environment, Health & Safety Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Human_Resource_on)
-                                                {{ $data1->Human_Resource_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Human_Resource_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1885,16 +1893,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Human Resource & Administration Review Completed On</th>
+                                    <th class="w-20">Human Resource & Administration Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->production_on)
-                                                {{ $data1->production_on }}
+                                                {{ \Carbon\Carbon::parse($data1->production_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -1995,16 +2004,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Information Technology Review Completed On</th>
+                                    <th class="w-20">Information Technology Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Information_Technology_on)
-                                                {{ $data1->Information_Technology_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Information_Technology_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -2105,16 +2115,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Project Management Review Completed On</th>
+                                    <th class="w-20">Project Management Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Project_management_on)
-                                                {{ $data1->Project_management_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Project_management_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -2223,16 +2234,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Other's 1 Review Completed On</th>
+                                    <th class="w-20">Other's 1 Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other1_on)
-                                                {{ $data1->Other1_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Other1_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -2341,16 +2353,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Other's 2 Review Completed On</th>
+                                    <th class="w-20">Other's 2 Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other2_on)
-                                                {{ $data1->Other2_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Other2_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -2459,16 +2472,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Other's 3 Review Completed On</th>
+                                    <th class="w-20">Other's 3 Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other3_on)
-                                                {{ $data1->Other3_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Other3_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -2577,16 +2591,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Other's 4 Review Completed On</th>
+                                    <th class="w-20">Other's 4 Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other4_on)
-                                                {{ $data1->Other4_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Other4_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -2695,16 +2710,17 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <th class="w-20"> Other's 5 Review Completed On</th>
+                                    <th class="w-20">Other's 5 Review Completed On</th>
                                     <td class="w-30">
                                         <div>
                                             @if ($data1->Other5_on)
-                                                {{ $data1->Other5_on }}
+                                                {{ \Carbon\Carbon::parse($data1->Other5_on)->format('d-m-Y') }}
                                             @else
                                                 Not Applicable
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                             </table>
                         </div>
