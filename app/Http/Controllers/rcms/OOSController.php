@@ -30,11 +30,11 @@ class OOSController extends Controller
     {
         $cft = [];
 
-        $old_records = OOS::select('id', 'division_id', 'record_number')->get();
+        $old_records = OOS::select('id', 'division_id', 'record')->get();
         $old_record = ActionItem::select('id', 'division_id', 'record')->get();
         $capa_record = Capa::select('id', 'division_id', 'record')->get();
-        $record_number = ((RecordNumber::first()->value('counter')) + 1);
-        $record_number = str_pad($record_number, 4, '0', STR_PAD_LEFT);
+        $record = ((RecordNumber::first()->value('counter')) + 1);
+        $record = str_pad($record, 4, '0', STR_PAD_LEFT);
         $division = QMSDivision::where('name', Helpers::getDivisionName(session()->get('division')))->first();
 
         $users = User::get();
@@ -43,7 +43,7 @@ class OOSController extends Controller
         $due_date= $formattedDate->format('Y-m-d');
         // $changeControl = OpenStage::find(1);
         //  if(!empty($changeControl->cft)) $cft = explode(',', $changeControl->cft);
-        return view("frontend.oos.oos-form", compact('due_date', 'record_number', 'old_records', 'cft','old_record','capa_record','users'));
+        return view("frontend.oos.oos-form", compact('due_date', 'record', 'old_records', 'cft','old_record','capa_record','users'));
 
     }
     
@@ -92,9 +92,9 @@ class OOSController extends Controller
         $data = OOS::find($id);
         $users = User::get();
         $currentDate = Carbon::now();
-        $old_record = OOS::select('id', 'division_id', 'record_number')->get();
+        $old_record = OOS::select('id', 'division_id', 'record')->get();
         // $revised_date = Extension::where('parent_id', $id)->where('parent_type', "OOS Chemical")->value('revised_date');
-        $data->record_number = str_pad($data->record_number, 4, '0', STR_PAD_LEFT);
+        $data->record = str_pad($data->record, 4, '0', STR_PAD_LEFT);
         
         $data->assign_to_name = User::where('id', $data->assign_id)->value('name');
         $data->initiator_name = User::where('id', $data->initiator_id)->value('name');

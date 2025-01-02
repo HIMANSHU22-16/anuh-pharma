@@ -208,8 +208,8 @@ Route::post('oosupdate/{id}', [OOSController::class, 'update'])->name('oosupdate
 Route::post('sendstage/{id}',[OOSController::class,'send_stage'])->name('send_stage');
 Route::get('AuditTrial/{id}', [OOSController::class, 'AuditTrial'])->name('audit_trial');
 Route::get('auditDetails/{id}', [OOSController::class, 'auditDetails'])->name('audit_details');
-Route::get('audit_report/{id}', [OOSController::class, 'auditReport'])->name('audit_report');
-Route::get('single_report/{id}', [OOSController::class, 'singleReport'])->name('single_report');
+// Route::get('audit_report/{id}', [OOSController::class, 'auditReport'])->name('audit_report');
+// Route::get('single_report/{id}', [OOSController::class, 'singleReport'])->name('single_report');
 
 Route::post('requestmoreinfo_back_stage/{id}',[OOSController::class,'requestmoreinfo_back_stage'])->name('requestmoreinfo_back_stage');
 Route::post('assignable_send_stage/{id}',[OOSController::class,'assignable_send_stage'])->name('assignable_send_stage');

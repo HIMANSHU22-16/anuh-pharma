@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('initiator_id')->nullable();
             $table->string('division_id')->nullable();
-            $table->string('record_number')->nullable();
+            $table->string('record')->nullable();
             $table->string('intiation_date')->nullable();
             $table->string('initiator')->nullable();
             $table->string('initiator_group')->nullable();

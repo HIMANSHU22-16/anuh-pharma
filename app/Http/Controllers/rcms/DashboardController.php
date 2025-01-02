@@ -378,9 +378,9 @@ class DashboardController extends Controller
             array_push($table, [
                 "id" => $data->id,
                 "parent" => $data->parent_record ? $data->parent_record : "-",
-                "record" => $data->record_number,
+                "record" => $data->record,
                 "division_id" => $data->division_id,
-                "type" => "OOS/OOT",
+                "type" => "OOS",
                 "parent_id" => $data->parent_id,
                 "parent_type" => $data->parent_type,
                 "short_description" => $data->description_gi ? $data->description_gi : "-",
@@ -388,7 +388,7 @@ class DashboardController extends Controller
                 "initiated_through" => $data->initiated_through_gi,
                 "intiation_date" => $data->intiation_date,
                 "stage" => $data->status,
-                "date_open" => $data->created_at,
+                "date_open" => $data->create,
                 "date_close" => $data->updated_at,
                 "due_date" => $data->due_date,
             ]);
@@ -784,9 +784,9 @@ class DashboardController extends Controller
             $parent="deviationparentchildReport/". $data->id;
             $family="DeviationFamily/". $data->id;
 
-        }elseif ($type == "OOS/OOT") {
+        }elseif ($type == "OOS") {
             $data = OOS::find($id);
-            $single = "single_report/" . $data->id;
+            $single = "single_report/" .$data->id;
             $audit = "audit_report/" . $data->id;
             $parent="deviationparentchildReport/". $data->id;
             $family="DeviationFamily/". $data->id;

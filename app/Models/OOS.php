@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Oosgrids;
+use App\Models\QmsRecordNumber;
+
 
 class OOS extends Model
 {
@@ -16,7 +18,7 @@ class OOS extends Model
           'initiator_id',
           'division_id',
           'record',
-          'record_number',
+          'record',
           'intiation_date',
           'initiator',
           'initiator_group',

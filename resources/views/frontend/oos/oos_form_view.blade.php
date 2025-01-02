@@ -364,10 +364,6 @@
         });
     </script>
 
-
-
-
-
     <div class="form-field-head">
         <!-- <div class="pr-id">
                 New Document
@@ -416,7 +412,6 @@
                 <button class="cctablinks" onclick="openCity(event, 'CCForm15')">Under Addendum Review</button>
                 <button class="cctablinks" onclick="openCity(event, 'CCForm16')">Under Addendum Verification</button> --}}
                 <button class="cctablinks" onclick="openCity(event, 'CCForm17')">Signature</button>
-
             </div>
         </div>
                 
@@ -433,8 +428,8 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator"> OOS Number </label>
-                                <input disabled type="text" name="record_number"
-                                 value="{{ Helpers::getDivisionName($data->division_id) }}/OOS/{{ Helpers::year($data->created_at) }}/{{ $data->record_number }}">
+                                <input disabled type="text" name="record"
+                                 value="{{ Helpers::getDivisionName($data->division_id) }}/OOS/{{ Helpers::year($data->created_at) }}/{{ $data->record }}">
                             </div>
                         </div>
 
