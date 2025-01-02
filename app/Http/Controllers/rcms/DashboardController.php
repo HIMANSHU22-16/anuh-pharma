@@ -787,8 +787,8 @@ class DashboardController extends Controller
             $family="DeviationFamily/". $data->id;
         } elseif ($type == "Deviation") {
             $data = Deviation::find($id);
-            $single = "deviationSingleReport/". $data->id . "/show";
-            $audit = " deviationAuditReport/". $data->id;
+            $single = "deviationSingleReport/". $data->id;
+            $audit = " DeviationAuditTrialPdf/". $data->id;
             $parent="deviationparentchildReport/". $data->id;
             $family="DeviationFamily/". $data->id;
         }

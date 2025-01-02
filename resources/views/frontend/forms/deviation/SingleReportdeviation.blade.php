@@ -229,72 +229,60 @@
                         </td>
                     </tr>
                     <tr>
-                        
                         <th class="w-20">Short Description</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->short_description)
                                 {{ $data->short_description }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-
-
                     </tr>
                     <tr>
                         <th class="w-20">Deviation Requested For</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->audit_type)
                                 {{ $data->audit_type }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
+                    </tr>
+                    <tr>
                         <th class="w-20">Name of Product</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->name_product)
                                 {{ $data->name_product }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-
                     </tr>
-
                     <tr>
                         <th class="w-20"> Stage of deviation</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->deviation_stage)
                                 {{ $data->deviation_stage }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <!-- <th class="w-20"> Deviation Observed On (Time)</th>
-                        <td class="w-30">
-                            @if ($data->deviation_time)
-                                {{ $data->deviation_time }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td> -->
-
                     </tr>
+
                     <tr>
                         <th class="w-20"> Description of Deviation</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->Description_Deviation)
-                            {{ $data->Description_Deviation }} 
+                            {{ strip_tags($data->Description_Deviation) }} 
                             @else 
                                Not Applicable 
                             @endif
                         </td>
-                       
                     </tr>
 
                     <tr>
                         <th class="w-20">Date/shift of Deviation Occurrence/ Noticed</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->deviation_shift)
                                 {{ $data->deviation_shift}}
                             @else
@@ -305,9 +293,9 @@
 
                     <tr>
                         <th class="w-20"> Existing Procedure (With References)</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->existing_procedure)
-                                {{ $data->existing_procedure }}
+                                {{ strip_tags($data->existing_procedure) }}
                             @else
                                 Not Applicable
                             @endif
@@ -316,9 +304,9 @@
 
                     <tr>
                         <th class="w-20">Immediate Action taken if any (In consultation with Quality Head/Designee)</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->Immediate_Action)
-                                {{ $data->Immediate_Action }}
+                                {{ strip_tags($data->Immediate_Action) }}
                             @else
                                 Not Applicable
                             @endif
@@ -346,9 +334,9 @@
 
                     <tr>
                         <th class="w-20">Summary of Investigation Findings</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->summary)
-                                {{ $data->summary }}
+                                {{ strip_tags($data->summary) }}
                             @else
                                 Not Applicable
                             @endif
@@ -357,9 +345,9 @@
 
                     <tr>
                         <th class="w-20">Root Cause (Based on outcome of investigation)</th>
-                        <td class="w-30">
+                        <td class="w-80">
                             @if ($data->Root)
-                                {{ $data->Root }}
+                                {{ strip_tags($data->Root) }}
                             @else
                                 Not Applicable
                             @endif
@@ -367,10 +355,10 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Impact Assessment (In coordination with Quality Head / Designee)<th>
-                        <td class="w-30">
+                        <th class="w-20">Impact Assessment (In coordination with Quality Head / Designee)</th>
+                        <td class="w-80">
                             @if ($data->Impact)
-                                {{ $data->Impact }}
+                                {{ strip_tags($data->Impact) }}
                             @else
                                 Not Applicable
                             @endif
@@ -416,10 +404,10 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Corrective Action Taken (In coordination with QA)<th>
-                        <td class="w-30">
+                        <th class="w-20">Corrective Action Taken (In coordination with QA)</th>
+                        <td class="w-80">
                             @if ($data->Corrective_Action)
-                                {{ $data->Corrective_Action }}
+                                {{ strip_tags($data->Corrective_Action) }}
                             @else
                                 Not Applicable
                             @endif
@@ -427,8 +415,8 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Deviation Approval<th>
-                        <td class="w-30">
+                        <th class="w-20">Deviation Approval</th>
+                        <td class="w-80">
                             @if ($data->deviation_approval)
                                 {{ $data->deviation_approval }}
                             @else
@@ -437,18 +425,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="w-20">Deviation Approval<th>
-                        <td class="w-30">
-                            @if ($data->deviation_approval)
-                                {{ $data->deviation_approval }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="w-20">Comments<th>
-                        <td class="w-30">
+                        <th class="w-20">Comments</th>
+                        <td class="w-80">
                             @if ($data->comments)
                                 {{ $data->comments }}
                             @else
@@ -458,8 +436,8 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Notification to Customer / Regulatory<th>
-                        <td class="w-30">
+                        <th class="w-20">Notification to Customer / Regulatory</th>
+                        <td class="w-80">
                             @if ($data->notification)
                                 {{ $data->notification }}
                             @else
@@ -469,8 +447,8 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Verification of Closure<th>
-                        <td class="w-30">
+                        <th class="w-20">Verification of Closure</th>
+                        <td class="w-80">
                             @if ($data->closure_verification)
                                 {{ $data->closure_verification }}
                             @else
@@ -480,8 +458,8 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Extension (if required) with justification from concerned department head<th>
-                        <td class="w-30">
+                        <th class="w-20">Extension (if required) with justification from concerned department head</th>
+                        <td class="w-80">
                             @if ($data->Extension_justification)
                                 {{ $data->Extension_justification }}
                             @else
@@ -490,8 +468,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="w-20">Feedback received from Customer / Regulatory<th>
-                        <td class="w-30">
+                        <th class="w-20">Feedback received from Customer / Regulatory</th>
+                        <td class="w-80">
                             @if ($data->feedback)
                                 {{ $data->feedback }}
                             @else
@@ -500,8 +478,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="w-20">Comments (QA)<th>
-                        <td class="w-30">
+                        <th class="w-20">Comments (QA)</th>
+                        <td class="w-80">
                             @if ($data->qa_comments)
                                 {{ $data->qa_comments }}
                             @else
@@ -511,7 +489,7 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Closure evidences attached<th>
+                        <th class="w-20">Closure evidences attached</th>
                         <td class="w-30">
                             @if ($data->closure_evidences)
                                 {{ $data->closure_evidences }}
@@ -520,7 +498,7 @@
                             @endif
                         </td>
 
-                        <th class="w-20">Closure evidence (pl. specify) enclosed<th>
+                        <th class="w-20">Closure evidence (pl. specify) enclosed</th>
                         <td class="w-30">
                             @if ($data->closure_enclosed)
                                 {{ $data->closure_enclosed }}
@@ -531,8 +509,8 @@
                     </tr>
 
                     <tr>
-                       <th class="w-20">Closure comments<th>
-                        <td class="w-30">
+                       <th class="w-20">Closure comments</th>
+                        <td class="w-80">
                             @if ( $data->comments_closure )
                                 {{ $data->comments_closure }}
                             @else
@@ -541,83 +519,30 @@
                         </td>
                     </tr>
                 </table>
-   
-        
-        <div class="block">
-            <div class="block-head">
-                Description of Deviation
-         </div>
-         <div class="border-table">
-        <table>
-                <tr class="table_bg">
-                    <th class="w-20" >5W/2H</th>
-                    <th class="w-80"  >Remarks</th>
-                </tr>
-            
-                <tr>
-                    <td class="w-20" style="background-color: #91b4f7;">What</td>
-                    <td class="w-80" >{{$data->what}}</td>
-                </tr>
-                <tr>
-                    <td class="w-20" style="background-color: #91b4f7;">Why</td>
-                    <td class="w-80">{{$data->why_why}}</td>
-                </tr>
-                <tr>
-                    <td class="w-20" style="background-color: #91b4f7;">Where</td>
-                    <td class="w-80">{{$data->where_where}}</td>
-                </tr>
-                <tr>
-                    <td class="w-20" style="background-color: #91b4f7;">When</td>
-                    <td class="w-80">{{$data->when_when}}</td>
-                </tr>
-                <tr>
-                    <td class="w-20" style="background-color: #91b4f7;">Who</td>
-                    <td class="w-80">{{$data->who}}</td>
-                </tr>
-                <tr>
-                    <td class="w-20" style="background-color: #91b4f7;">How</td>
-                    <td class="w-80">{{$data->how}}</td>
-                </tr>
-                <tr>
-                    <td class="w-20" style="background-color: #91b4f7;">How much</td>
-                    <td class="w-80">{{$data->how_much}}</td>
-                </tr>
-          
-        </table>
-    </div>
-    </div>
-
-
-
                 
-
                 <div class="block">
                     <div class="block-head">
-                        Facility/ Equipment/ Instrument/ System Details
+                        Product Details
                     </div>
                     <div class="border-table">
                         <table>
                             <tr class="table_bg">
-                                <th class="w-10">Sr. No.</th>
-                                <th class="w-25">Name</th>
-                                <th class="w-25">ID Number</th>
+                                <th class="w-25">Batch Nos.</th>
+                                <th class="w-25">Mfg. Date</th>
+                                <th class="w-25">Exp. Date</th>
+                                <th class="w-25">Batch Size</th>
+                                <th class="w-25">Market</th>
                                 <th class="w-25">Remarks</th>
-
                             </tr>
-                            @if (!empty($grid_data->IDnumber))
-                                @foreach (unserialize($grid_data->IDnumber) as $key => $dataDemo)
+                            @if (!empty($productDetailsData))
+                                @foreach($productDetailsData as $index => $product)
                                     <tr>
-                                        <td class="w-15">{{ $loop->index + 1 }}</td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data->facility_name)[$key] ? unserialize($grid_data->facility_name)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data->IDnumber)[$key] ? unserialize($grid_data->IDnumber)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data->Remarks)[$key] ? unserialize($grid_data->Remarks)[$key] : 'Not Applicable' }}
-                                        </td>
-
+                                        <td class="w-25">{{ $product['batch_no'] ? $product['batch_no'] : 'Not Applicable' }}</td>
+                                        <td class="w-25">{{ $product['mfg_date'] ? \Carbon\Carbon::parse($product['mfg_date'])->format('d-M-Y') : 'Not Applicable' }}</td>
+                                        <td class="w-25">{{ $product['exp_date'] ? \Carbon\Carbon::parse($product['exp_date'])->format('d-M-Y') : 'Not Applicable' }}</td>
+                                        <td class="w-25">{{ $product['batch_size'] ? $product['batch_size'] : 'Not Applicable' }}</td>
+                                        <td class="w-25">{{ $product['market'] ? $product['market'] : 'Not Applicable' }}</td>
+                                        <td class="w-25">{{ $product['remarks'] ? $product['remarks'] : 'Not Applicable' }}</td>
                                     </tr>
                                 @endforeach
                             @else
@@ -626,7 +551,8 @@
                                     <td>Not Applicable</td>
                                     <td>Not Applicable</td>
                                     <td>Not Applicable</td>
-
+                                    <td>Not Applicable</td>
+                                    <td>Not Applicable</td>
                                 </tr>
                             @endif
                         </table>
@@ -635,115 +561,122 @@
 
                 <div class="block">
                     <div class="block-head">
-                        Document Details
+                        Previous History of product-specific or similar nature of Deviation (If any)
                     </div>
                     <div class="border-table">
                         <table>
                             <tr class="table_bg">
-                                <th class="w-10">Sr. No.</th>
-                                <th class="w-25">Number</th>
-                                <th class="w-25">Reference Document Name</th>
-                                <th class="w-25">Remarks</th>
-
+                                <th>Sr. No.</th>
+                                <th>Deviation Date</th>
+                                <th>Deviation Details</th>
+                                <th>Action Taken</th>
+                                <th>Status</th>
+                                <th>Remark</th>
                             </tr>
-                            @if (!empty($grid_data1->Number))
-                                @foreach (unserialize($grid_data1->Number) as $key => $dataDemo)
+                            @if (!empty($previousHistoryData))
+                                @foreach($previousHistoryData as $index => $product)
                                     <tr>
-                                        <td class="w-15">{{ $loop->index + 1 }}</td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Number)[$key] ? unserialize($grid_data1->Number)[$key] : 'Not Applicable' }}
+                                        <td class="w-10">{{ $index + 1 }}</td>
+                                        <td class="w-20">
+                                            {{ $product['deviation_date'] ? \Carbon\Carbon::parse($product['deviation_date'])->format('d-M-Y') : 'Not Applicable' }}
                                         </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->ReferenceDocumentName)[$key] ? unserialize($grid_data1->ReferenceDocumentName)[$key] : 'Not Applicable' }}
+                                        <td class="w-20">
+                                            {{ $product['deviation_details'] ? $product['deviation_details'] : 'Not Applicable' }}
                                         </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Document_Remarks)[$key] ? unserialize($grid_data1->Document_Remarks)[$key] : 'Not Applicable' }}
+                                        <td class="w-20">
+                                            {{ $product['action_taken'] ? $product['action_taken'] : 'Not Applicable' }}
                                         </td>
-
+                                        <td class="w-20">
+                                            {{ $product['status'] ? $product['status'] : 'Not Applicable' }}
+                                        </td>
+                                        <td class="w-20">
+                                            {{ $product['remark'] ? $product['remark'] : 'Not Applicable' }}
+                                        </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
+                                    <td>1</td>
                                     <td>Not Applicable</td>
                                     <td>Not Applicable</td>
                                     <td>Not Applicable</td>
                                     <td>Not Applicable</td>
-
+                                    <td>Not Applicable</td>
                                 </tr>
                             @endif
                         </table>
                     </div>
                 </div>
-                {{-- ==================================new Added=================== --}}
+
                 <div class="block">
                     <div class="block-head">
-                        Product/Batch Details
+                        Actions Plan
                     </div>
                     <div class="border-table">
                         <table>
                             <tr class="table_bg">
                                 <th class="w-10">Sr. No.</th>
-                                <th class="w-25">Product</th>
-                                <th class="w-25">Stage</th>
-                                <th class="w-25">Batch No.</th>
-
+                                <th class="w-25">Description of Action</th>
+                                <th class="w-25">Responsible Department</th>
+                                <th class="w-20">Planned Date</th>
+                                <th class="w-20">Remark</th>
                             </tr>
-                            @if (!empty($grid_data1->Number))
-                                @foreach (unserialize($grid_data1->Number) as $key => $dataDemo)
+                            @if (is_array($actionsplanData) && !empty($actionsplanData))
+                                @foreach($actionsplanData as $index => $product)
                                     <tr>
-                                        <td class="w-15">{{ $loop->index + 1 }}</td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Number)[$key] ? unserialize($grid_data1->Number)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->ReferenceDocumentName)[$key] ? unserialize($grid_data1->ReferenceDocumentName)[$key] : 'Not Applicable' }}
-                                        </td>
-                                        <td class="w-15">
-                                            {{ unserialize($grid_data1->Document_Remarks)[$key] ? unserialize($grid_data1->Document_Remarks)[$key] : 'Not Applicable' }}
-                                        </td>
-
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $product['action_description'] ?? 'Not Applicable' }}</td>
+                                        <td>{{ $product['responsible_department'] ?? 'Not Applicable' }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($product['planned_date'])->format('d-M-Y') ?? 'Not Applicable' }}</td>
+                                        <td>{{ $product['actionremark'] ?? 'Not Applicable' }}</td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-                                    <td>Not Applicable</td>
-
+                                    <td colspan="5">No Actions Plan Data Available</td>
                                 </tr>
                             @endif
                         </table>
                     </div>
                 </div>
 
-                <div class="border-table">
+                <div class="block">
                     <div class="block-head">
-                        Initial Attachments
+                        Tracking sheet for completion of action plan impacted due to said deviation
                     </div>
-                    <table>
-
-                        <tr class="table_bg">
-                            <th class="w-20">S.N.</th>
-                            <th class="w-60">Attachment</th>
-                        </tr>
-                        @if ($data->Audit_file)
-                            @foreach (json_decode($data->Audit_file) as $key => $file)
-                                <tr>
-                                    <td class="w-20">{{ $key + 1 }}</td>
-                                    <td class="w-20"><a href="{{ asset('upload/' . $file) }}"
-                                            target="_blank"><b>{{ $file }}</b></a> </td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td class="w-20">1</td>
-                                <td class="w-20">Not Applicable</td>
+                    <div class="border-table">
+                        <table>
+                            <tr class="table_bg">
+                                <th class="w-10">Sr. No.</th>
+                                <th class="w-20">Description of Action</th>
+                                <th class="w-20">Responsible Department</th>
+                                <th class="w-15">Planned Date</th>
+                                <th class="w-15">Completion Date</th>
+                                <th class="w-10">Verified By / On (QA)</th>
+                                <th class="w-10">Remarks</th>
                             </tr>
-                        @endif
-
-                    </table>
+                            @if (is_array($trackingplanData) && !empty($trackingplanData))
+                                @foreach($trackingplanData as $index => $product)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $product['action_des'] ?? 'Not Applicable' }}</td>
+                                        <td>{{ $product['res_department'] ?? 'Not Applicable' }}</td>
+                                        <td>{{ !empty($product['plan_date']) ? \Carbon\Carbon::parse($product['plan_date'])->format('d-M-Y') : 'Not Applicable' }}</td>
+                                        <td>{{ !empty($product['completion_date']) ? \Carbon\Carbon::parse($product['completion_date'])->format('d-M-Y') : 'Not Applicable' }}</td>
+                                        <td>{{ $product['verified_by'] ?? 'Not Applicable' }}</td>
+                                        <td>{{ $product['trackingsheetremark'] ?? 'Not Applicable' }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="7">No Tracking Data Available</td>
+                                </tr>
+                            @endif
+                        </table>
+                    </div>
                 </div>
+
+
                 <!-- {{-- ==================================      --}} -->
 
                 <div class="block">
