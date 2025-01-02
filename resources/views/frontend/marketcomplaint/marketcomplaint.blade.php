@@ -1107,7 +1107,7 @@
                             <div class="col-12">
                                 <div class="group-input">
                                     <label for="due_date_extension">EXTENSION FOR DELAY IN CLOSURE OF MARKET COMPLAINT:
-                                        
+
                                         </label>
                                     <div><small class="text-primary">Justification for Delay</small></div>
                                     <textarea name="due_date_extension"></textarea>
@@ -1151,7 +1151,7 @@
                                     // Add new row in Closure Verification table
                                     $('#closureverification_add').click(function(e) {
                                         e.preventDefault();
-                            
+
                                         function generateClosureVerificationTableRow(serialNumber) {
                                             var html =
                                                 '<tr>' +
@@ -1165,20 +1165,20 @@
                                                 '</tr>';
                                             return html;
                                         }
-                            
+
                                         var tableBody = $('#closureverification_details tbody');
                                         var rowCount = tableBody.children('tr').length;
                                         var newRow = generateClosureVerificationTableRow(rowCount);
                                         tableBody.append(newRow);
                                     });
-                            
+
                                     // Remove row in Closure Verification table
                                     $(document).on('click', '.removeRowBtn', function() {
                                         $(this).closest('tr').remove();
                                     });
                                 });
                             </script>
-                            
+
 
                             </div>
                             <div class="button-block">
@@ -3212,7 +3212,7 @@
                                     </div>
                                 </div>
 
-                               
+
 
                             </div>
                             <div class="button-block">

@@ -195,7 +195,7 @@
                     <strong>Printed By :</strong> {{ Auth::user()->name }}
                 </td>
                 {{-- <td class="w-30">
-                    <strong>Page :</strong> 
+                    <strong>Page :</strong>
                 </td> --}}
             </tr>
         </table>
@@ -230,7 +230,7 @@
                         </td>
                     </tr>
                     <tr>
-                        
+
                         <th class="w-20">Department Group</th>
                         <td class="w-30">
                             @if ($data->initiator_group)
@@ -243,7 +243,7 @@
                     </tr>
 
                 </table>
-                
+
 
                 <div class="block-head">
                     Product Plan
@@ -259,7 +259,7 @@
                                     <th style="width: 100px;">Batch No</th>
                                     <th style="width: 100px;">Mfg. Date</th>
                                     <th style="width: 120px;">Exp. Date / Retest Date</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -285,7 +285,7 @@
                                 @endif
                             </tbody>
                         </table>
-                
+
                         <!-- Second Half of the Table -->
                         <table class="table table-bordered" id="product_dispatch" style="width: 100%; margin-top: 15px;">
                             <thead>
@@ -301,7 +301,7 @@
                                 @if($productdeta && is_array($productdeta))
                                 @php $serialNumber = 1; @endphp
                                     @foreach($productdeta as $key => $detail)
-                                        <tr> 
+                                        <tr>
                                             <td>{{ $serialNumber++ }}</td>
                                             <td>{{ $detail['batch_size'] ?? 'Not Applicable' }}</td>
                                             <td>{{ $detail['dispatch_date'] ?? 'Not Applicable' }}</td>
@@ -322,9 +322,9 @@
                         </table>
                     </div>
                 </div>
-                
-                
-                
+
+
+
                    <table>
                     <th class="w-20">Short Description</th>
                     <td class="w-30">
@@ -339,7 +339,7 @@
                     <tr>
                         <th class="w-20">Name & Address of The Complainant Agency</th>
                             @if ($data->nameAddressagency)
-                            {{ \Carbon\Carbon::parse($data->nameAddressagency)->format('d-m-Y') }}
+                            {{ $data->nameAddressagency}}
                         @else
                             Not Applicable
                         @endif
@@ -350,11 +350,11 @@
                         @else
                             Not Applicable
                         @endif</td>
-                       
+
 
                     </tr>
                     <tr>
-                        
+
                         <th class="w-20">Phone No</th>
                         <td>
                             @if ($data->phone_no)
@@ -419,9 +419,9 @@
                         </td>
                     </tr>
                 </table>
-              
+
                 <div class="block-head">
-                    Previous History of Product Specific 
+                    Previous History of Product Specific
                 </div>
                 <div class="border-table" style="margin-bottom: 15px;">
                     <div class="table-responsive">
@@ -456,7 +456,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            
+
                             <!-- Second Half of the Table -->
                             <table class="table table-bordered" id="history_details_second" style="width: 100%; margin-top: 15px;">
                                 <thead>
@@ -474,7 +474,7 @@
                                                 <td>{{ $serialNumber++ }}</td>
                                                 <td>{{ $detail['capa_taken'] ?? 'Not Applicable' }}</td>
                                                 <td>{{ $detail['remark'] ?? 'Not Applicable' }}</td>
-                                                
+
                                             </tr>
                                         @endforeach
                                     @else
@@ -489,7 +489,7 @@
                         </div>
                     </div>
                 </div>
-                
+
 
 
 
@@ -512,7 +512,7 @@
                     {{-- <th class="w-20">Name of Product & Batch No</th> --}}
                     {{-- <td class="w-30">@if ($data->Product_Batch){{ ($data->Product_Batch) }} @else Not Applicable @endif</td> --}}
                     {{-- </tr> --}}
-                 
+
 
                 </table>
                 <div class="block">
@@ -549,7 +549,7 @@
                             </tr>
                     </table>
                 </div>
-            
+
                 <div class="block">
                     <div class="block-head">
                         Testing Plan
@@ -589,7 +589,7 @@
                     @endif
                 </tbody>
             </table>
-            
+
             <!-- Second Half of the Table -->
             <table class="table table-bordered" id="material_details_second" style="width: 100%; margin-top: 15px;">
                 <thead>
@@ -624,7 +624,7 @@
 
                     </div>
                 </div>
-              
+
 
                 <div class="border-table">
                     <div class="block-head">
@@ -749,7 +749,7 @@
                             @endif
                         </td>
                     </tr>
-                  
+
                     <tr>
                         {{-- <th class="w-20">Customer Notification Required ?</th> --}}
                         {{-- <td class="w-30">@if ($data->Customer_notification){{$data->Customer_notification}}@else Not Applicable @endif</td> --}}
@@ -769,8 +769,8 @@
                     </td> --}}
                     </tr>
 
-                   
-                   
+
+
                 </table>
                 <div class="border-table">
                     <div class="block-head">
@@ -800,8 +800,8 @@
                     </table>
                 </div>
             </div>
-           
-          
+
+
 
 
             <div class="block">
@@ -899,7 +899,7 @@
 
     </div>
 
-  
+
 
 </body>
 

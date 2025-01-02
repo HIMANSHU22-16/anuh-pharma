@@ -371,6 +371,8 @@ class DashboardController extends Controller
             ]);
         }
         // $table  = collect($table)->sortBy('record')->reverse()->toArray();
+        $table = collect($table)->sortByDesc('record')->toArray();
+
         // return $table;
         // $paginatedData = json_encode($table);
 

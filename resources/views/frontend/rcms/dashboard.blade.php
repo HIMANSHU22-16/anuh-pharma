@@ -119,7 +119,7 @@
                 querySelect.options.add(new Option('Close - Done', '6'));
             }
 
-            
+
         // Add more conditions based on other scope values
 
     }
@@ -133,16 +133,16 @@
     overflow: hidden !important;
     text-overflow: ellipsis;
     }
-  
+
 </style>
 @section('rcms_container')
     <div id="rcms-dashboard">
         <div class="container-fluid">
             <div class="dash-grid">
-                
+
                 <div>
                     <div class="inner-block scope-table" style="height: calc(100vh - 170px); padding: 0;">
-                        
+
                        <div class="grid-block">
                             <div class="group-input">
                                 <label for="scope">Process</label>
@@ -179,7 +179,7 @@
                                     <option value="">Initial Deviation Category= Critical</option>
                                      <option value="">Post Categorization Of Deviation= Minor</option>
                                     <option value="">Post Categorization Of Deviation= Major</option>
-                                    <option value="">Post Categorization Of Deviation= Critical</option> 
+                                    <option value="">Post Categorization Of Deviation= Critical</option>
                                 </select>
                             </div>
                             <div class="item-btn" onclick="window.print()">Print</div>
@@ -189,7 +189,7 @@
                                 <thead >
                                     <tr>
                                         <th style="width: 2%;">Record</th>
-                                         <th>Parent ID</th> 
+                                         <th>Parent ID</th>
                                         <th style="width: 10%">Division</th>
                                         <th>Process</th>
                                         <th style="width: 10px;" class="td_desc">Short Description</th>
@@ -277,7 +277,7 @@
                                                             </div>
                                                         </a>
                                                     @endif
-                                                    
+
                                                 @elseif ($datas->type == 'Audit-Program')
                                                     <a href="{{ route('ShowAuditProgram', $datas->id) }}" style="color: blue">
                                                         {{ str_pad($datas->record, 4, '0', STR_PAD_LEFT) }}
@@ -392,9 +392,9 @@
                                                     @endif
                                                     @elseif($datas->type == 'MarketComplaint')
                                                     <a href="{{ route('marketshow', $datas->id) }}" style="color: blue">
-                                                        {{ str_pad($total_count - $loop->index, 4, '0', STR_PAD_LEFT) }}
+                                                        {{ str_pad($datas->record, 4, '0', STR_PAD_LEFT) }}
                                                     </a>
-                                                   
+
                                                     @if (!empty($datas->parent_id))
                                                         <a
                                                             href="{{ url('rcms/qms-dashboard_new', $datas->id) }}/deviation">
@@ -419,7 +419,7 @@
                                                             </div>
                                                         </a>
                                                     @endif
-                                                
+
                                                 @endif
                                             </td>
                                             @if ($datas->parent_record != '-')

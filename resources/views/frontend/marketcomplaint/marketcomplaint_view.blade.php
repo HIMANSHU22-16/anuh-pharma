@@ -229,7 +229,7 @@
                                             <div class="group-input">
                                                 <label for="RLS Record Number">Record Number</label>
                                                 <input disabled type="text" name="record_number"
-                                                    value="{{ Helpers::getDivisionName($data->division_id) }}/CAPA/{{ Helpers::year($data->created_at) }}/{{ $data->record }}">
+                                                    value="{{ Helpers::getDivisionName($data->division_id) }}/CAPA/{{ Helpers::year($data->created_at) }}/{{ $data->record_number }}">
                                                 {{-- <div class="static"></div> --}}
                                             </div>
                                         </div>
@@ -1063,7 +1063,7 @@
                                                             <option value="Yes" {{ $data->identification_cross_functional == "Yes" ? 'selected' : '' }}>Yes</option>
                                                             <option value="No" {{ $data->identification_cross_functional == "No" ? 'selected' : '' }}>No</option>
                                                         </select>
-                                                        
+
                                             </div>
                                         </div>
 
@@ -1099,39 +1099,39 @@
                                                     <!-- Add New Attachments -->
                                                     <div class="add-btn">
                                                         <div>Add</div>
-                                                        <input type="file" 
-                                                               id="myfile" 
-                                                               name="attachment[]" 
-                                                               oninput="addMultipleFiles(this, 'attachment')" 
+                                                        <input type="file"
+                                                               id="myfile"
+                                                               name="attachment[]"
+                                                               oninput="addMultipleFiles(this, 'attachment')"
                                                                multiple>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <!-- Hidden field to track deleted files -->
                                         <input type="hidden" id="deleted_attachment" name="deleted_attachment" value="">
-                                        
+
                                         <!-- Script to Handle Remove File Logic -->
                                         <script>
                                             document.addEventListener('DOMContentLoaded', function () {
                                                 const removeButtons = document.querySelectorAll('.remove-file');
-                                        
+
                                                 removeButtons.forEach(button => {
                                                     button.addEventListener('click', function () {
                                                         const fileName = this.getAttribute('data-file-name');
                                                         const fileContainer = this.closest('.file-container');
-                                        
+
                                                         // Hide the file container
                                                         if (fileContainer) {
                                                             fileContainer.style.display = 'none';
-                                        
+
                                                             // Remove hidden input associated with this file
                                                             const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
                                                             if (hiddenInput) {
                                                                 hiddenInput.remove();
                                                             }
-                                        
+
                                                             // Add the file name to the deleted files list
                                                             const deletedFilesInput = document.getElementById('deleted_attachment');
                                                             let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
@@ -1142,29 +1142,29 @@
                                                 });
                                             });
                                         </script>
-                                        
+
                                         <div class="col-lg-6 new-date-data-field">
                                             <div class="group-input input-date">
                                                 <label for="Date Due">Further Response Received from Customer</label>
                                                 <div class="calenderauditee">
                                                     <!-- Readonly Input to Show Selected Date -->
-                                                    <input type="text" 
-                                                           id="further_response_received" 
-                                                           readonly 
-                                                           placeholder="DD-MMM-YYYY" 
+                                                    <input type="text"
+                                                           id="further_response_received"
+                                                           readonly
+                                                           placeholder="DD-MMM-YYYY"
                                                            value="{{ $data->further_response_received ? \Carbon\Carbon::parse($data->further_response_received)->format('d-M-Y') : '' }}" />
-                                        
+
                                                     <!-- Date Picker Input -->
-                                                    <input type="date" 
-                                                           name="further_response_received" 
-                                                           class="hide-input" 
-                                                           min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" 
-                                                           value="{{ $data->further_response_received ?? '' }}" 
+                                                    <input type="date"
+                                                           name="further_response_received"
+                                                           class="hide-input"
+                                                           min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                                           value="{{ $data->further_response_received ?? '' }}"
                                                            oninput="handleDateInput(this, 'further_response_received')" />
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-12">
                                             <div class="group-input">
                                                 <label for="Preventive Action">Details of Response </label>
@@ -1192,7 +1192,7 @@
                                                     <option value="BMCR and BPCR review" {{ $data->method_tools_to_be_used_for == "BMCR and BPCR review" ? 'selected' : '' }}>BMCR and BPCR review</option>
                                                     <option value="others (Pl. specify)" {{ $data->method_tools_to_be_used_for == "others (Pl. specify)" ? 'selected' : '' }}>others (Pl. specify)</option>
                                                 </select>
-                                                
+
                                             </div>
                                         </div>
 
@@ -1483,17 +1483,17 @@
                                             <option value="minor" {{ $data->re_categoruzation_of_complaint == "minor" ? 'selected' : '' }}>Minor</option>
                                             <option value="not applicable" {{ $data->re_categoruzation_of_complaint == "not applicable" ? 'selected' : '' }}>Not Applicable</option>
                                         </select>
-                                        
+
                                     </div>
                                 </div>
-    
+
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Corrective Action">Reason For Re-Categorization (Head Quality):</label>
                                         <textarea name="reson_for_re_cate">{{ $data->reson_for_re_cate }}</textarea>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-12">
                                     <div class="group-input">
                                         <label for="Closure Verification Details">
@@ -1541,13 +1541,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <script>
                                     $(document).ready(function() {
                                         // Add new row in Closure Verification Details table
                                         $('#closureverification_add').click(function(e) {
                                             e.preventDefault();
-                                
+
                                             function generateClosureVerificationTableRow(serialNumber) {
                                                 return (
                                                     '<tr>' +
@@ -1558,21 +1558,21 @@
                                                     '</tr>'
                                                 );
                                             }
-                                
+
                                             var tableBody = $('#closureverification_details tbody');
                                             var rowCount = tableBody.children('tr').length;
                                             var newRow = generateClosureVerificationTableRow(rowCount);
                                             tableBody.append(newRow);
                                         });
-                                
+
                                         // Remove row in Closure Verification Details table
                                         $(document).on('click', '.removeRowBtn', function() {
                                             $(this).closest('tr').remove();
                                         });
                                     });
                                 </script>
-                                
-                                                                    
+
+
 
 
 
@@ -2274,7 +2274,7 @@
                                             <div class="group-input">
                                                 <label for="Analytical Development Laboratory Review Completed On">Analytical Development Laboratory Review Completed On</label>
                                                 <input type="date" name="Analytical_Development_on" disabled>
-            
+
                                             </div>
                                         </div> --}}
                                         <div class="col-lg-6 new-date-data-field analytical_development">
@@ -3791,8 +3791,8 @@
                                                 <label for="Effect.Check Creation Date">Effect.Check Creation
                                                     Date</label>
                                                 <input type="date" name="effect_check_date"
-                                                    value="{{ $data->effect_check_date }}"> 
-                                                    <div class="calenderauditee">                                     
+                                                    value="{{ $data->effect_check_date }}">
+                                                    <div class="calenderauditee">
                                                         <input type="text"  value="{{ $data->effect_check_date }}" id="effect_check_date"  readonly placeholder="DD-MMM-YYYY" />
                                                         <input type="date" name="effect_check_date" value=""
                                                         class="hide-input"
