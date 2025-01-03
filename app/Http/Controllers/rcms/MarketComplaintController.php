@@ -145,7 +145,25 @@ class MarketComplaintController extends Controller
                 }
             }
             // Encode the file names array to JSON and assign it to the model
-            $marketcomplaint->attachments = json_encode($files);
+            $marketcomplaint->attachment = json_encode($files);
+        }
+
+        if (!empty($request->closure_attachment)) {
+            $files = [];
+            if ($request->hasFile('closure_attachment')) {
+                foreach ($request->file('closure_attachment') as $file) {
+                    // Generate a unique name for the file
+                    $name = $request->name . 'closure_attachment' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                    // Move the file to the upload directory
+                    $file->move(public_path('upload/'), $name);
+
+                    // Add the file name to the array
+                    $files[] = $name;
+                }
+            }
+            // Encode the file names array to JSON and assign it to the model
+            $marketcomplaint->closure_attachment = json_encode($files);
         }
         // dd($marketcomplaint);
 
@@ -352,10 +370,10 @@ class MarketComplaintController extends Controller
 
 
 
-    if (!empty($request->attachment) || !empty($request->deleted_attachments_gi)) {
+    if (!empty($request->attachment) || !empty($request->deleted_attachment)) {
         $existingFiles = json_decode($marketcomplaint->attachment, true) ?? [];
-                if (!empty($request->deleted_attachments_gi)) {
-            $filesToDelete = explode(',', $request->deleted_attachments_gi);
+                if (!empty($request->deleted_attachment)) {
+            $filesToDelete = explode(',', $request->deleted_attachment);
             $existingFiles = array_filter($existingFiles, function($file) use ($filesToDelete) {
                 return !in_array($file, $filesToDelete);
             });
@@ -369,9 +387,30 @@ class MarketComplaintController extends Controller
             }
         }
         $allFiles = array_merge($existingFiles, $newFiles);
-        $marketcomplaint->attachments = json_encode($allFiles);
+        $marketcomplaint->attachment = json_encode($allFiles);
     }
 
+    if (!empty($request->closure_attachment) || !empty($request->deleted_closure_attachment)) {
+        $existingFiles = json_decode($marketcomplaint->closure_attachment, true) ?? [];
+                if (!empty($request->deleted_closure_attachment)) {
+            $filesToDelete = explode(',', $request->deleted_closure_attachment);
+            $existingFiles = array_filter($existingFiles, function($file) use ($filesToDelete) {
+                return !in_array($file, $filesToDelete);
+            });
+        }
+        $newFiles = [];
+        if ($request->hasFile('closure_attachment')) {
+            foreach ($request->file('closure_attachment') as $file) {
+                $name = $request->name . 'closure_attachment' . rand(1, 100) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/'), $name);
+                $newFiles[] = $name;
+            }
+        }
+        $allFiles = array_merge($existingFiles, $newFiles);
+        $marketcomplaint->closure_attachment = json_encode($allFiles);
+    }
+
+// dd($marketcomplaint->closure_attachment);
         //=================grid updated --------------------
         $griddata = $marketcomplaint->id;
 

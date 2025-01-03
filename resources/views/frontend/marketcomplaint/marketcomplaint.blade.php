@@ -108,7 +108,7 @@
                 <button class="cctablinks" onclick="openCity(event, 'CCForm2')">QA Head / Designee</button>
                 {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm3')">Project/Study</button> --}}
                 <button class="cctablinks" onclick="openCity(event, 'CCForm4')">Quality Control</button>
-                <button class="cctablinks" onclick="openCity(event, 'CCForm5')">CFT</button>
+                {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm5')">CFT</button> --}}
                 {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm6')">Group Comments</button> --}}
                 <button class="cctablinks" onclick="openCity(event, 'CCForm7')"> Closure</button>
                 <button class="cctablinks" onclick="openCity(event, 'CCForm8')">Activity Log</button>
@@ -1123,7 +1123,7 @@
                                         Closure Verification Details
                                         <button type="button" id="closureverification_add">+</button>
                                     </label>
-                                    <div class="table-responsive">
+                                    <div class="table-responsive">  
                                         <table class="table table-bordered" id="closureverification_details" style="width: 100%;">
                                             <thead>
                                                 <tr>

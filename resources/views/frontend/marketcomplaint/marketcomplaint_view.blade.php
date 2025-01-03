@@ -210,7 +210,7 @@
                         {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm3')">Project/Study</button> --}}
                         <button class="cctablinks" onclick="openCity(event, 'CCForm4')">Quality Control</button>
                         {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm8')">Additional Information</button> --}}
-                        <button class="cctablinks" onclick="openCity(event, 'CCForm8')">CFT</button>
+                        {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm8')">CFT</button> --}}
                         {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm7')">Group Comments</button> --}}
                         <button class="cctablinks" onclick="openCity(event, 'CCForm5')">Closure</button>
                         <button class="cctablinks" onclick="openCity(event, 'CCForm6')">Activity Log</button>
@@ -1150,7 +1150,7 @@
                                                     <!-- Readonly Input to Show Selected Date -->
                                                     <input type="text"
                                                            id="further_response_received"
-                                                           readonly
+
                                                            placeholder="DD-MMM-YYYY"
                                                            value="{{ $data->further_response_received ? \Carbon\Carbon::parse($data->further_response_received)->format('d-M-Y') : '' }}" />
 
@@ -3731,44 +3731,66 @@
                                                 <textarea name="qa_review" {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}>{{ $data->qa_review }}</textarea>
                                             </div>
                                         </div>
+
+
                                         <div class="col-12">
                                             <div class="group-input">
-                                                <label for="Closure Attachments">Closure Attachment</label>
-                                                <div><small class="text-primary">Please Attach all relevant or supporting
-                                                        documents</small></div>
-                                                {{-- <input type="file" id="myfile" name="closure_attachment"
-                                                    {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}> --}}
+                                                <label for="Attachments">Closure Attachment</label>
+                                                <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
                                                 <div class="file-attachment-field">
-                                                    <div class="file-attachment-list" id="closure_attachment1">
+                                                    <div class="file-attachment-list" id="closure_attachment">
                                                         @if ($data->closure_attachment)
-                                                            @foreach (json_decode($data->closure_attachment) as $file)
-                                                                <h6 type="button" class="file-container text-dark"
-                                                                    style="background-color: rgb(243, 242, 240);">
+                                                            @foreach(json_decode($data->closure_attachment) as $file)
+                                                                <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
                                                                     <b>{{ $file }}</b>
-                                                                    <a href="{{ asset('upload/' . $file) }}"
-                                                                        target="_blank"><i
-                                                                            class="fa fa-eye text-primary"
-                                                                            style="font-size:20px; margin-right:-10px;"></i></a>
-                                                                    <a type="button" class="remove-file"
-                                                                        data-file-name="{{ $file }}"><i
-                                                                            class="fa-solid fa-circle-xmark"
-                                                                            style="color:red; font-size:20px;"></i></a>
+                                                                    <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
+                                                                    <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                                                    <input type="hidden" name="existing_closure_attachment[]" value="{{ $file }}">
                                                                 </h6>
                                                             @endforeach
                                                         @endif
                                                     </div>
                                                     <div class="add-btn">
                                                         <div>Add</div>
-                                                        <input
-                                                            {{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                            type="file" id="myfile"
-                                                            name="closure_attachment[]"{{ $data->stage == 0 || $data->stage == 6 ? 'disabled' : '' }}
-                                                            oninput="addMultipleFiles(this, 'closure_attachment1')"
-                                                            multiple>
+                                                        <input type="file" id="myfile" name="closure_attachment[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'closure_attachment')" multiple>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Hidden field to keep track of files to be deleted -->
+                                        <input type="hidden" id="deleted_closure_attachment" name="deleted_closure_attachment" value="">
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const removeButtons = document.querySelectorAll('.remove-file');
+
+                                                removeButtons.forEach(button => {
+                                                    button.addEventListener('click', function() {
+                                                        const fileName = this.getAttribute('data-file-name');
+                                                        const fileContainer = this.closest('.file-container');
+
+                                                        // Hide the file container
+                                                        if (fileContainer) {
+                                                            fileContainer.style.display = 'none';
+                                                            // Remove hidden input associated with this file
+                                                            const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                                                            if (hiddenInput) {
+                                                                hiddenInput.remove();
+                                                            }
+
+                                                            // Add the file name to the deleted files list
+                                                            const deletedFilesInput = document.getElementById('deleted_closure_attachment');
+                                                            let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                                                            deletedFiles.push(fileName);
+                                                            deletedFilesInput.value = deletedFiles.join(',');
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+
+
                                         <!-- <div class="col-12 sub-head">
                                                         Effectiveness Check Details -->
                                     </div>
