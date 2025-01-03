@@ -1107,7 +1107,7 @@ class DeviationController extends Controller
             
             $history = new DeviationAuditTrail();
             $history->deviation_id = $deviation->id;
-            $history->activity_type = 'Initiation';
+            $history->activity_type = 'Initiator';
             $history->previous = "Null";
             $history->current = Auth::user()->name;
             $history->comment = "Not Applicable";

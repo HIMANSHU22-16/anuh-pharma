@@ -168,10 +168,10 @@
                 <td class="w-70 head">
                     Change Control Audit Trail Report
                 </td>
-                <td class="w-30">
+                <td class="w-20" >
                     <div class="logo">
-                       <img src="" alt="logo" class="w-80">
-
+                        <img src="https://navin.mydemosoftware.com/public/user/images/logo.png" alt=""
+                            class="w-100">
                     </div>
                 </td>
             </tr>

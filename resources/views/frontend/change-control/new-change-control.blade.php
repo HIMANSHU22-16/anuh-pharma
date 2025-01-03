@@ -625,7 +625,6 @@
                                     });
 
                                 </script>
-
 <script>
                                     VirtualSelect.init({
                                         ele: '#related_records, #cft_reviewer, #audit_type'

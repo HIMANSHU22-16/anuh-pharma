@@ -188,7 +188,7 @@
         font-size: 0.9rem;
     } 
     body{
-        margin-top: 315px;
+        margin-top: 150px;
         margin-bottom: 0px;
     }
 
@@ -213,7 +213,7 @@
         <table>
             <tr>
                 <td class="w-30">
-                    <strong> CC No.</strong>
+                    <strong> Change Control No.</strong>
                 </td>
                 <td class="w-40">
                     {{ Helpers::divisionNameForQMS($data->division_id) }}/{{ Helpers::year($data->created_at) }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
@@ -257,22 +257,22 @@
                     <tr> On {{ Helpers::getDateFormat($data->created_at) }} added by {{ $data->originator }}
                         <th class="w-20">Initiator</th>
                         <td class="w-30">{{ $data->originator }}</td>
-                        <th class="w-20">Date Initiation</th>
-                        <td class="w-30">{{ Helpers::getDateFormat($data->intiation_date) }}</td>
+                        <th class="w-20">Date of Initiation</th>
+                        <td class="w-30">{{ \Carbon\Carbon::parse($data->intiation_date)->format('d-M-Y') }}</td>
                     </tr>
                     <tr>
                         <th class="w-20">Due Date</th>
                         <td class="w-30">
                             @if ($data->due_date)
-                                {{ Helpers::getdateFormat($data->due_date) }}
+                              {{ \Carbon\Carbon::parse($data->due_date)->format('d-M-Y') }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <th class="w-20">Initiaton Department</th>
+                        <th class="w-20">Department</th>
                         <td class="w-30">
                             @if ($data->Initiator_Group)
-                                {{ Helpers::getFullDepartmentName($data->Initiator_Group) }}
+                                {{ $data->Initiator_Group }}
                             @else
                                 Not Applicable
                             @endif
@@ -280,18 +280,222 @@
                     </tr>
 
                     <tr>
-                        <th class="w-20">Initiation Department Code</th>
+                        <th class="w-20">Short Description</th>
                         <td class="w-30">
-                            @if ($data->initiator_group_code)
-                                {{ $data->initiator_group_code }}
+                            @if ($data->short_description)
+                                {{ $data->short_description }}
                             @else
                                 Not Applicable
                             @endif
                         </td>
-                        <th class="w-20">Risk Assessment Required</th>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Type of Change Requested</th>
                         <td class="w-30">
-                            @if ($data->risk_assessment_required)
-                                {{ $data->risk_assessment_required }}
+                            @if ($data->audit_type)
+                                {{ $data->audit_type }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Title</th>
+                        <td class="w-30">
+                            @if ($data->title)
+                              {{ $data->title }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Document Number</th>
+                        <td class="w-30">
+                            @if ($data->doc_no)
+                                {{ $data->doc_no }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Existing Stage / System </th>
+                        <td class="w-30">
+                            @if ($data->Existing_Stage)
+                                {{ $data->Existing_Stage }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Proposed changes</th>
+                        <td class="w-30">
+                            @if ($data->Proposed_changes)
+                                {{ $data->Proposed_changes }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Justification for Change</th>
+                        <td class="w-30">
+                            @if ($data->justification_changes)
+                                {{ $data->justification_changes }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Review by-Initiating Department Head</th>
+                        <td class="w-30">
+                            @if ($data->review_initiating)
+                                {{ $data->review_initiating }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Identification of Cross-functional departments by QA for review of change proposal & Impact</th>
+                        <td class="w-30">
+                            @if ($data->identification_cross_funct)
+                                {{ $data->identification_cross_funct }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Evaluation and Approval by Head Quality / Designee</th>
+                        <td class="w-30">
+                            @if ($data->evaluation)
+                                {{ $data->evaluation }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Outcome of Risk Assessment (if Applicable)</th>
+                        <td class="w-30">
+                            @if ($data->outcome_risk)
+                                {{ $data->outcome_risk }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Change Proposal Request</th>
+                        <td class="w-30">
+                            @if ($data->proposal_change)
+                              {{ $data->proposal_change }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Category of Change</th>
+                        <td class="w-30">
+                            @if ($data->change_category)
+                                {{ $data->change_category }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Reason for Categorization</th>
+                        <td class="w-30">
+                            @if ($data->reason_categorization)
+                              {{ $data->reason_categorization }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                        <th class="w-20">Intimation to be sent to Customer/Regulatory</th>
+                        <td class="w-30">
+                            @if ($data->intimation)
+                                {{ $data->intimation }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Acknowledgement by HOD of change proposal initiator</th>
+                        <td class="w-30">
+                            @if ($data->acknowledgement)
+                                {{ $data->acknowledgement }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Justification for Extension (if required) for completion of identified actions with new Target Completion Date
+                        </th>
+                        <td class="w-30">
+                            @if ($data->justification_extension)
+                                {{ $data->justification_extension }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Closure Remark</th>
+                        <td class="w-30">
+                            @if ($data->closure_remark)
+                                {{ $data->closure_remark }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Effectiveness verification is required</th>
+                        <td class="w-30">
+                            @if ($data->effectiveness)
+                                {{ $data->effectiveness }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Remark</th>
+                        <td class="w-30">
+                            @if ($data->remark)
+                                {{ $data->remark }}
+                            @else
+                                Not Applicable
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="w-20">Closure Conclusion by Head Quality / Designee</th>
+                        <td class="w-30">
+                            @if ($data->closure_conclusion)
+                                {{ $data->closure_conclusion }}
                             @else
                                 Not Applicable
                             @endif
@@ -299,16 +503,77 @@
                     </tr>
                 </table>
 
-                <label class="head-number" for="Justification">Justification</label>
-                <div class="div-data">
-                    @if ($data->risk_identification)
-                        {{ $data->risk_identification }}
-                    @else
-                        Not Applicable
-                    @endif
-                </div>
+                <div class="block">
+    <div class="block-head">
+        Actions Plan, Tracking, Verification, and Closure
+    </div>
+    <div class="border-table">
+        <table>
+            <tr class="table_bg">
+                <th class="w-5">Sr. No.</th>
+                <th class="w-30">Description of Action</th>
+                <th class="w-30">Responsible Department</th>
+                <th class="w-15">Planned Completion Date</th>
+                <th class="w-15">Actual Completion Date</th>
+            </tr>
+            @if (is_array($actionsplanData) && !empty($actionsplanData))
+                @foreach($actionsplanData as $index => $action)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $action['action_description'] ?? 'Not Applicable' }}</td>
+                        <td>{{ $action['responsible_department'] ?? 'Not Applicable' }}</td>
+                        <td>{{ !empty($action['planned_date']) ? \Carbon\Carbon::parse($action['planned_date'])->format('d-M-Y') : 'Not Applicable' }}</td>
+                        <td>{{ !empty($action['actual_date']) ? \Carbon\Carbon::parse($action['actual_date'])->format('d-M-Y') : 'Not Applicable' }}</td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="5">No Actions Plan Data Available</td>
+                </tr>
+            @endif
+        </table>
+    </div>
+</div>
 
-                <table>
+<div class="block">
+    <div class="block-head">
+        Actions Plan, Tracking, Verification, and Closure
+    </div>
+    <div class="border-table">
+        <table>
+            <tr class="table_bg">
+                <th class="w-5">Sr. No.</th>
+                <th class="w-20">Evidence Attached (Y/N)</th>
+                <th class="w-25">HOD Sign & Date</th>
+                <th class="w-25">QA Verification (Sign & Date)</th>
+                <th class="w-25">Reference Annexures</th>
+            </tr>
+            @if (is_array($actionsplanData) && !empty($actionsplanData))
+                @foreach($actionsplanData as $index => $action)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $action['evidence_attached'] ?? 'Not Applicable' }}</td>
+                        <td>{{ $action['hod_sign_date'] ?? 'Not Applicable' }}</td>
+                        <td>{{ $action['qa_verification'] ?? 'Not Applicable' }}</td>
+                        <td>{{ $action['reference_annexures'] ?? 'Not Applicable' }}</td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="5">No Verification and Closure Data Available</td>
+                </tr>
+            @endif
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+                <!-- <table>
                     <tr>
                         <th class="w-20">HOD Person</th>
                         <td class="w-80">
@@ -331,7 +596,7 @@
                 </div>
 
 
-                {{-- <table>
+                <table>
                     <tr>
                         <th class="w-20">Type Of Change</th>
                         <td class="w-80">
@@ -342,7 +607,7 @@
                             @endif
                         </td>
                     </tr>
-                </table> --}}
+                </table>
 
                 <label class="head-number" for="Validation Requirement">Validation Requirement</label>
                 <div class="div-data">
@@ -547,7 +812,7 @@
 
                     </table>
                 </div>
-            </div>
+            </div> -->
 
             <div class="block">
                 <div class="block-head">
@@ -592,7 +857,7 @@
                 </div>
             </div>
 
-            <div class="block">
+            <!-- <div class="block">
                 <div class="block-head">
                     Change Details
                 </div>
@@ -634,7 +899,7 @@
                 </div>
 
 
-            </div>
+            </div> -->
 
             <div class="block">
                 <div class="block-head">
@@ -647,10 +912,10 @@
                             <td class="w-30">{{ $data->due_days }}</td> --}}
 
 
-                        <th class="w-20">Classification of Change</th>
+                        <th class="w-20">External Review User</th>
                         <td class="w-80">
-                            @if ($data->severity_level1)
-                                {{ $data->severity_level1 }}
+                            @if ($data->external_users)
+                                {{ $data->external_users }}
                             @else
                                 Not Applicable
                             @endif
@@ -661,8 +926,8 @@
 
                 <label class="head-number" for="QA Initial Review Comments">QA Initial Review Comments</label>
                 <div class="div-data">
-                    @if ($review->qa_comments)
-                        {{ $review->qa_comments }}
+                    @if ($review->qa_review_comments)
+                        {{ $review->qa_review_comments }}
                     @else
                         Not Applicable
                     @endif
@@ -671,7 +936,6 @@
                 <label class="head-number" for="Related Records">Related Records</label>
                 <div class="div-data">
                     @if ($data->related_records)
-                        {{ $data->initiated_if_other }}
                         {{ str_replace(',', ', ', $data->related_records) }}
                     @else
                         Not Applicable

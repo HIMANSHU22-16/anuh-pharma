@@ -1251,72 +1251,72 @@
                                         ele: '#related_records, #cft_reviewer, #audit_type'
                                     });
 
-                                    function openCity(evt, cityName) {
-                                        var i, cctabcontent, cctablinks;
-                                        cctabcontent = document.getElementsByClassName("cctabcontent");
-                                        for (i = 0; i < cctabcontent.length; i++) {
-                                            cctabcontent[i].style.display = "none";
-                                        }
-                                        cctablinks = document.getElementsByClassName("cctablinks");
-                                        for (i = 0; i < cctablinks.length; i++) {
-                                            cctablinks[i].className = cctablinks[i].className.replace(" active", "");
-                                        }
-                                        document.getElementById(cityName).style.display = "block";
-                                        evt.currentTarget.className += " active";
+                                    // function openCity(evt, cityName) {
+                                    //     var i, cctabcontent, cctablinks;
+                                    //     cctabcontent = document.getElementsByClassName("cctabcontent");
+                                    //     for (i = 0; i < cctabcontent.length; i++) {
+                                    //         cctabcontent[i].style.display = "none";
+                                    //     }
+                                    //     cctablinks = document.getElementsByClassName("cctablinks");
+                                    //     for (i = 0; i < cctablinks.length; i++) {
+                                    //         cctablinks[i].className = cctablinks[i].className.replace(" active", "");
+                                    //     }
+                                    //     document.getElementById(cityName).style.display = "block";
+                                    //     evt.currentTarget.className += " active";
 
-                                        // Find the index of the clicked tab button
-                                        const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
+                                    //     // Find the index of the clicked tab button
+                                    //     const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
 
-                                        // Update the currentStep to the index of the clicked tab
-                                        currentStep = index;
-                                    }
+                                    //     // Update the currentStep to the index of the clicked tab
+                                    //     currentStep = index;
+                                    // }
 
-                                    const saveButtons = document.querySelectorAll(".saveButton");
-                                    const nextButtons = document.querySelectorAll(".nextButton");
-                                    const form = document.getElementById("step-form");
-                                    const stepButtons = document.querySelectorAll(".cctablinks");
-                                    const steps = document.querySelectorAll(".cctabcontent");
-                                    let currentStep = 0;
+                                    // const saveButtons = document.querySelectorAll(".saveButton");
+                                    // const nextButtons = document.querySelectorAll(".nextButton");
+                                    // const form = document.getElementById("step-form");
+                                    // const stepButtons = document.querySelectorAll(".cctablinks");
+                                    // const steps = document.querySelectorAll(".cctabcontent");
+                                    // let currentStep = 0;
 
-                                    function nextStep() {
-                                        // Check if there is a next step
-                                        if (currentStep < steps.length - 1) {
-                                            // Hide current step
-                                            steps[currentStep].style.display = "none";
+                                    // function nextStep() {
+                                    //     // Check if there is a next step
+                                    //     if (currentStep < steps.length - 1) {
+                                    //         // Hide current step
+                                    //         steps[currentStep].style.display = "none";
 
-                                            // Show next step
-                                            steps[currentStep + 1].style.display = "block";
+                                    //         // Show next step
+                                    //         steps[currentStep + 1].style.display = "block";
 
-                                            // Add active class to next button
-                                            stepButtons[currentStep + 1].classList.add("active");
+                                    //         // Add active class to next button
+                                    //         stepButtons[currentStep + 1].classList.add("active");
 
-                                            // Remove active class from current button
-                                            stepButtons[currentStep].classList.remove("active");
+                                    //         // Remove active class from current button
+                                    //         stepButtons[currentStep].classList.remove("active");
 
-                                            // Update current step
-                                            currentStep++;
-                                        }
-                                    }
+                                    //         // Update current step
+                                    //         currentStep++;
+                                    //     }
+                                    // }
 
-                                    function previousStep() {
-                                        // Check if there is a previous step
-                                        if (currentStep > 0) {
-                                            // Hide current step
-                                            steps[currentStep].style.display = "none";
+                                    // function previousStep() {
+                                    //     // Check if there is a previous step
+                                    //     if (currentStep > 0) {
+                                    //         // Hide current step
+                                    //         steps[currentStep].style.display = "none";
 
-                                            // Show previous step
-                                            steps[currentStep - 1].style.display = "block";
+                                    //         // Show previous step
+                                    //         steps[currentStep - 1].style.display = "block";
 
-                                            // Add active class to previous button
-                                            stepButtons[currentStep - 1].classList.add("active");
+                                    //         // Add active class to previous button
+                                    //         stepButtons[currentStep - 1].classList.add("active");
 
-                                            // Remove active class from current button
-                                            stepButtons[currentStep].classList.remove("active");
+                                    //         // Remove active class from current button
+                                    //         stepButtons[currentStep].classList.remove("active");
 
-                                            // Update current step
-                                            currentStep--;
-                                        }
-                                    }
+                                    //         // Update current step
+                                    //         currentStep--;
+                                    //     }
+                                    // }
                                 </script>
                                             
 
@@ -2688,7 +2688,7 @@
                                                         placeholder="Select Reference Records" data-search="false"
                                                         data-silent-initial-value-set="true">
                                                         @foreach ($getExternalUser as $users)
-                                                            <option value="{{ $users->id }}" {{ in_array($users->id, explode(',', $data->external_users)) ? 'selected' : '' }}>
+                                                            <option value="{{ $users->id }}" >
                                                                 {{ $users->name }}
                                                             </option>
                                                         @endforeach
@@ -3724,7 +3724,7 @@
                                                 $data1 = DB::table('cc_cfts')->where('cc_id', $data->id)->first();
                                                 $userRoles = DB::table('user_roles')
                                                     ->where([
-                                                        'q_m_s_roles_id' => 55,
+                                                        'q_m_s_roles_id' => 25,
                                                         'q_m_s_divisions_id' => $data->division_id,
                                                     ])->get();
                                                 $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -3962,7 +3962,7 @@
                                                 @php
                                                     $userRoles = DB::table('user_roles')
                                                         ->where([
-                                                            'q_m_s_roles_id' => 57,
+                                                            'q_m_s_roles_id' => 25,
                                                             'q_m_s_divisions_id' => $data->division_id,
                                                         ])->get();
                                                     $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -4178,7 +4178,7 @@
                                                 @php
                                                     $userRoles = DB::table('user_roles')
                                                         ->where([
-                                                            'q_m_s_roles_id' => 58,
+                                                            'q_m_s_roles_id' => 25,
                                                             'q_m_s_divisions_id' => $data->division_id,
                                                         ])->get();
                                                     $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -4401,7 +4401,7 @@
                                             @php
                                                 $userRoles = DB::table('user_roles')
                                                     ->where([
-                                                        'q_m_s_roles_id' => 56,
+                                                        'q_m_s_roles_id' => 25,
                                                         'q_m_s_divisions_id' => $data->division_id,
                                                     ])->get();
                                                 $userRoleIds = $userRoles->pluck('user_id')->toArray();
@@ -7385,13 +7385,8 @@
             }
             document.getElementById(cityName).style.display = "block";
             evt.currentTarget.className += " active";
-
-            // Find the index of the clicked tab button
-            const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
-
-            // Update the currentStep to the index of the clicked tab
-            currentStep = index;
         }
+
 
         const saveButtons = document.querySelectorAll(".saveButton");
         const nextButtons = document.querySelectorAll(".nextButton");
@@ -7400,45 +7395,33 @@
         const steps = document.querySelectorAll(".cctabcontent");
         let currentStep = 0;
 
-        function nextStep() {
-            // Check if there is a next step
-            if (currentStep < steps.length - 1) {
-                // Hide current step
-                steps[currentStep].style.display = "none";
+        window.nextStep = function nextStep() {
+                if (currentStep < steps.length - 1) {
+                    steps[currentStep].style.display = "none";
+                    steps[currentStep + 1].style.display = "block";
+                    stepButtons[currentStep + 1].classList.add("active");
+                    stepButtons[currentStep].classList.remove("active");
+                    currentStep++;
+                }
+            };
 
-                // Show next step
-                steps[currentStep + 1].style.display = "block";
+            window.previousStep = function previousStep() {
+                if (currentStep > 0) {
+                    steps[currentStep].style.display = "none";
+                    steps[currentStep - 1].style.display = "block";
+                    stepButtons[currentStep - 1].classList.add("active");
+                    stepButtons[currentStep].classList.remove("active");
+                    currentStep--;
+                }
+            };
 
-                // Add active class to next button
-                stepButtons[currentStep + 1].classList.add("active");
+            // document.querySelectorAll(".nextButton").forEach(button => {
+            //     button.addEventListener("click", nextStep);
+            // });
 
-                // Remove active class from current button
-                stepButtons[currentStep].classList.remove("active");
-
-                // Update current step
-                currentStep++;
-            }
-        }
-
-        function previousStep() {
-            // Check if there is a previous step
-            if (currentStep > 0) {
-                // Hide current step
-                steps[currentStep].style.display = "none";
-
-                // Show previous step
-                steps[currentStep - 1].style.display = "block";
-
-                // Add active class to previous button
-                stepButtons[currentStep - 1].classList.add("active");
-
-                // Remove active class from current button
-                stepButtons[currentStep].classList.remove("active");
-
-                // Update current step
-                currentStep--;
-            }
-        }
+            // document.querySelectorAll(".previousButton").forEach(button => {
+            //     button.addEventListener("click", previousStep);
+            // });
     </script>
 
     <script>
