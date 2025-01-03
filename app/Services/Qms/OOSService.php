@@ -185,7 +185,7 @@ class OOSService
                     $history->current = $request->description_gi;
                     $history->save();
                 }
-                if (!empty($request->initiator_Group)){
+                if (!empty($request->oos_occurrence_date)){
                     $history = new OosAuditTrial();
                     $history->oos_id = $oos->id;
                     $history->previous = "Null";
@@ -198,11 +198,11 @@ class OOSService
                     $history->change_to =   "Opened";
                     $history->change_from = "Initiation";
                     $history->action_name = 'Create';
-                    $history->activity_type = 'initiator Group';
-                    $history->current = $request->initiator_Group;
+                    $history->activity_type = 'Date Of OOS Occurrence';
+                    $history->current = $request->oos_occurrence_date;
                     $history->save();
                 }
-                if (!empty($request->initiator_group_code)){
+                if (!empty($request->oos_reporting_date)){
                     $history = new OosAuditTrial();
                     $history->oos_id = $oos->id;
                     $history->previous = "Null";
@@ -215,8 +215,8 @@ class OOSService
                     $history->change_to =   "Opened";
                     $history->change_from = "Initiator";
                     $history->action_name = 'Create';
-                    $history->activity_type = 'Initiator Group Code';
-                    $history->current = $request->initiator_group_code;
+                    $history->activity_type = 'Date Of OOS reporting';
+                    $history->current = $request->oos_reporting_date;
                     $history->save();
                 }
                 if (!empty($request->if_others_gi)){
@@ -2536,6 +2536,46 @@ class OOSService
                 $validation2->change_to =   "Not Applicable";
                 $validation2->change_from = $lastOosRecod->status;
                 if (is_null($lastOosRecod->description_gi) || $lastOosRecod->description_gi === '') {
+                    $validation2->action_name = 'New';
+                } else {
+                    $validation2->action_name = 'Update';
+                }
+                $validation2->save();
+            }
+
+            if ($lastOosRecod->oos_occurrence_date != $request->oos_occurrence_date) {
+                $validation2 = new OosAuditTrial();
+                $validation2->oos_id = $lastOosRecod->id;
+                $validation2->previous = $lastOosRecod->oos_occurrence_date;
+                $validation2->current = $request->oos_occurrence_date;
+                $validation2->activity_type = 'Date Of OOS Occurrence';
+                $validation2->user_id = Auth::user()->id;
+                $validation2->user_name = Auth::user()->name;
+                $validation2->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+    
+                $validation2->change_to =   "Not Applicable";
+                $validation2->change_from = $lastOosRecod->status;
+                if (is_null($lastOosRecod->oos_occurrence_date) || $lastOosRecod->oos_occurrence_date === '') {
+                    $validation2->action_name = 'New';
+                } else {
+                    $validation2->action_name = 'Update';
+                }
+                $validation2->save();
+            }
+
+            if ($lastOosRecod->oos_reporting_date != $request->oos_reporting_date) {
+                $validation2 = new OosAuditTrial();
+                $validation2->oos_id = $lastOosRecod->id;
+                $validation2->previous = $lastOosRecod->oos_reporting_date;
+                $validation2->current = $request->oos_reporting_date;
+                $validation2->activity_type = 'Date Of OOS reporting';
+                $validation2->user_id = Auth::user()->id;
+                $validation2->user_name = Auth::user()->name;
+                $validation2->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+    
+                $validation2->change_to =   "Not Applicable";
+                $validation2->change_from = $lastOosRecod->status;
+                if (is_null($lastOosRecod->oos_reporting_date) || $lastOosRecod->oos_reporting_date === '') {
                     $validation2->action_name = 'New';
                 } else {
                     $validation2->action_name = 'Update';

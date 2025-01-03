@@ -70,15 +70,8 @@ class OOSController extends Controller
         }
         
 
-        // $oos_id = $oos->id;
+        // $oos_id = $data->id;
 
-        // $trainerSkillGrid = Oosgrids::where(['oos_id' => $oos_id, 'identifier' => 'info_product_material'])->firstOrNew();
-        // $trainerSkillGrid->oos_id = $oos_id;
-        // $trainerSkillGrid->identifier = 'info_product_material';
-        // $trainerSkillGrid->data = $request->info_product_material;
-        // $trainerSkillGrid->save();
-
-        
 
         return redirect(url('rcms/qms-dashboard'));
     }
@@ -86,7 +79,6 @@ class OOSController extends Controller
 
     public static function show($id)
     {
-        // dd($id);
         $cft = [];
         $revised_date = "";
         $data = OOS::find($id);
@@ -394,9 +386,9 @@ class OOSController extends Controller
             if ($changestage->stage == 11) {
                 $changestage->stage = "12";
                 $changestage->status = "Under Phase-II A Investigation";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_assignable_cause = Auth::user()->name;
+                $changestage->completed_on_assignable_cause = Carbon::now()->format('d-M-Y');
+                $changestage->comment_under_assignable_cause = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -418,9 +410,9 @@ class OOSController extends Controller
             if ($changestage->stage == 12) {
                 $changestage->stage = "13";
                 $changestage->status = "Phase II A HOD Primary Review";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_A = Auth::user()->name;
+                $changestage->completed_on_phase2_A = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_A = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -442,9 +434,9 @@ class OOSController extends Controller
             if ($changestage->stage == 13) {
                 $changestage->stage = "14";
                 $changestage->status = "Phase II A QA/CQA Review";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_hod_review = Auth::user()->name;
+                $changestage->completed_on_phase2_hod_review = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_hod_review = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -466,9 +458,9 @@ class OOSController extends Controller
             if ($changestage->stage == 14) {
                 $changestage->stage = "15";
                 $changestage->status = "P-II A QAH/CQAH Review";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_cqa_qa = Auth::user()->name;
+                $changestage->completed_on_phase2_cqa_qa = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_cqa_qa = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -490,13 +482,13 @@ class OOSController extends Controller
             if ($changestage->stage == 15) {
                 $changestage->stage = "16";
                 $changestage->status = "Under Phase-II B Investigation";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_assignable_cause_not = Auth::user()->name;
+                $changestage->completed_on_phase2_assignable_cause_not = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_assignable_cause_not = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
-                    $history->current = $changestage->completed_by_under_phaseIB_investigation;
+                    $history->current = $changestage->completed_by_phase2_assignable_cause_not;
                     $history->comment = $request->comment;
                     $history->user_id = Auth::user()->id;
                     $history->user_name = Auth::user()->name;
@@ -514,9 +506,9 @@ class OOSController extends Controller
             if ($changestage->stage == 16) {
                 $changestage->stage = "17";
                 $changestage->status = "Phase II B HOD Primary Review";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_b_hod_primary = Auth::user()->name;
+                $changestage->completed_on_phase2_b_hod_primary = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_b_hod_primary = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -537,9 +529,9 @@ class OOSController extends Controller
             if ($changestage->stage == 17) {
                 $changestage->stage = "18";
                 $changestage->status = "Phase II B QA/CQA Review";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_b_hod_review = Auth::user()->name;
+                $changestage->completed_on_phase2_b_hod_review = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_b_hod_review = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -561,9 +553,9 @@ class OOSController extends Controller
             if ($changestage->stage == 18) {
                 $changestage->stage = "19";
                 $changestage->status = "P-II B QAH/CQAH Review";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_b_cqa_qa_review = Auth::user()->name;
+                $changestage->completed_on_phase2_b_cqa_qa_review = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_b_cqa_qa_review = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -585,9 +577,9 @@ class OOSController extends Controller
             if ($changestage->stage == 19) {
                 $changestage->stage = "20";
                 $changestage->status = "Closed - Done";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->completed_by_phase2_b_assignable_couse_not = Auth::user()->name;
+                $changestage->completed_on_phase2_b_assignable_couse_not = Carbon::now()->format('d-M-Y');
+                $changestage->comment_phase2_b_assignable_couse_not = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -598,7 +590,7 @@ class OOSController extends Controller
                     $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
                     $history->origin_state = $lastDocument->status;
                     $history->action = 'submit';
-                    $history->change_to ="Closed - Done";
+                    $history->change_to = "Closed - Done";
                     $history->save();
                 $changestage->update();
                 toastr()->success('Document Sent');
@@ -621,9 +613,9 @@ class OOSController extends Controller
             if ($changestage->stage == 2) {
                 $changestage->stage = "1";
                 $changestage->status = "Opened";
-                $changestage->completed_by_pending_initial_assessment = Auth::user()->name;
-                $changestage->completed_on_pending_initial_assessment = Carbon::now()->format('d-M-Y');
-                $changestage->comment_pending_initial_assessment = $request->comment;
+                $changestage->moreinfo_hod_primary_by = Auth::user()->name;
+                $changestage->moreinfo_hod_primary_on = Carbon::now()->format('d-M-Y');
+                $changestage->moreinfo_hod_primary_comment = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -642,9 +634,9 @@ class OOSController extends Controller
             if ($changestage->stage == 3) {
                 $changestage->stage = "2";
                 $changestage->status = "Pending Initial Assessment & Lab Incident";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->moreinfo_cqa_qahead_primary_by = Auth::user()->name;
+                $changestage->moreinfo_cqa_qahead_primary_on = Carbon::now()->format('d-M-Y');
+                $changestage->moreinfo_cqa_qahead_primary_comment = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -663,9 +655,9 @@ class OOSController extends Controller
             if ($changestage->stage == 4) {
                 $changestage->stage = "3";
                 $changestage->status = "Under Phase I Investigation";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->request_moreinfo_by = Auth::user()->name;
+                $changestage->request_moreinfo_on = Carbon::now()->format('d-M-Y');
+                $changestage->request_moreinfo_comment = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -684,10 +676,9 @@ class OOSController extends Controller
             if ($changestage->stage == 5) {
                 $changestage->stage = "4";
                 $changestage->status = "Under Phase-IA Investigation";
-                // $changestage->status = "Under Phase I Investigation";
-                $changestage->completed_by_under_phaseI_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseI_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseI_investigation = $request->comment;
+                $changestage->moreinfo_phase_IA_hod_by = Auth::user()->name;
+                $changestage->moreinfo_phase_IA_hod_on = Carbon::now()->format('d-M-Y');
+                $changestage->moreinfo_phase_IA_hod_comment = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -706,9 +697,9 @@ class OOSController extends Controller
             if ($changestage->stage == 6) {
                 $changestage->stage = "5";
                 $changestage->status = "Phase IA HOD Primary Review";
-                $changestage->completed_by_under_hypothesis = Auth::user()->name;
-                $changestage->completed_on_under_hypothesis = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_hypothesis = $request->comment;
+                $changestage->moreinfo_phase_qa_review_by = Auth::user()->name;
+                $changestage->moreinfo_phase_qa_review_on = Carbon::now()->format('d-M-Y');
+                $changestage->moreinfo_phase_qa_review_comment = $request->comment;
                     $history = new OosAuditTrial();
                     $history->oos_id = $id;
                     $history->activity_type = 'Activity Log';
@@ -728,9 +719,9 @@ class OOSController extends Controller
             if ($changestage->stage == 7) {
                 $changestage->stage = "6";
                 $changestage->status = "Phase IA QA/CQA Review";
-                $changestage->completed_by_under_phaseII_investigation = Auth::user()->name;
-                $changestage->completed_on_under_phaseII_investigation = Carbon::now()->format('d-M-Y');
-                $changestage->comment_under_phaseII_investigation = $request->comment;
+                $changestage->moreinfo_assignable_couse_by = Auth::user()->name;
+                $changestage->moreinfo_assignable_couse_on = Carbon::now()->format('d-M-Y');
+                $changestage->moreinfo_assignable_couse_comment = $request->comment;
                 
                 $history = new OosAuditTrial();
                 $history->oos_id = $id;
@@ -751,14 +742,13 @@ class OOSController extends Controller
             if ($changestage->stage == 8) {
                 $changestage->stage = "7";
                 $changestage->status = "P-IA CQAH/QAH Review";
-                // $changestage->completed_by_under_phaseII_investigation = Auth::user()->name;
-                // $changestage->completed_on_under_phaseII_investigation = Carbon::now()->format('d-M-Y');
-                // $changestage->comment_under_phaseII_investigation = $request->comment;
+                $changestage->moreinfo_phase_IB_Investigation_by = Auth::user()->name;
+                $changestage->moreinfo_phase_IB_Investigation_on = Carbon::now()->format('d-M-Y');
+                $changestage->moreinfo_phase_IB_Investigation_comment = $request->comment;
                 
                 $history = new OosAuditTrial();
                 $history->oos_id = $id;
                 $history->activity_type = 'Activity Log';
-                // $history->current = $changestage->completed_by_under_phaseII_investigation;
                 $history->comment = $request->comment;
                 $history->user_id = Auth::user()->id;
                 $history->user_name = Auth::user()->name;

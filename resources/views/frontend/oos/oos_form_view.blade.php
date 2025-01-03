@@ -18,72 +18,72 @@
             ele: '#related_records, #hod'
         });
 
-        function openCity(evt, cityName) {
-            var i, cctabcontent, cctablinks;
-            cctabcontent = document.getElementsByClassName("cctabcontent");
-            for (i = 0; i < cctabcontent.length; i++) {
-                cctabcontent[i].style.display = "none";
-            }
-            cctablinks = document.getElementsByClassName("cctablinks");
-            for (i = 0; i < cctablinks.length; i++) {
-                cctablinks[i].className = cctablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
+        // function openCity(evt, cityName) {
+        //     var i, cctabcontent, cctablinks;
+        //     cctabcontent = document.getElementsByClassName("cctabcontent");
+        //     for (i = 0; i < cctabcontent.length; i++) {
+        //         cctabcontent[i].style.display = "none";
+        //     }
+        //     cctablinks = document.getElementsByClassName("cctablinks");
+        //     for (i = 0; i < cctablinks.length; i++) {
+        //         cctablinks[i].className = cctablinks[i].className.replace(" active", "");
+        //     }
+        //     document.getElementById(cityName).style.display = "block";
+        //     evt.currentTarget.className += " active";
 
-            // Find the index of the clicked tab button
-            const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
+        //     // Find the index of the clicked tab button
+        //     const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
 
-            // Update the currentStep to the index of the clicked tab
-            currentStep = index;
-        }
+        //     // Update the currentStep to the index of the clicked tab
+        //     currentStep = index;
+        // }
 
-        const saveButtons = document.querySelectorAll(".saveButton");
-        const nextButtons = document.querySelectorAll(".nextButton");
-        const form = document.getElementById("step-form");
-        const stepButtons = document.querySelectorAll(".cctablinks");
-        const steps = document.querySelectorAll(".cctabcontent");
-        let currentStep = 0;
+        // const saveButtons = document.querySelectorAll(".saveButton");
+        // const nextButtons = document.querySelectorAll(".nextButton");
+        // const form = document.getElementById("step-form");
+        // const stepButtons = document.querySelectorAll(".cctablinks");
+        // const steps = document.querySelectorAll(".cctabcontent");
+        // let currentStep = 0;
 
-        function nextStep() {
-            // Check if there is a next step
-            if (currentStep < steps.length - 1) {
-                // Hide current step
-                steps[currentStep].style.display = "none";
+        // function nextStep() {
+        //     // Check if there is a next step
+        //     if (currentStep < steps.length - 1) {
+        //         // Hide current step
+        //         steps[currentStep].style.display = "none";
 
-                // Show next step
-                steps[currentStep + 1].style.display = "block";
+        //         // Show next step
+        //         steps[currentStep + 1].style.display = "block";
 
-                // Add active class to next button
-                stepButtons[currentStep + 1].classList.add("active");
+        //         // Add active class to next button
+        //         stepButtons[currentStep + 1].classList.add("active");
 
-                // Remove active class from current button
-                stepButtons[currentStep].classList.remove("active");
+        //         // Remove active class from current button
+        //         stepButtons[currentStep].classList.remove("active");
 
-                // Update current step
-                currentStep++;
-            }
-        }
+        //         // Update current step
+        //         currentStep++;
+        //     }
+        // }
 
-        function previousStep() {
-            // Check if there is a previous step
-            if (currentStep > 0) {
-                // Hide current step
-                steps[currentStep].style.display = "none";
+        // function previousStep() {
+        //     // Check if there is a previous step
+        //     if (currentStep > 0) {
+        //         // Hide current step
+        //         steps[currentStep].style.display = "none";
 
-                // Show previous step
-                steps[currentStep - 1].style.display = "block";
+        //         // Show previous step
+        //         steps[currentStep - 1].style.display = "block";
 
-                // Add active class to previous button
-                stepButtons[currentStep - 1].classList.add("active");
+        //         // Add active class to previous button
+        //         stepButtons[currentStep - 1].classList.add("active");
 
-                // Remove active class from current button
-                stepButtons[currentStep].classList.remove("active");
+        //         // Remove active class from current button
+        //         stepButtons[currentStep].classList.remove("active");
 
-                // Update current step
-                currentStep--;
-            }
-        }
+        //         // Update current step
+        //         currentStep--;
+        //     }
+        // }
     </script>
 
     <!-- -----------------------------grid-1----------------------------script -->
@@ -415,8 +415,16 @@
             </div>
         </div>
                 
+        <script>
+            $(document).ready(function() {
+                <?php if ($data->stage == 20) : ?>
+                    $("#target :input").prop("disabled", true);
+                <?php endif; ?>
+            });
+        </script>
+
             <!-- General Information -->
-    <form action="{{ route('oosupdate', $data->id) }}" method="post" enctype="multipart/form-data">
+    <form id="target" action="{{ route('oosupdate', $data->id) }}" method="post" enctype="multipart/form-data">
      @csrf
         <div id="step-form">
             <div id="CCForm1" class="inner-block cctabcontent">
@@ -473,7 +481,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS Occurrence<span class="text-danger"></span></label>
-                                <input type="text" value="{{$data->oos_occurrence_date}}" name="oos_occurrence_date">
+                                <input type="date" value="{{$data->oos_occurrence_date}}" name="oos_occurrence_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -481,7 +489,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS reporting<span class="text-danger"></span></label>
-                                <input type="text" value="{{$data->oos_reporting_date}}" name="oos_reporting_date">
+                                <input type="date" value="{{$data->oos_reporting_date}}" name="oos_reporting_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -812,7 +820,7 @@
                             </div>
                         </div> -->
 
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <div class="group-input">
                                 <label for="Audit Attachments">Preliminary Attachment</label>
                                 <small class="text-primary">
@@ -843,14 +851,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
+                        
+
                   </div>
                         <div class="button-block">
                             <button type="submit" class="saveButton">Save</button>
-                            <!-- <button type="button" class="backButton" onclick="previousStep()">Back</button> -->
-                            <button style=" justify-content: center; width: 4rem; margin-left: auto;" type="button"
-                            class="nextButton" onclick="nextStep()">Next</button>
-                            <!-- <button type="button" class="nextButton" id="" onclick="nextStep()">Next</button> -->
+                            <button type="button" class="nextButton" onclick="nextStep()">Next</button>
+
+                            <!-- <button type="button" class="nextButton" id="nextButton" onclick="nextStep()">Next</button> -->
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
@@ -866,7 +875,7 @@
 
                     <div class="col-12">
 
-                        <label style="font-weight: bold; for="Audit Attachments">Phase IB Investigation Checklist</label>
+                        <label style="font-weight: bold;" for="Audit Attachments">Phase IB Investigation Checklist</label>
 
                             @php
                                 $IIB_inv_questions = array(
@@ -3527,7 +3536,7 @@
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                        <button type="button" id="ChangeNextButton" class="nextButton"
+                        <button type="button" id="" class="nextButton"
                             onclick="nextStep()">Next</button>
                         <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                 Exit </a> </button>
@@ -3643,283 +3652,680 @@
 
         <div id="CCForm17" class="inner-block cctabcontent">
             <div class="inner-block-content">
-                <div class="sub-head">
-                    Activity Log
-                </div>
-                <div class="row">
+                    <div class="sub-head">Activity Log</div>
 
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Agenda">Preliminary Lab Inves. Done By</label>
-                            <div class="static"></div>
+                    {{-- <div class="d-flex align-item-end justify-content-end">
+                            <button style="margin-bottom:20px;" class="button_theme1"> <a
+                                    class="text-white"
+                                    href="{{ url('rcms/activityLog', $data->id) }}"> Print </a>
+                            </button>
+                    </div> --}}
+
+
+                    <div class="printable-content">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>Submitted By :</strong><br>
+                                            {{ $data->completed_by_pending_initial_assessment }}
+                                        </td>
+
+                                        <td>
+                                            <strong>Submitted On:</strong><br>
+                                            @php
+                                                $utcTime = $data->completed_on_pending_initial_assessment ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+
+                                        </td>           
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Submitted Comments :</strong><br>
+                                            {{ $data->comment_pending_initial_assessment}}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>HOD Primary Review Completed By :</strong><br>
+                                            {{ $data->completed_by_under_phaseI_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>HOD Primary Review Completed On:</strong><br>
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseI_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>HOD Review Complete Comment:</strong><br>
+                                            {{ $data->comment_under_phaseI_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>CQA/QA Head Primary Review Complete By :</strong><br>
+                                            {{ $data->completed_by_under_phaseIB_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>CQA/QA Head Primary Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseIB_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>CQA/QA Head Primary Review Complete Comments :</strong><br>
+                                            {{ $data->comment_under_phaseIB_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IA Investigation By :</strong><br>
+                                            {{ $data->completed_by_under_hypothesis }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IA Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_hypothesis ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IA Investigation Comments :</strong><br>
+                                            {{ $data->comment_under_hypothesis ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IA HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_under_phaseII_investigation}}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IA HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseII_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IA HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_under_phaseII_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IA QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_under_manufacturing_investigation_phaseIIA }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IA QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_manufacturing_investigation_phaseIIA ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IA QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_under_manufacturing_investigation_phaseIIA ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_under_phaseIIB_additional_lab_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseIIB_additional_lab_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_under_phaseIIB_additional_lab_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IB Investigation By :</strong><br>
+                                            {{ $data->completed_by_under_phaseIII_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IB Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseIII_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IB Investigation Comments :</strong><br>
+                                            {{ $data->comment_under_phaseIII_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IB HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_approval_completed }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IB HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_approval_completed ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IB HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_approval_completed ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IB CQA/QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_close_done }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IB CQA/QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_close_done ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IB CQA/QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_close_done ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>P-I B Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_assignable_cause }}
+                                        </td>
+                                        <td>
+                                            <strong>P-I B Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_assignable_cause ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>P-I B Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_under_assignable_cause ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A Investigation By :</strong><br>
+                                            {{ $data->completed_by_phase2_A }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_A ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A Investigation Comments :</strong><br>
+                                            {{ $data->comment_phase2_A ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_hod_review }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_hod_review ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_hod_review ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A CQA/QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_cqa_qa }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A CQA/QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_cqa_qa ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A CQA/QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_cqa_qa ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_phase2_assignable_cause_not }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_assignable_cause_not ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_phase2_assignable_cause_not ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B Investigation By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_hod_primary }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_hod_primary ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B Investigation Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_hod_primary ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_hod_review }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_hod_review ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_hod_review ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B CQA/QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_cqa_qa_review }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B CQA/QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_cqa_qa_review ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B CQA/QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_cqa_qa_review ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_assignable_couse_not }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_assignable_couse_not ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_assignable_couse_not ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Agenda">Preliminary Lab Inves. Done On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
 
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Team">Pre. Lab Inv. Conclusion By</label>
-                            <div class="static"></div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Team">Pre. Lab Inv. Conclusion On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="group-input">
-                            <label for="Audit Comments"> Pre.Lab Invest. Review By </label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Pre.Lab Invest. Review On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Phase II Invest. Proposed By</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Phase II Invest. Proposed On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Response Completed By"> Phase II QC Review Done By</label>
-                            <div class=" static"></div>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Response Completed On">Phase II QC Review Done On</label>
-                            <div class="date"></div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Additional Test Proposed By</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Additional Test Proposed On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">OOS Conclusion Complete By</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">OOS Conclusion Complete On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">CQ Review Done By</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">CQ Review Done On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Disposition Decision Done by</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Disposition Decision Done On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Reopen Addendum Complete By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Reopen Addendum Complete on
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Approval Completed By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Reopen Addendum Complete on
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Execution Done By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Execution Done On
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Review Done By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Review Done On
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Verification Review Done By
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Verification Review Done On
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-
-
-                    <!-- ====================================================================== -->
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="submitted by">Submitted By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="submitted on">Submitted On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="cancelled by">Cancelled By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="cancelled on">Cancelled On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="More information Required ? By">More information Required ? By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="More information Required ? On">More information Required ? On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="completed by">Completed By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="completed on">Completed On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-                </div>
 
                 <div class="button-block">
                     <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -4005,5 +4411,34 @@
             document.getElementById(cityName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+
+
+        const saveButtons = document.querySelectorAll(".saveButton");
+        const nextButtons = document.querySelectorAll(".nextButton");
+        const form = document.getElementById("step-form");
+        const stepButtons = document.querySelectorAll(".cctablinks");
+        const steps = document.querySelectorAll(".cctabcontent");
+        let currentStep = 0;
+
+        window.nextStep = function nextStep() {
+                if (currentStep < steps.length - 1) {
+                    steps[currentStep].style.display = "none";
+                    steps[currentStep + 1].style.display = "block";
+                    stepButtons[currentStep + 1].classList.add("active");
+                    stepButtons[currentStep].classList.remove("active");
+                    currentStep++;
+                }
+            };
+
+            window.previousStep = function previousStep() {
+                if (currentStep > 0) {
+                    steps[currentStep].style.display = "none";
+                    steps[currentStep - 1].style.display = "block";
+                    stepButtons[currentStep - 1].classList.add("active");
+                    stepButtons[currentStep].classList.remove("active");
+                    currentStep--;
+                }
+            };
+
     </script>
 @endsection

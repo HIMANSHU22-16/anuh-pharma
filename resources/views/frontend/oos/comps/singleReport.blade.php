@@ -252,8 +252,8 @@
                     <tr>
                         <th class="w-20">OOS Number</th>
                         <td class="w-30">
-                            {{-- {{ Helpers::getDivisionName($data->division_id) }}/{{ $data->Form_type }}/{{ Helpers::year($data->created_at) }}/{{ $data->record_number ? str_pad($data->record_number, 4, '0', STR_PAD_LEFT) : '1' }} --}}
-                            {{ Helpers::getDivisionName(session()->get('division')) }}/OOS/{{ date('Y') }}/{{ str_pad($data->record_number, 4, '0', STR_PAD_LEFT) }}
+                            {{-- {{ Helpers::getDivisionName($data->division_id) }}/{{ $data->Form_type }}/{{ Helpers::year($data->created_at) }}/{{ $data->record ? str_pad($data->record, 4, '0', STR_PAD_LEFT) : '1' }} --}}
+                            {{ Helpers::getDivisionName(session()->get('division')) }}/OOS/{{ date('Y') }}/{{ str_pad($data->record, 4, '0', STR_PAD_LEFT) }}
 
                         </td>
                         <th class="w-20">Site/Location Code</th>

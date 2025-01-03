@@ -708,7 +708,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-12">
+                        <!-- <div class="col-lg-12">
                             <div class="group-input">
                                 <label for="Audit Attachments">Preliminary Attachment</label>
                                 <small class="text-primary">
@@ -724,7 +724,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div> -->
 
                      </div>
                         <div class="button-block">
