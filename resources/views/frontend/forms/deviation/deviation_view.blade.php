@@ -11586,13 +11586,13 @@
 
             <div class="sub-head">Activity Log</div>
 
-                <div class="d-flex align-item-end justify-content-end">
+                {{-- <div class="d-flex align-item-end justify-content-end">
 
                         <button style="margin-bottom:20px;" class="button_theme1"> <a
                                 class="text-white"
                                 href="{{ url('rcms/activityLog', $data->id) }}"> Print </a>
                         </button>
-                </div>
+                </div> --}}
 
 
                 <div class="printable-content">
