@@ -670,95 +670,95 @@
 
 
 
-                    <!-- CAPA Details content ****************************-->
-                    <div id="CCForm4" class="inner-block cctabcontent">
-                        <div class="inner-block-content">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="group-input">
-                                        <label for="Quality Control">
-                                            Quality Control 1
-                                            <button type="button" name="add_quality_control_1"
-                                                id="quality_add_1">+</button>
-                                        </label>
-                                        <table class="table table-bordered" id="quality_details_1">
-                                            <thead>
-                                                <tr>
-                                                    <th>Sr. No.</th>
-                                                    <th>Test</th>
-                                                    <th>Control Sample</th>
-                                                    <th>Complaint Sample</th>
-                                                    <th>Initial Result</th>
-                                                    <th>Limits</th>
-                                                    <th>Remark</th>
-                                                    <th>Batch Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Default first row -->
-                                                <tr>
-                                                    <td><input disabled type="text" name="qualitycontrol_1[0][serial]"
-                                                            value="1"></td>
-                                                    <td><input type="text" name="qualitycontrol_1[0][test]"></td>
-                                                    <td><input type="text" name="qualitycontrol_1[0][control_sample]">
-                                                    </td>
-                                                    <td><input type="text"
-                                                            name="qualitycontrol_1[0][complaint_sample]"></td>
-                                                    <td><input type="text" name="qualitycontrol_1[0][initial_result]">
-                                                    </td>
-                                                    <td><input type="text" name="qualitycontrol_1[0][limits]"></td>
-                                                    <td><input type="text" name="qualitycontrol_1[0][remark]"></td>
-                                                    <td><input type="text" name="qualitycontrol_1[0][batch_status]">
-                                                    </td>
-                                                    <td><button type="button" class="removeRowBtn">Remove</button></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                        <!-- CAPA Details content ****************************-->
+                        <div id="CCForm4" class="inner-block cctabcontent">
+                            <div class="inner-block-content">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="group-input">
+                                            <label for="Quality Control">
+                                                Quality Control 1
+                                                <button type="button" name="add_quality_control_1"
+                                                    id="quality_add_1">+</button>
+                                            </label>
+                                            <table class="table table-bordered" id="quality_details_1">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sr. No.</th>
+                                                        <th>Test</th>
+                                                        <th>Control Sample</th>
+                                                        <th>Complaint Sample</th>
+                                                        <th>Initial Result</th>
+                                                        <th>Limits</th>
+                                                        <th>Remark</th>
+                                                        <th>Batch Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Default first row -->
+                                                    <tr>
+                                                        <td><input disabled type="text" name="qualitycontrol_1[0][serial]"
+                                                                value="1"></td>
+                                                        <td><input type="text" name="qualitycontrol_1[0][test]"></td>
+                                                        <td><input type="text" name="qualitycontrol_1[0][control_sample]">
+                                                        </td>
+                                                        <td><input type="text"
+                                                                name="qualitycontrol_1[0][complaint_sample]"></td>
+                                                        <td><input type="text" name="qualitycontrol_1[0][initial_result]">
+                                                        </td>
+                                                        <td><input type="text" name="qualitycontrol_1[0][limits]"></td>
+                                                        <td><input type="text" name="qualitycontrol_1[0][remark]"></td>
+                                                        <td><input type="text" name="qualitycontrol_1[0][batch_status]">
+                                                        </td>
+                                                        <td><button type="button" class="removeRowBtn">Remove</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <script>
-                                    $(document).ready(function() {
-                                        // Add new row in Quality Control 1 table
-                                        $('#quality_add_1').click(function(e) {
-                                            e.preventDefault();
+                                    <script>
+                                        $(document).ready(function() {
+                                            // Add new row in Quality Control 1 table
+                                            $('#quality_add_1').click(function(e) {
+                                                e.preventDefault();
 
-                                            function generateQualityTableRow(serialNumber) {
-                                                var html =
-                                                    '<tr>' +
-                                                    '<td><input disabled type="text" name="qualitycontrol_1[' + serialNumber +
-                                                    '][serial]" value="' + (serialNumber + 1) + '"></td>' +
-                                                    '<td><input type="text" name="qualitycontrol_1[' + serialNumber + '][test]"></td>' +
-                                                    '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
-                                                    '][control_sample]"></td>' +
-                                                    '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
-                                                    '][complaint_sample]"></td>' +
-                                                    '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
-                                                    '][initial_result]"></td>' +
-                                                    '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
-                                                    '][limits]"></td>' +
-                                                    '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
-                                                    '][remark]"></td>' +
-                                                    '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
-                                                    '][batch_status]"></td>' +
-                                                    '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
-                                                    '</tr>';
-                                                return html;
-                                            }
+                                                function generateQualityTableRow(serialNumber) {
+                                                    var html =
+                                                        '<tr>' +
+                                                        '<td><input disabled type="text" name="qualitycontrol_1[' + serialNumber +
+                                                        '][serial]" value="' + (serialNumber + 1) + '"></td>' +
+                                                        '<td><input type="text" name="qualitycontrol_1[' + serialNumber + '][test]"></td>' +
+                                                        '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
+                                                        '][control_sample]"></td>' +
+                                                        '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
+                                                        '][complaint_sample]"></td>' +
+                                                        '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
+                                                        '][initial_result]"></td>' +
+                                                        '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
+                                                        '][limits]"></td>' +
+                                                        '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
+                                                        '][remark]"></td>' +
+                                                        '<td><input type="text" name="qualitycontrol_1[' + serialNumber +
+                                                        '][batch_status]"></td>' +
+                                                        '<td><button type="button" class="removeRowBtn">Remove</button></td>' +
+                                                        '</tr>';
+                                                    return html;
+                                                }
 
-                                            var tableBody = $('#quality_details_1 tbody');
-                                            var rowCount = tableBody.children('tr').length;
-                                            var newRow = generateQualityTableRow(rowCount);
-                                            tableBody.append(newRow);
+                                                var tableBody = $('#quality_details_1 tbody');
+                                                var rowCount = tableBody.children('tr').length;
+                                                var newRow = generateQualityTableRow(rowCount);
+                                                tableBody.append(newRow);
+                                            });
+
+                                            // Remove row in Quality Control 1 table
+                                            $(document).on('click', '.removeRowBtn', function() {
+                                                $(this).closest('tr').remove();
+                                            });
                                         });
-
-                                        // Remove row in Quality Control 1 table
-                                        $(document).on('click', '.removeRowBtn', function() {
-                                            $(this).closest('tr').remove();
-                                        });
-                                    });
-                                </script>
+                                    </script>
 
 
 
@@ -1123,7 +1123,7 @@
                                         Closure Verification Details
                                         <button type="button" id="closureverification_add">+</button>
                                     </label>
-                                    <div class="table-responsive">  
+                                    <div class="table-responsive">
                                         <table class="table table-bordered" id="closureverification_details" style="width: 100%;">
                                             <thead>
                                                 <tr>

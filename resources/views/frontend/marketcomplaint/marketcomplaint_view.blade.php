@@ -1074,9 +1074,9 @@
                                                 <textarea name="preliminary_investigation_report">{{ $data->preliminary_investigation_report }}</textarea>
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        {{-- <div class="col-12">
                                             <div class="group-input">
-                                                <label for="Closure Attachments">Attachment (if any)</label>
+                                                <label for="Closure Attachments">Attachmentkjnk (if any)</label>
                                                 <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
                                                 <div class="file-attachment-field">
                                                     <!-- List of Existing Attachments -->
@@ -1141,7 +1141,69 @@
                                                     });
                                                 });
                                             });
-                                        </script>
+                                        </script> --}}
+
+
+
+
+
+<div class="col-12">
+    <div class="group-input">
+        <label for="Attachments">Attachment</label>
+        <div><small class="text-primary">Please Attach all relevant or supporting documents</small></div>
+        <div class="file-attachment-field">
+            <div class="file-attachment-list" id="attachment">
+                @if ($data->attachment)
+                    @foreach(json_decode($data->attachment) as $file)
+                        <h6 type="button" class="file-container text-dark" style="background-color: rgb(243, 242, 240);">
+                            <b>{{ $file }}</b>
+                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i></a>
+                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                            <input type="hidden" name="existing_attachment[]" value="{{ $file }}">
+                        </h6>
+                    @endforeach
+                @endif
+            </div>
+            <div class="add-btn">
+                <div>Add</div>
+                <input type="file" id="myfile" name="attachment[]" {{ $data->stage == 0 || $data->stage >= 2 ? "disabled" : "" }} oninput="addMultipleFiles(this, 'attachment')" multiple>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden field to keep track of files to be deleted -->
+<input type="hidden" id="deleted_attachment" name="deleted_attachment" value="">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeButtons = document.querySelectorAll('.remove-file');
+
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const fileName = this.getAttribute('data-file-name');
+                const fileContainer = this.closest('.file-container');
+
+                // Hide the file container
+                if (fileContainer) {
+                    fileContainer.style.display = 'none';
+                    // Remove hidden input associated with this file
+                    const hiddenInput = fileContainer.querySelector('input[type="hidden"]');
+                    if (hiddenInput) {
+                        hiddenInput.remove();
+                    }
+
+                    // Add the file name to the deleted files list
+                    const deletedFilesInput = document.getElementById('deleted_attachment');
+                    let deletedFiles = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+                    deletedFiles.push(fileName);
+                    deletedFilesInput.value = deletedFiles.join(',');
+                }
+            });
+        });
+    });
+</script>
+
 
                                         <div class="col-lg-6 new-date-data-field">
                                             <div class="group-input input-date">
@@ -1499,7 +1561,7 @@
                                         <label for="Closure Verification Details">
                                             Closure Verification Details
                                             <button type="button" id="closureverification_add">+</button>
-                                        </label>
+                                        </label>  
                                         <div class="table-responsive">
                                             <table class="table table-bordered" id="closureverification_details" style="width: 100%;">
                                                 <thead>
