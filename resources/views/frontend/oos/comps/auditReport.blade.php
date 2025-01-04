@@ -151,7 +151,7 @@
         <table>
             <tr>
                 <td class="w-70 head">
-                   OOS/OOT Audit Trial Report
+                   OOS Audit Trial Report
                 </td>
                 <td class="w-30">
                     <div class="logo">
@@ -167,7 +167,7 @@
                     <strong>OOS/OOT Audit No.</strong>
                 </td>
                 <td class="w-40">
-                   {{ Helpers::divisionNameForQMS($doc->division_id) }}/OOS/OOT/20{{ Helpers::year($doc->created_at) }}/{{ str_pad($doc->record_number, 4, '0', STR_PAD_LEFT) }}
+                   {{ Helpers::divisionNameForQMS($doc->division_id) }}/OOS/{{ Helpers::year($doc->created_at) }}/{{ str_pad($doc->record_number, 4, '0', STR_PAD_LEFT) }}
                 </td>
                 <td class="w-30">
                     <strong>Record No.</strong> {{ str_pad($doc->record_number, 4, '0', STR_PAD_LEFT) }}
@@ -443,12 +443,11 @@
 </style>
 
 <body>
-
     <header>
         <table>
             <tr>
                 <td class="w-70 head">
-                    OOS/OOT Audit Trial Report
+                    OOS Audit Trial Report
                 </td>
                 <td class="w-30">
                     <div class="logo">
@@ -460,10 +459,10 @@
         <table>
             <tr>
                 <td class="w-30">
-                    <strong>OOS/OOT Audit No.</strong>
+                    <strong>OOS Audit No.</strong>
                 </td>
                 <td class="w-40">
-                    {{ Helpers::divisionNameForQMS($doc->division_id) }}/OOS/OOT/20{{ Helpers::year($doc->created_at) }}/{{ str_pad($doc->record_number, 4, '0', STR_PAD_LEFT) }}
+                    {{ Helpers::divisionNameForQMS($doc->division_id) }}/OOS/{{ Helpers::year($doc->created_at) }}/{{ str_pad($doc->record, 4, '0', STR_PAD_LEFT) }}
                 </td>
                 <td class="w-30">
                     <strong>Record No.</strong> {{ str_pad($doc->record, 4, '0', STR_PAD_LEFT) }}
@@ -522,7 +521,6 @@
                                     {{ $dataDemo->activity_type ?: 'Not Applicable' }}
                                 </div>
                                 <div style="margin-top: 5px;" class="imageContainer">
-                                    <!-- Assuming $dataDemo->image_url contains the URL of your image -->
                                     @if ($dataDemo->activity_type == 'Activity Log')
                                         <strong>Change From :</strong>
                                         @if ($dataDemo->change_from)
@@ -597,7 +595,6 @@
                 </tbody>
             </table>
 
-            </table>
         </div>
 
     </div>
