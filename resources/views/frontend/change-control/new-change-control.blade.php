@@ -1,5 +1,5 @@
-@extends('frontend.rcms.layout.main_rcms')
-@section('rcms_container')
+@extends('frontend.layout.main')
+@section('container')
     <style>
         header .header_rcms_bottom {
             display: none;
@@ -171,18 +171,18 @@
             <!-- Tab links -->
             <div class="cctab">
                 <button class="cctablinks active" onclick="openCity(event, 'CCForm1')">General Information</button>
-                <button class="cctablinks" onclick="openCity(event, 'CCForm17')">Impact Assessment</button>
-                <button class="cctablinks" onclick="openCity(event, 'CCForm8')" style="display: none"
-                    id="riskAssessmentButton">Risk Assessment</button>
+                <!-- <button class="cctablinks" onclick="openCity(event, 'CCForm17')">Impact Assessment</button> -->
+                <!-- <button class="cctablinks" onclick="openCity(event, 'CCForm8')" style="display: none"
+                    id="riskAssessmentButton">Risk Assessment</button> -->
                 <button class="cctablinks" onclick="openCity(event, 'CCForm3')">Initial HOD Review</button>
                 {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm2')">Change Details</button> --}}
 
-                <!-- <button class="cctablinks" onclick="openCity(event, 'CCForm3')">Impact Assessment</button> -->
+                {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm3')">Impact Assessment</button> --}}
                 <button class="cctablinks" onclick="openCity(event, 'CCForm4')">QA/CQA Review</button>
                 <button class="cctablinks " onclick="openCity(event, 'CCForm12')">CFT</button>
-                <button class="cctablinks " onclick="openCity(event, 'CCForm18')">External Review</button>
+                {{-- <button class="cctablinks " onclick="openCity(event, 'CCForm18')">External Review</button> --}}
                 <button class="cctablinks" onclick="openCity(event, 'CCForm14')">QA Final Review</button>
-                <button class="cctablinks" onclick="openCity(event, 'CCForm15')">RA</button>
+                {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm15')">RA</button> --}}
                 <button class="cctablinks" onclick="openCity(event, 'CCForm16')">QA/CQA Designee Approval</button>
 
                 <button class="cctablinks" onclick="openCity(event, 'CCForm5')">Evaluation</button>
@@ -625,7 +625,8 @@
                                     });
 
                                 </script>
-<script>
+                               
+                               <!-- <script>
                                     VirtualSelect.init({
                                         ele: '#related_records, #cft_reviewer, #audit_type'
                                     });
@@ -696,7 +697,7 @@
                                             currentStep--;
                                         }
                                     }
-                                </script>
+                                </script> -->
                                 
                                 <div class="col-md-12 mb-3">
                                     <div class="group-input">
@@ -848,7 +849,7 @@
                         </div>
                     </div>
 
-                    <div id="CCForm17" class="inner-block cctabcontent">
+                    {{-- <div id="CCForm17" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <label style="font-weight: bold;" for="Audit Attachments">Impact Assessment</label>
                             
@@ -1810,13 +1811,13 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
 
 
 
-                    <div id="CCForm8" class="inner-block cctabcontent">
+                    {{-- <div id="CCForm8" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="sub-head">
                                 Risk Assessment
@@ -1872,7 +1873,8 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+
                     <div id="CCForm3" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="sub-head">
@@ -4492,7 +4494,7 @@
                         </div>
                     </div>
 
-                    <div id="CCForm18" class="inner-block cctabcontent">
+                    {{-- <div id="CCForm18" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="row">
                                 <div class="sub-head">
@@ -4534,7 +4536,7 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <div id="CCForm14" class="inner-block cctabcontent">
@@ -4614,7 +4616,7 @@
                     </div>
                     <!-- </div>  -->
 
-                    <div id="CCForm15" class="inner-block cctabcontent">
+                    {{-- <div id="CCForm15" class="inner-block cctabcontent">
                         <div class="inner-block-content">
                             <div class="sub-head">
                                 RA
@@ -4657,7 +4659,7 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div id="CCForm5" class="inner-block cctabcontent">
                         <div class="inner-block-content">
@@ -5753,7 +5755,7 @@
 
     <script>
         VirtualSelect.init({
-            ele: '#related_records, #cft_reviewer, #risk_assessment_related_record'
+            ele: '#related_records, #cft_reviewer,#audit_type,#risk_assessment_related_record'
         });
 
         function openCity(evt, cityName) {

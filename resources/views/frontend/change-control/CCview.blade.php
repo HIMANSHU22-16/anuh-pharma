@@ -1,5 +1,5 @@
-@extends('frontend.rcms.layout.main_rcms')
-@section('rcms_container')
+@extends('frontend.layout.main')
+@section('container')
     @php
         $users = DB::table('users')->select('id', 'name')->get();
         $Allusers = DB::table('users')->select('id', 'name')->get();
@@ -69,7 +69,7 @@
             font-size: 12px;
 
         } */
-    </style>
+    </style>   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -628,7 +628,7 @@
                         <div class="cctab">
                             <button class="cctablinks active" onclick="openCity(event, 'CCForm1')">General Information</button>
                             {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm18')">Impact Assessment</button> --}}
-                            <button class="cctablinks" onclick="openCity(event, 'CCForm7')" style="display: none" id="riskAssessmentButton">Risk Assessment</button>
+                            {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm7')" style="display: none" id="riskAssessmentButton">Risk Assessment</button> --}}
                             <button class="cctablinks" onclick="openCity(event, 'CCForm12')">Initial HOD Review</button>
                             {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm2')">Change Details</button> --}}
                        
@@ -638,7 +638,7 @@
                             <button class="cctablinks" onclick="openCity(event, 'CCForm11')">CFT</button>
                             <button class="cctablinks " onclick="openCity(event, 'CCForm19')">External Review</button>
                             <button class="cctablinks" onclick="openCity(event, 'CCForm14')">QA Final Review</button>
-                            <button class="cctablinks" onclick="openCity(event, 'CCForm15')"  style="display: none" id="actionButton">RA</button>
+                            {{-- <button class="cctablinks" onclick="openCity(event, 'CCForm15')"  style="display: none" id="actionButton">RA</button> --}}
                             <button class="cctablinks" onclick="openCity(event, 'CCForm17')">QA/CQA Designee Approval</button>
                            
                             <button class="cctablinks" onclick="openCity(event, 'CCForm4')">Evaluation</button>
@@ -1479,9 +1479,25 @@
                                             </div>
                                             
                                         </div>
-                                        <div class="button-block">
+                                        <!-- <div class="button-block">
                                             <button type="submit" class="saveButton">Save</button>
                                             <button type="button" class="nextButton" onclick="nextStep()">Next</button>
+                                        </div> -->
+                                        <div class="button-block">
+                                            <button  type="submit"
+                                                id="ChangesaveButton01" class="saveButton saveAuditFormBtn d-flex"
+                                                style="align-items: center;">
+                                                <div class="spinner-border spinner-border-sm auditFormSpinner"
+                                                    style="display: none" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                Save
+                                            </button>
+                                            <button  type="button"
+                                                id="ChangeNextButton" class="nextButton">Next</button>
+                                            <!-- <button type="button" style=" justify-content: center; width: 4rem; margin-left: auto;"> <a href="{{ url('rcms/qms-dashboard') }}"
+                                                    class="text-white">
+                                                    Exit </a> </button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -2449,7 +2465,7 @@
                                     </div>
                                 </div> --}}
 
-                                <div id="CCForm7" class="inner-block cctabcontent">
+                                {{-- <div id="CCForm7" class="inner-block cctabcontent">
                                     <div class="inner-block-content">
                                         <div class="sub-head">
                                             Risk Assessment
@@ -2525,7 +2541,9 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
+
+
                                 <div id="CCForm12" class="inner-block cctabcontent">
                                     <div class="inner-block-content">
                                         <div class="sub-head">
@@ -5649,7 +5667,7 @@
                             <!-- </div> -->
                             
 
-                                <div id="CCForm15" class="inner-block cctabcontent">
+                                {{-- <div id="CCForm15" class="inner-block cctabcontent">
                                     <div class="inner-block-content">
                                         <div class="sub-head">
                                             RA
@@ -5705,7 +5723,7 @@
                                                 <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">Exit</a>
                                             </button>
                                         </div>
-                                    </div>
+                                </div> --}}
                                 <!-- </div>     -->
 
                                 <div id="CCForm17" class="inner-block cctabcontent">
@@ -5971,6 +5989,112 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="CCForm9" class="inner-block cctabcontent">
+                                    <div class="inner-block-content">
+                                        <div class="group-input">
+                                            <label for="qa-closure-comments">
+                                                QA Closure Comments
+                                                @if($data->stage == 13)
+                                                    <span class="text-danger">*</span>
+                                                @endif
+                                            </label>
+                                            <div class="relative-container">
+                                                <textarea 
+                                                    class="tiny" 
+                                                    name="qa_closure_comments"
+                                                    {{ $data->stage == 0 || $data->stage == 8 || $data->stage == 14 ? 'readonly' : '' }}
+                                                    {{ $isUserReviewExist ? 'readonly' : '' }}
+                                                >{{ $closure->qa_closure_comments }}</textarea>
+                                                @component('frontend.forms.language-model', ['readonly' => $data->stage == 0 || $data->stage == 8 || $data->stage == 14])
+                                                @endcomponent
+                                            </div>
+                                        </div>
+
+                                        @if ($closure->tran_attach)
+                                            @foreach (json_decode($closure->tran_attach) as $file)
+                                                <input 
+                                                    id="trainingAttachmentFile-{{ $loop->index }}" 
+                                                    type="hidden"
+                                                    name="existinTrainingFile[{{ $loop->index }}]"
+                                                    value="{{ $file }}"
+                                                >
+                                            @endforeach
+                                        @endif
+
+                                        <div class="group-input">
+                                            <label for="attach-list">List Of Attachments</label>
+                                            <div class="file-attachment-field">
+                                                <div class="file-attachment-list" id="attach_list">
+                                                    @if ($closure->attach_list)
+                                                        @foreach (json_decode($closure->attach_list) as $file)
+                                                            <h6 
+                                                                type="button" 
+                                                                class="file-container text-dark"
+                                                                style="background-color: rgb(243, 242, 240);"
+                                                            >
+                                                                <b>{{ $file }}</b>
+                                                                <a href="{{ asset('upload/' . $file) }}" target="_blank">
+                                                                    <i class="fa fa-eye text-primary" style="font-size:20px; margin-right:-10px;"></i>
+                                                                </a>
+                                                                <a 
+                                                                    type="button" 
+                                                                    class="remove-file" 
+                                                                    data-remove-id="existinProductionLiquidFile-{{ $loop->index }}"
+                                                                    data-file-name="{{ $file }}"
+                                                                >
+                                                                    <i class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i>
+                                                                </a>
+                                                            </h6>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                                <div class="add-btn">
+                                                    <div>Add</div>
+                                                    <input 
+                                                        type="file" 
+                                                        id="myfile" 
+                                                        name="attach_list[]" 
+                                                        oninput="addMultipleFiles(this, 'attach_list')" 
+                                                        multiple 
+                                                        {{ $data->stage == 0 || $data->stage == 8 || $data->stage == 13 ? 'readonly' : '' }}
+                                                        {{ $isUserReviewExist ? 'readonly' : '' }}
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 sub-head">
+                                            Extension Justification
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="group-input">
+                                                <label for="due_date_extension">Due Date Extension Justification</label>
+                                                <div class="relative-container">
+                                                    <textarea 
+                                                        class="tiny" 
+                                                        name="due_date_extension"
+                                                        {{ $data->stage == 0 || $data->stage == 8 || $data->stage == 13 ? 'readonly' : '' }}
+                                                        {{ $isUserReviewExist ? 'readonly' : '' }}
+                                                    >{{ $due_date_extension }}</textarea>
+                                                    @component('frontend.forms.language-model', ['readonly' => $data->stage == 0 || $data->stage == 13])
+                                                    @endcomponent
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="button-block">
+                                            <button type="submit" class="saveButton">Save</button>
+                                            <button type="button" class="backButton" onclick="previousStep()">Back</button>
+                                            <button type="button" class="nextButton" onclick="nextStep()">Next</button>
+                                            <button 
+                                                type="button" 
+                                                style="justify-content: center; width: 4rem; margin-left: 1px;"
+                                            >
+                                                <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">Exit</a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div id="CCForm16" class="inner-block cctabcontent">
                                     <div class="inner-block-content">
@@ -6038,75 +6162,8 @@
                                     </div>
                                 </div>
 
-                                <div id="CCForm9" class="inner-block cctabcontent">
-                                    <div class="inner-block-content">
-                                        
-                                <div class="group-input">
-                                    <label for="qa-closure-comments">QA Closure Comments @if($data->stage == 13) <span class="text-danger">*</span>@endif</label>
-                                    <div class="relative-container">
-                                        <textarea class="tiny" name="qa_closure_comments" {{ $data->stage == 0 || $data->stage == 8 || $data->stage == 14 ? 'readonly' : '' }} {{ $isUserReviewExist ? 'readonly' : '' }}>{{ $closure->qa_closure_comments }}</textarea>
-                                        @component('frontend.forms.language-model', ['readonly' => $data->stage == 0 || $data->stage == 8 || $data->stage == 14])
-                                        @endcomponent
-                                    </div>
-                                </div>
 
-                                @if ($closure->tran_attach)
-                                    @foreach (json_decode($closure->tran_attach) as $file)
-                                        <input id="trainingAttachmentFile-{{ $loop->index }}" type="hidden"
-                                            name="existinTrainingFile[{{ $loop->index }}]"
-                                            value="{{ $file }}">
-                                    @endforeach
-                                @endif
-                                <div class="group-input">
-                                    <label for="attach-list">List Of Attachments</label>
-                                    <div class="file-attachment-field">
-                                        <div class="file-attachment-list" id="attach_list">
-                                            @if ($closure->attach_list)
-                                                @foreach (json_decode($closure->attach_list) as $file)
-                                                    <h6 type="button" class="file-container text-dark"
-                                                        style="background-color: rgb(243, 242, 240);">
-                                                        <b>{{ $file }}</b>
-                                                        <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
-                                                                class="fa fa-eye text-primary"
-                                                                style="font-size:20px; margin-right:-10px;"></i></a>
-                                                        <a type="button" class="remove-file" data-remove-id="existinProductionLiquidFile-{{ $loop->index }}"
-                                                            data-file-name="{{ $file }}"><i
-                                                                class="fa-solid fa-circle-xmark"
-                                                                style="color:red; font-size:20px;"></i></a>
-                                                    </h6>
-                                                @endforeach
-                                            @endif
-                                        </div>
-                                        <div class="add-btn">
-                                            <div>Add</div>
-                                            <input type="file"  {{ $data->stage == 0 || $data->stage == 13 ? 'readonly' : '' }}  id="myfile" name="attach_list[]" {{ $isUserReviewExist ? 'readonly' : '' }}
-                                                oninput="addMultipleFiles(this, 'attach_list')" multiple {{ $data->stage == 0 || $data->stage == 8 || $data->stage == 13 ? 'readonly' : '' }}>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-12 sub-head">
-                                Extension Justification
-                            </div>
-                            <div class="col-12">
-                                <div class="group-input">
-                                    <label for="due_date_extension">Due Date Extension Justification</label>
-                                    <div class="relative-container">
-                                        <textarea class="tiny" name="due_date_extension" {{ $data->stage == 0 || $data->stage == 8 || $data->stage == 13 ? 'readonly' : '' }} {{ $isUserReviewExist ? 'readonly' : '' }}> {{ $due_date_extension }}</textarea>
-                                        @component('frontend.forms.language-model', ['readonly' => $data->stage == 0 || $data->stage == 13])
-                                        @endcomponent
-                                    </div>
-                                </div>
-                    <div class="button-block">
-                        <button type="submit" class="saveButton">Save</button>
-                        <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                        <button type="button" class="nextButton" onclick="nextStep()">Next</button>
-                        <button type="button" style=" justify-content: center; width: 4rem; margin-left: 1px;;">
-                            <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">Exit</a>
-                        </button>
-                    </div>
-                </div>
-            </div>
-                                        </div>
+
             @php
                 $product = DB::table('products')->get();
                 $material = DB::table('materials')->get();
@@ -7600,6 +7657,100 @@
 
             $('#dueDate').attr('min', maxDate);
         });
+    </script>
+    <script>
+            console.log('Script working')
+
+            $(document).ready(function() {
+
+
+                function submitForm() {
+
+                    let auditForm = document.getElementById('auditForm');
+
+
+                    console.log('sumitting form')
+
+                    document.querySelectorAll('.saveAuditFormBtn').forEach(function(button) {
+                        button.disabled = true;
+                    })
+
+                    document.querySelectorAll('.auditFormSpinner').forEach(function(spinner) {
+                        spinner.style.display = 'flex';
+                    })
+
+                    auditForm.submit();
+                }
+
+                $('#ChangesaveButton01').click(function() {
+                    document.getElementById('formNameField').value = 'general-open';
+                    submitForm();
+                });
+
+                $('#ChangesaveButton02').click(function() {
+                    document.getElementById('formNameField').value = 'hod';
+                    submitForm();
+                });
+
+                $('#ChangesaveButton03').click(function() {
+                    document.getElementById('formNameField').value = 'qa';
+                    submitForm();
+                });
+
+                $('#ChangesaveButton04').click(function() {
+                    document.getElementById('formNameField').value = 'capa';
+                    submitForm();
+                });
+
+                $('#ChangesaveButton05').click(function() {
+                    document.getElementById('formNameField').value = 'qa-final';
+                    submitForm();
+                });
+
+                $('#ChangesaveButton06').click(function() {
+                    document.getElementById('formNameField').value = 'qah';
+                    submitForm();
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var signatureForm = document.getElementById('signatureModalForm');
+
+                signatureForm.addEventListener('submit', function(e) {
+
+                    var submitButton = signatureForm.querySelector('.signatureModalButton');
+                    var spinner = signatureForm.querySelector('.signatureModalSpinner');
+
+                    submitButton.disabled = true;
+
+                    spinner.style.display = 'inline-block';
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var signatureForm = document.getElementById('pendingInitiatorForm');
+
+                signatureForm.addEventListener('submit', function(e) {
+
+                    var submitButton = signatureForm.querySelector('.pendingInitiatorModalButton');
+                    var spinner = signatureForm.querySelector('.pendingInitiatorModalSpinner');
+
+                    submitButton.disabled = true;
+
+                    spinner.style.display = 'inline-block';
+                });
+            });
+
+
+            // =========================
+            wow = new WOW({
+                boxClass: 'wow', // default
+                animateClass: 'animated', // default
+                offset: 0, // default
+                mobile: true, // default
+                live: true // default
+            })
+            wow.init();
     </script>
 
 @endsection
