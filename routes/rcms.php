@@ -89,7 +89,7 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::get('audit/{id}', [CCController::class, 'audit_pdf']);
 
             Route::get('changeControlFamilyReport/{id}', [CCController::class, 'familyReport'])->name('changeControlFamilyReport');
-            
+
             Route::post('send-qa-approval/{id}', [CCController::class, 'sentToQAHeadApproval'])->name('send-qa-approval');
             Route::post('send-reject/{id}', [CCController::class, 'reject'])->name('send-reject');
             Route::post('send-post-implementation/{id}', [CCController::class, 'sentoPostImplementation'])->name('send-post-implementation');
@@ -99,7 +99,7 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::view('audit_trial_pdf', 'frontend.change-control.audit_trial_pdf');
             Route::view('change_control_single_pdf', 'frontend.change-control.change_control_single_pdf');
 
-            Route::get('change_control_family_pdf', [CCController::class, 'parent_child']);            
+            Route::get('change_control_family_pdf', [CCController::class, 'parent_child']);
             Route::get('changeControl-single-show/{id}', [CCController::class, 'singleReportShow'])->name('changeControl-single-show');
 
             Route::get('change_control_single_pdf/{id}', [CCController::class, 'single_pdf'])->name('change_control_single_pdf');
@@ -186,7 +186,7 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::get('internalSingleReport/{id}', [InternalauditController::class, 'singleReport'])->name('internalSingleReport');
             Route::get('internalauditReport/{id}', [InternalauditController::class, 'auditReport'])->name('internalauditReport');
 
-           
+
              /********************* Deviation Routes Starts *******************/
 
              Route::get('deviation', [DeviationController::class, 'deviation'])->name('deviation');
@@ -206,17 +206,17 @@ Route::group(['prefix' => 'rcms'], function () {
              Route::post('deviation/Qa/{id}', [DeviationController::class, 'deviation_qa_more_info'])->name('deviation_qa_more_info');
              Route::get('deviationSingleReport/{id}', [DeviationController::class, 'singleReport'])->name('deviationSingleReport');
              Route::get('deviation_showpdf/{id}', [DeviationController::class, 'singleReportShow'])->name('deviation_showpdf');
- 
+
              Route::get('activityLog/{id}', [DeviationController::class, 'activityLog'])->name('deviation_activityLog');
- 
- 
+
+
              Route::get('deviationFamilyReport/{id}', [DeviationController::class, 'familyReport'])->name('deviationFamilyReport');
- 
+
              Route::post('dev-launch-extension-deviation/{id}', [DeviationController::class, 'launchExtensionDeviation'])->name('dev-launch-extension-deviation');
              Route::post('dev-launch-extension-capa/{id}', [DeviationController::class, 'launchExtensionCapa'])->name('dev-launch-extension-capa');
              Route::post('dev-launch-extension-qrm/{id}', [DeviationController::class, 'launchExtensionQrm'])->name('dev-launch-extension-qrm');
              Route::post('dev-launch-extension-investigation/{id}', [DeviationController::class, 'launchExtensionInvestigation'])->name('dev-launch-extension-investigation');
- 
+
              /********************* Deviation Routes Ends *******************/
 
 
@@ -232,6 +232,7 @@ Route::group(['prefix' => 'rcms'], function () {
         Route::post('marketcomplaintupdate/{id}', [MarketComplaintController::class, 'update'])->name('marketcomplaintupdate');
         Route::get('MarketComplaintSingleReport/{id}', [MarketComplaintController::class, 'singleReport'])->name('MarketComplaintSingleReport');
         Route::post('MarketComplaint/stage/{id}', [MarketComplaintController::class, 'MC_send_stage'])->name('MC_send_stage');
+        Route::post('capa/cancel/{id}', [MarketComplaintController::class, 'marketCancel'])->name('marketCancel');
         Route::post('marketcomplaint/moreinfo/{id}', [MarketComplaintController::class, 'moreinfo_reject_market'])->name('marketcomplaint_moreinfo');
         Route::get('MarketComplaintAuditTrial/{id}', [MarketComplaintController::class, 'AuditTrial'])->name('MarketcomplaintAuditTrial');
         Route::get('/marketcomplaint/{id}',[MarketComplaintController::class,'audit_trail_filter_marketcomplaint'])->name('marketcomplaint_filter');
