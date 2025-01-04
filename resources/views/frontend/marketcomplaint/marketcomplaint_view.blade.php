@@ -1561,7 +1561,7 @@
                                         <label for="Closure Verification Details">
                                             Closure Verification Details
                                             <button type="button" id="closureverification_add">+</button>
-                                        </label>  
+                                        </label>
                                         <div class="table-responsive">
                                             <table class="table table-bordered" id="closureverification_details" style="width: 100%;">
                                                 <thead>
@@ -4263,7 +4263,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <form action="{{ route('capaCancel', $data->id) }}" method="POST">
+                    <form action="{{ route('marketCancel', $data->id) }}" method="POST">
                         @csrf
                         <!-- Modal body -->
                         <div class="modal-body">

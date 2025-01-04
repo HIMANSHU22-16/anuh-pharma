@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 use PDF;
 
 
@@ -786,6 +787,68 @@ class MarketComplaintController extends Controller
     }
 
 
+    public function marketCancel(Request $request, $id)
+    {
+        if ($request->username == Auth::user()->email && Hash::check($request->password, Auth::user()->password)) {
+            $marketcomplaint = MarketComplaint::find($id);
+            $lastDocument = MarketComplaint::find($id);
+
+
+            $marketcomplaint->stage = "0";
+            $marketcomplaint->status = "Closed-Cancelled";
+            $marketcomplaint->cancelled_by = Auth::user()->name;
+            $marketcomplaint->cancelled_on = Carbon::now()->format('d-M-Y');
+            $history = new MarketComplaintAuditTrial();
+            $history->market_id = $id;
+            $history->activity_type = 'Activity Log';
+            $history->previous = "";
+            $history->current = $marketcomplaint->cancelled_by;
+            $history->comment = $request->comment;
+            $history->user_id = Auth::user()->id;
+            $history->user_name = Auth::user()->name;
+            $history->user_role = RoleGroup::where('id', Auth::user()->role)->value('name');
+            $history->origin_state =  $marketcomplaint->status;
+            $history->stage = 'Cancelled';
+            // $history->action_name = 'Cancelled';
+            $history->save();
+            $marketcomplaint->update();
+            $history = new MarketComplaintAuditTrial();
+            $history->type = "marketcomplaint";
+            $history->doc_id = $id;
+            $history->user_id = Auth::user()->id;
+            $history->user_name = Auth::user()->name;
+            $history->stage_id = $marketcomplaint->stage;
+            $history->status = $marketcomplaint->status;
+            $history->save();
+
+            $list = Helpers::getInitiatorUserList();
+            foreach ($list as $u) {
+                if ($u->q_m_s_divisions_id == $marketcomplaint->division_id) {
+                    $email = Helpers::getInitiatorEmail($u->user_id);
+                    if ($email !== null) {
+                        try {
+                            Mail::send(
+                                'mail.view-mail',
+                                ['data' => $marketcomplaint],
+                                function ($message) use ($email) {
+                                    $message->to($email)
+                                        ->subject("Cancelled By " . Auth::user()->name);
+                                }
+                            );
+                        } catch (\Exception $e) {
+                            //
+                        }
+                    }
+                }
+            }
+
+            toastr()->success('Document Sent');
+            return back();
+        } else {
+            toastr()->error('E-signature Not match');
+            return back();
+        }
+    }
     public function moreinfo_reject_market(Request $request, $id)
     {
         // dd("test");
