@@ -139,7 +139,7 @@
                         '"></td>' +
                         '<td><input type="text" name="details_stability[' + serialNumber + '][summary_of_previous_oos]" value=""></td>'+
                         '<td><input type="text" name="details_stability[' + serialNumber + '][capa_taken_for_oos]" value=""></td>' +
-                        '<td><button type="text" class="removeRowBtn">Remove</button></td>' +
+                        // '<td><button type="text" class="removeRowBtn">Remove</button></td>' +
 
                     '</tr>';
                     for (var i = 0; i < users.length; i++) {
@@ -298,7 +298,8 @@
                
               
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_ar_no]" value=""></td>' +
-                        '<td><input type="text" name="info_product_material[' + serialNumber + '][info_stage]" value=""></td>' +
+                        '<td><select name="info_product_material[' + serialNumber + '][info_stage]"><option value="">--Select--</option><option value="finished_product">Finished Product</option><option value="raw_material">Raw Material</option><option value="reaction_material">Reaction Material</option><option value="stability_study">Stability Study</option><option value="other">Other (Specify)</option></select></td>' +
+                                  // '<td><input type="text" name="info_product_material[' + serialNumber + '][info_stage]"><option value="">--Select--</option><option value="finished_product">Finished Product</option><option value="raw_material">Raw Material</option><option value="reaction_material">Reaction Material</option><option value="stability_study">Stability Study</option><option value="other">Other (Specify)</option></select>
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_reference_specification_no]" value=""></td>' +
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_test]" value=""></td>' +
                         '<td><input type="text" name="info_product_material[' + serialNumber + '][info_results_obtained]" value=""></td>' +
@@ -428,26 +429,26 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator"> OOS Number </label>
-                                <input type="number" disabled>
+                                <input type="hidden" name="record" value="{{ $record }}">
+                                <input disabled type="text" id="record_display" name="record"
+                                       value="{{ Helpers::getDivisionName(session()->get('division')) }}/OOS/{{ date('Y') }}/{{ $record }}">
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator Group"> Division Code </label>
-                                <select disabled>
-                                    <option>Enter Your Selection Here</option>
-                                    <option></option>
-                                    <option></option>
-                                </select>
+                                <input disabled type="text" name="division_code"
+                                        value="{{ Helpers::getDivisionName(session()->get('division')) }}">
+                                <input type="hidden" name="division_id" value="{{ session()->get('division') }}">
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator">Initiator <span class="text-danger"></span></label>
-                                {{-- <input type="hidden" name="initiator_id" value="{{ Auth::user()->id }}">
-                                <input disabled type="text" name="initiator" value="{{ Auth::user()->name }}"> --}}
+                                <input type="hidden" name="initiator_id" value="{{ Auth::user()->id }}">
+                                <input disabled type="text" name="initiator" value="{{ Auth::user()->name }}">
                             </div>
                         </div>
 
@@ -463,11 +464,12 @@
                             <div class="group-input">
                                 <label for="Initiator"> Due Date
                                 </label>
-
-                                <small class="text-primary">
-                                    Please mention expected date of completion
-                                </small>
-                                <input type="date" id="date" name="date-time">
+                                <div><small class="text-primary">If revising Due Date, kindly mention revision reason in "Due Date Extension Justification" data field.</small></div>
+                                <div class="calenderauditee">
+                                    <input type="hidden" name="due_date"  id="due_date"  readonly placeholder="DD-MMM-YYYY"/>
+                                    <input type="date" name="due_date" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
+                                    oninput="handleDateInput(this, 'due_date')" />
+                                </div>
 
                             </div>
                         </div>
@@ -475,7 +477,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS Occurrence<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="date" value="" name="oos_occurrence_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -483,7 +485,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS reporting<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="date" value="" name="oos_reporting_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -500,7 +502,7 @@
                             @enderror
                         </div>
                         <!-- <p id="docnameError" style="color:red">**Short Description is required</p> -->
-                        {{-- <div class="col-lg-6">
+                {{-- <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Short Description"> Severity Level</label>
                                 <select>
@@ -638,34 +640,10 @@
                                     value="">
 
                             </div>
-                        </div> --}}
+                </div> --}}
 
                         <div class="sub-head pt-3">Preliminary Information</div>
-                        <!-- <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Short Description ">Product / Material Name</label>
-
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input ">
-                                <label for="Short Description ">Market</label>
-
-                                <input type="text" name="num">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Initiator Group">Customer</label>
-                                <input type="text">
-                                {{-- <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option></option>
-                                    <option></option>
-                                </select> --}}
-                            </div>
-                        </div> -->
+ 
 
                         <!-- ---------------------------grid-1 -------------------------------- -->
                         <div class="group-input">
@@ -689,9 +667,9 @@
                                             <th style="width: 10%">Stage</th>
                                             <th style="width: 12% pt-3">Reference Specification No.</th>
                                             <th style="width: 16% pt-2"> Test</th>
-                                            <th style="width: 8%">Results Obtained</th>
-                                            <th style="width: 8%">Specification limit</th>
-                                            <th style="width: 15%">Action</th>
+                                            <th style="width: 12%">Results Obtained</th>
+                                            <th style="width: 10%">Specification limit</th>
+                                            <th style="width: 8%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -702,7 +680,7 @@
 
                                             <td>
                                                 <select name="info_product_material[0][info_stage]">
-                                                <option value="">Enter Your Selection Here</option>
+                                                    <option value="">--Select--</option>
                                                     <option value="finished_product">Finished Product</option>
                                                     <option value="raw_material">Raw Material</option>
                                                     <option value="reaction_material">Reaction Material</option>
@@ -713,9 +691,16 @@
                                             <td><input type="text" name="info_product_material[0][info_reference_specification_no]" value=""></td>
                                             <td><input type="text" name="info_product_material[0][info_test]" value=""></td>
                                             <td><input type="text" name="info_product_material[0][info_results_obtained]" value=""></td>
-                                            <td><input type="text" name="info_product_material[0][info_specification_limit]" value=""></td>
-
-
+                                            <td>
+                                                {{-- <input type="text" name="info_product_material[0][info_specification_limit]" value=""> --}}
+                                                <select name="info_product_material[0][info_specification_limit]">
+                                                    <option value="">--Select--</option>
+                                                    <option value="Primary">Primary</option>
+                                                    <option value="Secondary">Secondary</option>
+                                                    <option value="Tertiary">Tertiary</option>
+                                                    <option value="Not Applicable">Not Applicable</option>
+                                                </select>
+                                            </td>
                                             <td><button type="text" class="removeRowBtn">Remove</button></td>
                                         </tr>
                                     </tbody>
@@ -723,104 +708,25 @@
                             </div>
                         </div>
 
-                       
+                        <!-- <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment5"></div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment5[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment5')" multiple>
+                                    </div>
+                                </div>
 
-
-                        <!-- -------------------------------grid-2  ----------------------------------   -->
-                        <!-- <div class="group-input">
-                            <label for="audit-agenda-grid">
-                                Details of Stability Study
-                                <button type="button" name="audit-agenda-grid" id="Details_Stability">+</button>
-                                <span class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#document-details-field-instruction-modal"
-                                    style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
-                                    (Launch Instruction)
-                                </span>
-                            </label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="Details_Stability_details" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 4%">Row#</th>
-                                            <th style="width: 8%">AR Number</th>
-                                            <th style="width: 12%">Condition: Temperature & RH</th>
-                                            <th style="width: 12%">Interval</th>
-                                            <th style="width: 16%">Orientation</th>
-                                            <th style="width: 16%">Pack Details (if any)</th>
-                                            <th style="width: 16%">Specification No.</th>
-                                            <th style="width: 16%">Sample Description</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td><input disabled type="text" name="serial[]" value="1"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-
-
-
-                                    </tbody>
-
-                                </table>
                             </div>
                         </div> -->
 
-
-                        <!--
-        ------------------------------------------grid-3----------------------------------- -->
-
-                        <!-- <div class="group-input">
-                            <label for="audit-agenda-grid">
-                                OOS Details
-                                <button type="button" name="audit-agenda-grid" id="OOS_Details">+</button>
-                                <span class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#document-details-field-instruction-modal"
-                                    style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
-                                    (Launch Instruction)
-                                </span>
-                            </label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="OOS_Details_details" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 4%">Row#</th>
-                                            <th style="width: 8%">AR Number.</th>
-                                            <th style="width: 8%">Test Name of OOS</th>
-                                            <th style="width: 12%">Results Obtained</th>
-                                            <th style="width: 16%">Specification Limit</th>
-                                            <th style="width: 16%">Details of Obvious Error</th>
-                                            <th style="width: 16%">File Attachment</th>
-                                            {{-- <th style="width: 16%">Submit By</th>
-                                            <th style="width: 16%">Submit On</th> --}}
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td><input disabled type="text" name="serial[]" value="1"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="text[]"></td>
-                                        <td><input type="file" name="file[]"></td>
-                                        {{-- <td><input type="text" name="text[]"></td>
-                                        <td><input type="date" name="time[]"></td> --}}
-
-
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div> -->
-
-
-
+                     </div>
                         <div class="button-block">
                             <button type="submit" class="saveButton">Save</button>
                             <!-- <button type="button" class="backButton" onclick="previousStep()">Back</button> -->
@@ -830,7 +736,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            
 
 
             <!-- Preliminary Lab. Investigation -->
@@ -1007,7 +913,7 @@
                         <div class="group-input">
                             <label for="audit-agenda-grid">
                                 Details Of Previous history Of Similar type (Same product, Same test) Of OOS Observed
-                                <button type="button" name="audit-agenda-grid" id="details_tability">+</button>
+                                <button type="button" name="audit-agenda-grid" id="details_stability">+</button>
                                 <span class="text-primary" data-bs-toggle="modal"
                                     data-bs-target="#document-details-field-instruction-modal"
                                     style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
@@ -1046,7 +952,23 @@
                             </div>
                         </div>
 
-                   
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Lab Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment2"></div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment2[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment2')" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
 
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -1059,8 +981,7 @@
                     </div>
                 </div>
 
-            </div>
-
+        
 
             <!-- Preliminary Lab Inv. Conclusion -->
             <div id="CCForm3" class="inner-block cctabcontent">
@@ -1115,7 +1036,7 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
-                                <label for="Description Deviation">Correct the Obvious error/cause and document.</label>
+                                <label for="Description Deviation">Correct the Obvious error/cause and document</label>
                                 <textarea class="summernote" name="summary_of_prelim_investiga_plic" id="summernote-1"></textarea> 
                             </div>
                         </div>
@@ -1148,14 +1069,14 @@
                             <div class="group-input">
                                 <label for="Description Deviation">Evaluation By Head Quality</label>
                                 <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                                <input type="text" class="evaluation_by_head_quality" name="" id="">
+                                <input type="text" class="" name="evaluation_by_head_quality" id="">
                                     
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation.</label>
+                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation</label>
                                 <select multiple id="reference_record" name="outcome_phase_i_investigation" id="">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
@@ -1172,8 +1093,6 @@
                             <div class="group-input">
                                 <label for="Description Deviation">Hypothesis Analysis</label>
                                 <div><small class="text-primary">Hypothesis may vary depending on nature and test of OOS</small></div>
-                                {{-- <textarea class="" name="hypothesis_analysis" id="">
-                                    </textarea> --}}
                                 <select name="hypothesis_analysis">
                                     <option value="">Enter Your Selection Here</option>
                                     <option value="yes">Yes</option>
@@ -1184,7 +1103,7 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
-                                <label for="Description Deviation">Results of Hypothesis:</label>
+                                <label for="Description Deviation">Results of Hypothesis</label>
                                 <!-- <div><small class="text-primary">Hypothesis may vary depending on nature and test of OOS</small></div> -->
                                 <textarea class="" name="results_hypothesis" id="">
                                     </textarea>
@@ -1204,13 +1123,78 @@
                             <div class="group-input">
                                 <label for="Lead Auditor">Hypothesis Root Cause</label>
                                 <!-- <div class="text-primary">Please Choose the relevent units</div> -->
-                                <select name="" id="hypothesis_root_cause" onchange="">
+                                <select name="hypothesis_root_cause" id="" onchange="">
                                     <option value="">Enter Your Selection Here</option>
                                     <option value="yes">Yes</option>
                                     <option value="no">No</option>
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Investigator</label>
+                                <textarea class="summernote" name="hypothesis_investigator" id="summernote-1">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">If applicable: Yes/No</label>
+                                <p style="font-size:0.9rem">
+                                    Approval of allocation for repeat analysis to other analyst since Analyst-1 
+                                    <select name="approval_1" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    is absent, hence repeat analysis to be performed by another analyst 
+                                    <select name="approval_2" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    as Analyst-1.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Phase-I (B) test results:</label>
+                                <input type="text" name="phase_1_result">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Test Result</label>
+                                <input type="text" name="phase_1_test_result">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Conclusion</label>
+                                <input type="text" name="phase_1_conclusion">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Investigator</label>
+                                <input type="text" name="phase_1_investigator">
+                            </div>
+                        </div>
+
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
@@ -1222,7 +1206,7 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
-                                <label for="Description Deviation">Preventive action(if any)</label>
+                                <label for="Description Deviation">Preventive Action(if any)</label>
                                 <textarea class="summernote" name="preventive_action_phase1b" id="summernote-1">
                                     </textarea>
                             </div>
@@ -1239,7 +1223,7 @@
 
                         <div class="col-lg-6">
                             <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase I(B) Investigation.</label>
+                                <label for="Reference Recores">Outcome Of Phase I(B) Investigation</label>
                                 <select multiple id="reference_record1" name="outcome_phase_ib_investigation2[]">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
@@ -1248,6 +1232,23 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Phase 1(A) Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment3"></div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment3[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment3')" multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -1259,7 +1260,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            
             <!-- Preliminary Lab Invst. Review--->
             <div id="CCForm4" class="inner-block cctabcontent">
                 <div class="inner-block-content">
@@ -1309,6 +1310,63 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
+                                <label for="Description Deviation">Investigator</label>
+                                <textarea class="summernote" name="hypothesis_investigator_01" id="summernote-1">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">If applicable: Yes/No</label>
+                                <p style="font-size:0.9rem">
+                                    Approval of allocation for repeat analysis to other analyst since Analyst-1 
+                                    <select name="approval_two" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    is absent, hence repeat analysis to be performed by another analyst 
+                                    <select name="approval_three" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    as Analyst-1.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Phase-I (B) test results:</label>
+                                <input type="text" name="phase_1_result">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Test Result</label>
+                                <input type="text" name="phase_1_test_result">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Conclusion</label>
+                                <input type="text" name="phase_1_conclusion">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
                                 <label for="Description Deviation">Impact assessment/Risk assessment (If applicable)</label>
                                 <textarea class="summernote" name="impact_assessment_risk_phase2" id="summernote-1">
                                     </textarea>
@@ -1332,97 +1390,23 @@
                             </div>
                         </div>
 
-                        <!-- <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase II Extended Laboratory Investigation.</label>
-                                <select multiple id="reference_record2" name="outcome_phase_ii_investigation2[]">
-                                    <option value="">--Select---</option>
-                                    <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
-                                    <option value="Phase II">Phase II (Manufacturing investigation)</option>
-                                </select>
-                            </div>
-                        </div> -->
-
-
-                        <!-- ---------------------------grid-1 ---Preliminary Lab Invst. Review----------------------------- -->
-                        <!-- <div class="group-input">
-                            <label for="audit-agenda-grid">
-                                Info. On Product/ Material
-                                <button type="button" name="audit-agenda-grid" id="oos_capa">+</button>
-                                <span class="text-primary" data-bs-toggle="modal"
-                                    data-bs-target="#document-details-field-instruction-modal"
-                                    style="font-size: 0.8rem; font-weight: 400; cursor: pointer;">
-                                    (Launch Instruction)
-                                </span>
-                            </label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="oos_capa_details" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 4%">Row#</th>
-                                            <th style="width: 8%">OOS Number</th>
-                                            <th style="width: 8%"> OOS Reported Date</th>
-                                            <th style="width: 12%">Description of OOS</th>
-                                            <th style="width: 16%">Previous OOS Root Cause</th>
-                                            <th style="width: 16%"> CAPA</th>
-                                            <th style="width: 16% pt-3">Closure Date of CAPA</th>
-                                            <th style="width: 16%">CAPA Requirement</th>
-
-                                            <th style="width: 16%">Reference CAPA Number</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td><input disabled type="text" name="serial[]" value="1"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="date" name="Name[]"></td>
-                                        <td><input type="text" name="Remarks[]"></td>
-                                        <td><input type="text" name="Number[]"></td>
-                                        <td><input type="text" name="Name[]"></td>
-                                        <td><input type="date" name="Remarks[]"></td>
-                                        <td><select name="CAPARequirement[]">
-                                                <option>Yes</option>
-                                                <option>No</option>
-                                            </select></td>
-                                        <td><input type="text" name="Name[]"></td>
-
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div>
-
-
-
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Audit Start Date"> Phase II Inv. Required ?</label>
-                                <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Audit Attachments"> Supporting Attachments</label>
+                                <label for="Audit Attachments">PHASE-II Attachment</label>
                                 <small class="text-primary">
                                     Please Attach all relevant or supporting documents
                                 </small>
                                 <div class="file-attachment-field">
-                                    <div class="file-attachment-list" id="file_attach"></div>
+                                    <div class="file-attachment-list" id="hod_attachment4"></div>
                                     <div class="add-btn">
                                         <div>Add</div>
-                                        <input type="file" id="myfile" name="file_attach[]"
-                                            oninput="addMultipleFiles(this, 'file_attach')" multiple>
+                                        <input type="file" id="myfile" name="hod_attachment4[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment4')" multiple>
                                     </div>
                                 </div>
-
                             </div>
-                        </div> -->
-
+                        </div>
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -1433,8 +1417,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+      
         <!--Phase II Investigation -->
         <div id="CCForm5" class="inner-block cctabcontent">
             <div class="inner-block-content">
@@ -1724,45 +1707,7 @@
                         </div>
                     </div>
                     
-                <!--<div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments"> Hypo/Exp. Required ?</label>
-                            <select>
-                                <option>Yes</option>
-                                <option>No</option>
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Hypo/Exp. Reference  .</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
-                                <option value=""> Enter Your Selection Here</option>
-                                <option value=""></option>
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="group-input">
-                            <label for="Audit Attachments"> Attachment</label>
-                            <small class="text-primary">
-                                Please Attach all relevant or supporting documents
-                            </small>
-                            <div class="file-attachment-field">
-                                <div class="file-attachment-list" id="file_attach"></div>
-                                <div class="add-btn">
-                                    <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
-                                        oninput="addMultipleFiles(this, 'file_attach')" multiple>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div> -->
+               </div>
 
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -1913,7 +1858,7 @@
 
                     <div class="col-md-12 mb-4">
                         <div class="group-input">
-                            <label for="Description Deviation">Average of all six test results :</label>
+                            <label for="Description Deviation">Average of all six test results</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
                             <textarea class="summernote" name="average_all_six_result" id="summernote-1">
                                     </textarea>
@@ -2013,7 +1958,7 @@
                             <textarea  type="text" class="" name="justification_text" id=""></textarea>
                         </div>
                     </div>
-
+                </div>
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -2022,9 +1967,6 @@
                         <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                 Exit </a> </button>
                     </div>
-
-
-
 
                 </div>
             </div>
@@ -2318,8 +2260,8 @@
                 <div class="button-block">
                     <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                     <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                    <button type="button" id="ChangeNextButton" class="nextButton"
-                        onclick="nextStep()">Next</button>
+                    <!-- <button type="button" id="ChangeNextButton" class="nextButton"
+                        onclick="nextStep()">Next</button> -->
                     <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                             Exit </a> </button>
                 </div>

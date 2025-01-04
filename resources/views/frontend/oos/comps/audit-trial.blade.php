@@ -153,7 +153,7 @@
                     padding: 10px;
                     margin-bottom: 10px;
                     margin-top: 10px;
-                    background: #4274da;
+                    background: #eb7f00d9;
                 }
 
                 .heading-new {
@@ -199,7 +199,7 @@
                                 View
                             </button>
                             <button class="button_theme1"><a class="text-white"
-                                    href="{{ route('oos.oos_view', $document->id) }}"> Back
+                                    href="{{ route('oos_view', $document->id) }}"> Back
                                 </a>
                             </button>
                             <button class="button_theme1"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white" >Exit </a> </button>
@@ -287,7 +287,7 @@
                                                         class="text-danger">*</span></label>
                                                 <div><small class="text-primary">Please insert "NA" in the data field if it
                                                         does not require completion</small></div>
-                                                <textarea {{ $auditCollect ? 'disabled' : '' }} class="summernote w-100" name="reviewer_comment" id="summernote-17">{{ $auditCollect ? $auditCollect->reviewer_comment : '' }}</textarea>
+                                                <textarea class="summernote w-100" name="reviewer_comment" id="summernote-17">{{ $auditCollect ? $auditCollect->reviewer_comment : '' }}</textarea>
                                             </div>
                                             <div class="group-input">
                                                 <label for="Reviewer Completed By">Reviewer Completed By</label>
@@ -304,7 +304,7 @@
                                             <input type="hidden" id="type" name="type" value="OOS">
                                         </div>
                                         <div class="modal-footer">
-                                            {!! $auditCollect ? '' : '<button type="submit" >Submit</button>' !!}
+                                            <button type="submit" >Submit</button>
                                             <button type="button" data-bs-dismiss="modal">Close</button>
                                         </div>
                                     </form>
@@ -316,7 +316,7 @@
                     <table>
                         <div class="heading">
                             <div class="heading-new"> Audit Trail </div>
-                            <div> <strong>Record ID.</strong> {{ str_pad($document->record_number, 4, '0', STR_PAD_LEFT) }}</div>
+                            <div> <strong>Record ID.</strong> {{ str_pad($document->record, 4, '0', STR_PAD_LEFT) }}</div>
                             <div style="margin-bottom: 5px;  font-weight: bold;"> Originator
                                 :{{ $document->initiator ? $document->initiator : '' }}</div>
                             <div style="margin-bottom: 5px; font-weight: bold;">Short Description :
@@ -463,11 +463,6 @@
                 var user = $('#user').val();
                 var fromDate = $('#from_date').val();
                 var toDate = $('#to_date').val();
-
-
-
-
-
 
                 $.ajax({
                     url: " ",

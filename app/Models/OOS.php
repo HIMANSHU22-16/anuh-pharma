@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Oosgrids;
+use App\Models\QmsRecordNumber;
+
 
 class OOS extends Model
 {
@@ -16,12 +18,14 @@ class OOS extends Model
           'initiator_id',
           'division_id',
           'record',
-          'record_number',
+          'record',
           'intiation_date',
           'initiator',
           'initiator_group',
           'initiator_group_code',
           'due_date',
+          'oos_occurrence_date',
+          'oos_reporting_date',
           'severity_level_gi',
           'initiated_through_gi',
           'if_others_gi',
@@ -64,6 +68,14 @@ class OOS extends Model
           'material_conclusion',
           'evaluation_by_quality_designee',
           'phase_iii_investigator',
+          'hypothesis_investigator',
+          'approval_1',
+          'approval_2',
+          'phase_1_result',
+          'phase_1_test_result',
+          'phase_1_limit',
+          'phase_1_conclusion',
+          'phase_1_investigator',
           'is_repeat_gi',
           'average_all_six_result',
           'phase_iii_investigator_result1',
@@ -301,6 +313,15 @@ class OOS extends Model
           'Laboratory_Investigation_Hypothesis',
           'Outcome_of_Laboratory',
           'Evaluation_IIB',
+          'approval_1',
+          'approval_2',
+          'hypothesis_investigator_01',
+          'approval_two',
+          'approval_three',
+          'phase_1_result_01',
+          'phase_1_test_result_01',
+          'phase_1_limit_01',
+          'phase_1_conclusion_01',
           'Assignable_Cause111',
           'If_assignable_cause',
           'If_assignable_error',
@@ -327,10 +348,10 @@ class OOS extends Model
           'verification_comments_uav',
           'verification_attachment_uar',
           // 'hod_attachment1',
-          // 'hod_attachment2',
-          // 'hod_attachment3',
-          // 'hod_attachment4',
-          // 'hod_attachment5',
+          'hod_attachment2',
+          'hod_attachment3',
+          'hod_attachment4',
+          'hod_attachment5',
           // 'phaseII_attachment',
           'status',
           'stage',
@@ -340,6 +361,7 @@ class OOS extends Model
       ];
 
     protected $casts = [
+      'outcome_phase_i_investigation' =>'array',
       'phase_iii_investigation' => 'array',
       'recommendation_for_batch' => 'array',
       'outcome_phase_ii_investigation2'=> 'array',
@@ -387,10 +409,10 @@ class OOS extends Model
       // 'addendum_attachments_uae' => 'array',
       // 'required_attachment_uar' => 'array',
       // 'hod_attachment1' => 'array',
-      // 'hod_attachment2' => 'array',
-      // 'hod_attachment3' => 'array',
-      // 'hod_attachment4' => 'array',
-      // 'hod_attachment5' => 'array',
+      'hod_attachment2' => 'array',
+      'hod_attachment3' => 'array',
+      'hod_attachment4' => 'array',
+      'hod_attachment5' => 'array',
       // 'phaseII_attachment' => 'array',
       // 'QA_Head_attachment1' => 'array',
       // 'QA_Head_attachment2' => 'array',

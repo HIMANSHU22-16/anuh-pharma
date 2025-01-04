@@ -79,8 +79,8 @@
                                     <tr>
                                         <td class="flex text-center">{{ $review_item['is_sub_question'] ? $main_question_index .'.'. $sub_question_index : number_format($main_question_index, 1) }}</td>
                                         <td>{{$review_item['question']}}</td>
-                                        <td>{{ Helpers::getChemicalGridData($data, 'analyst_training_procedure', true, 'response', true, $index) ?? '' }}</td>
-                                        <td>{{ Helpers::getChemicalGridData($data, 'analyst_training_procedure', true, 'remark', true, $index) ?? '' }}</td>
+                                        {{-- <td>{{ Helpers::getChemicalGridData($data, 'analyst_training_procedure', true, 'response', true, $index) ?? '' }}</td>
+                                        <td>{{ Helpers::getChemicalGridData($data, 'analyst_training_procedure', true, 'remark', true, $index) ?? '' }}</td> --}}
                                     </tr>
                                     @endforeach
                             </table>
@@ -143,8 +143,8 @@
                                 <tr>
                                     <td class="flex text-center">{{ $review_item['is_sub_question'] ? $main_question_index .'.'. $sub_question_index : number_format($main_question_index, 1) }}</td>
                                     <td>{{$review_item['question']}}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'sample_receiving_var', true, 'response', true, $index) ?? '' }}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'sample_receiving_var', true, 'remark', true, $index) ?? '' }}</td>
+                                    {{-- <td>{{ Helpers::getChemicalGridData($data, 'sample_receiving_var', true, 'response', true, $index) ?? '' }}</td>
+                                    <td>{{ Helpers::getChemicalGridData($data, 'sample_receiving_var', true, 'remark', true, $index) ?? '' }}</td> --}}
                                 </tr>
                                 @endforeach
                         </table>
@@ -317,8 +317,8 @@
                                 <tr>
                                     <td class="flex text-center">{{ $review_item['is_sub_question'] ? $main_question_index .'.'. $sub_question_index : number_format($main_question_index, 1) }}</td>
                                     <td>{{$review_item['question']}}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'method_used_during_analysis', true, 'response', true, $index) ?? '' }}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'method_used_during_analysis', true, 'remark', true, $index) ?? '' }}</td>
+                                    {{-- <td>{{ Helpers::getChemicalGridData($data, 'method_used_during_analysis', true, 'response', true, $index) ?? '' }}</td>
+                                    <td>{{ Helpers::getChemicalGridData($data, 'method_used_during_analysis', true, 'remark', true, $index) ?? '' }}</td> --}}
                                 </tr>
                                 @endforeach
                         </table>
@@ -440,8 +440,8 @@
                                 <tr>
                                     <td class="flex text-center">{{ $review_item['is_sub_question'] ? $main_question_index .'.'. $sub_question_index : number_format($main_question_index, 1) }}</td>
                                     <td>{{$review_item['question']}}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'instrument_equipment_detailss', true, 'response', true, $index) ?? '' }}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'instrument_equipment_detailss', true, 'remark', true, $index) ?? '' }}</td>
+                                    {{-- <td>{{ Helpers::getChemicalGridData($data, 'instrument_equipment_detailss', true, 'response', true, $index) ?? '' }}</td>
+                                    <td>{{ Helpers::getChemicalGridData($data, 'instrument_equipment_detailss', true, 'remark', true, $index) ?? '' }}</td> --}}
                                 </tr>
                                 @endforeach
                         </table>
@@ -494,8 +494,8 @@
                                 <tr>
                                     <td class="flex text-center">{{ $review_item['is_sub_question'] ? $main_question_index .'.'. $sub_question_index : number_format($main_question_index, 1) }}</td>
                                     <td>{{$review_item['question']}}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'result_and_calculation', true, 'response', true, $index) ?? '' }}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'result_and_calculation', true, 'remark', true, $index) ?? '' }}</td>
+                                    {{-- <td>{{ Helpers::getChemicalGridData($data, 'result_and_calculation', true, 'response', true, $index) ?? '' }}</td>
+                                    <td>{{ Helpers::getChemicalGridData($data, 'result_and_calculation', true, 'remark', true, $index) ?? '' }}</td> --}}
                                 </tr>
                                 @endforeach
                         </table>
@@ -563,8 +563,8 @@
                                 <tr>
                                     <td class="flex text-center">{{ $review_item['is_sub_question'] ? $main_question_index .'.'. $sub_question_index : number_format($main_question_index, 1) }}</td>
                                     <td>{{$review_item['question']}}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'Training_records_Analyst_Involved1', true, 'response', true, $index) ?? '' }}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'Training_records_Analyst_Involved1', true, 'remark', true, $index) ?? '' }}</td>
+                                    {{-- <td>{{ Helpers::getChemicalGridData($data, 'Training_records_Analyst_Involved1', true, 'response', true, $index) ?? '' }}</td>
+                                    <td>{{ Helpers::getChemicalGridData($data, 'Training_records_Analyst_Involved1', true, 'remark', true, $index) ?? '' }}</td> --}}
                                 </tr>
                                 @endforeach
                         </table>
@@ -632,8 +632,8 @@
                                 <tr>
                                     <td class="flex text-center">{{ $review_item['is_sub_question'] ? $main_question_index .'.'. $sub_question_index : number_format($main_question_index, 1) }}</td>
                                     <td>{{$review_item['question']}}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'sample_intactness_before_analysis1', true, 'response', true, $index) ?? '' }}</td>
-                                    <td>{{ Helpers::getChemicalGridData($data, 'sample_intactness_before_analysis1', true, 'remark', true, $index) ?? '' }}</td>
+                                    {{-- <td>{{ Helpers::getChemicalGridData($data, 'sample_intactness_before_analysis1', true, 'response', true, $index) ?? '' }}</td>
+                                    <td>{{ Helpers::getChemicalGridData($data, 'sample_intactness_before_analysis1', true, 'remark', true, $index) ?? '' }}</td> --}}
                                 </tr>
                                 @endforeach
                         </table>

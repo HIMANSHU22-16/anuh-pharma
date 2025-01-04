@@ -208,8 +208,8 @@ Route::post('oosupdate/{id}', [OOSController::class, 'update'])->name('oosupdate
 Route::post('sendstage/{id}',[OOSController::class,'send_stage'])->name('send_stage');
 Route::get('AuditTrial/{id}', [OOSController::class, 'AuditTrial'])->name('audit_trial');
 Route::get('auditDetails/{id}', [OOSController::class, 'auditDetails'])->name('audit_details');
-Route::get('audit_report/{id}', [OOSController::class, 'auditReport'])->name('audit_report');
-Route::get('single_report/{id}', [OOSController::class, 'singleReport'])->name('single_report');
+// Route::get('audit_report/{id}', [OOSController::class, 'auditReport'])->name('audit_report');
+// Route::get('single_report/{id}', [OOSController::class, 'singleReport'])->name('single_report');
 
 Route::post('requestmoreinfo_back_stage/{id}',[OOSController::class,'requestmoreinfo_back_stage'])->name('requestmoreinfo_back_stage');
 Route::post('assignable_send_stage/{id}',[OOSController::class,'assignable_send_stage'])->name('assignable_send_stage');
@@ -356,11 +356,11 @@ Route::view('QMSDashboardFormat', 'frontend.rcms.QMSDashboardFormat');
 //! ============================================ 
 
 
-Route::view('deviation', 'frontend.forms.deviation');
-Route::post('deviation_child/{id}', [DeviationController::class, 'deviation_child_1'])->name('deviation_child_1');
-Route::get('DeviationAuditTrial/{id}', [DeviationController::class, 'DeviationAuditTrial']);
-Route::post('DeviationAuditTrial/{id}', [DeviationController::class, 'store_audit_review'])->name('store_audit_review');
-Route::get('DeviationAuditTrialDetails/{id}', [DeviationController::class, 'DeviationAuditTrialDetails']);
+// Route::view('deviation', 'frontend.forms.deviation');
+// Route::post('deviation_child/{id}', [DeviationController::class, 'deviation_child_1'])->name('deviation_child_1');
+// Route::get('DeviationAuditTrial/{id}', [DeviationController::class, 'DeviationAuditTrial']);
+// Route::post('DeviationAuditTrial/{id}', [DeviationController::class, 'store_audit_review'])->name('store_audit_review');
+// Route::get('DeviationAuditTrialDetails/{id}', [DeviationController::class, 'DeviationAuditTrialDetails']);
 Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 
@@ -439,7 +439,16 @@ Route::get('extension', [ExtensionController::class, 'extension_child']);
 
 //Route::view('observation', 'frontend.forms.observation'); 
 Route::get('observation', [ObservationController::class, 'observation']);
-Route::get('deviation', [DeviationController::class, 'deviation']);
+// Route::get('deviation', [DeviationController::class, 'deviation']);
+
+
+Route::post('deviation_child/{id}', [DeviationController::class, 'deviation_child_1'])->name('deviation_child_1');
+
+Route::get('DeviationAuditTrial/{id}', [DeviationController::class, 'DeviationAuditTrial']);
+Route::post('DeviationAuditTrial/{id}', [DeviationController::class, 'store_audit_review'])->name('store_audit_review');
+
+
+
 
 Route::view('new-root-cause-analysis', 'frontend.forms.new-root-cause-analysis');
 

@@ -5,6 +5,7 @@ use App\Models\Division;
 use App\Models\QMSDivision;
 use App\Models\User;
 use Carbon\Carbon;  
+use App\Models\QMSProcess;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -215,6 +216,24 @@ class Helpers
     public static function getFPUserList(){
         
         return $FPUserList = DB::table('user_roles')->where(['q_m_s_roles_id' =>'18'])->get();
+    }
+
+    public static function check_roles($division_id, $process_name, $role_id, $user_id = null)
+    {
+
+        $process = QMSProcess::where([
+            'division_id' => $division_id,
+            'process_name' => $process_name
+        ])->first();
+
+        $roleExists = DB::table('user_roles')->where([
+            'user_id' => $user_id ? $user_id : Auth::user()->id,
+            'q_m_s_divisions_id' => $division_id,
+            'q_m_s_processes_id' => $process ? $process->id : 0,
+            'q_m_s_roles_id' => $role_id
+        ])->first();
+
+        return $roleExists ? true : false;
     }
 
     public static function checkRoles($role)

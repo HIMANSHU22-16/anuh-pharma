@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('impact_on')->nullable(); // Store the first group of checkboxes
             $table->text('impact_on_facility')->nullable(); // Store the second group of checkboxes
             $table->text('impact_on_documents')->nullable(); // Store the third group of checkboxes
-            $table->text('risk_assessment'); // Store 'Yes' or 'No'
+            $table->text('risk_assessment')->nullable(); // Store 'Yes' or 'No'
             $table->text('risk_justification')->nullable(); // Justification if 'No' is selected
             $table->text('others')->nullable(); // Textarea for "Others"
 
