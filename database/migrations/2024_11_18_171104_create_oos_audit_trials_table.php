@@ -19,6 +19,7 @@ return new class extends Migration
             $table->longtext('activity_type')->nullable();
             $table->longtext('previous')->nullable();
             $table->longtext('current')->nullable();
+            $table->longtext('action')->nullable();
             $table->string('comment')->nullable();
             $table->string('user_id')->nullable();
             $table->string('user_name')->nullable();

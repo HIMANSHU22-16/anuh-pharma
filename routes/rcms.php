@@ -18,6 +18,7 @@ use App\Http\Controllers\rcms\ManagementReviewController;
 use App\Http\Controllers\rcms\RootCauseController;
 use App\Http\Controllers\RiskManagementController;
 use App\Http\Controllers\rcms\DeviationController;
+use App\Http\Controllers\rcms\OOSController;
 use App\Http\Controllers\rcms\MarketComplaintController;
 use App\Models\EffectivenessCheck;
 use Illuminate\Support\Facades\Route;
@@ -142,6 +143,9 @@ Route::group(['prefix' => 'rcms'], function () {
             Route::get('ObservationAuditTrialShow/{id}', [ObservationController::class, 'ObservationAuditTrialShow'])->name('ShowObservationAuditTrial');
             Route::get('ObservationAuditTrialDetails/{id}', [ObservationController::class, 'ObservationAuditTrialDetails'])->name('showaudittrialobservation');
 
+            //OOS route
+            Route::get('audit_report/{id}', [OOSController::class, 'auditReport'])->name('audit_report');
+            Route::get('single_report/{id}', [OOSController::class, 'singleReport'])->name('single_report');
 
             //----------------------------------------------By PRIYA SHRIVASTAVA------------------
             Route::post('formDivision', [FormDivisionController::class, 'formDivision'])->name('formDivision');

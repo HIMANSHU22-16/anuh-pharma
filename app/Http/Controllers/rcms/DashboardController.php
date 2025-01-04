@@ -19,6 +19,7 @@ use App\Models\Observation;
 use App\Models\RiskManagement;
 use App\Models\RootCauseAnalysis;
 use App\Models\User;
+use App\Models\OOS;
 use Carbon\Carbon;
 use Helpers;
 use Illuminate\Http\Request;
@@ -67,6 +68,7 @@ class DashboardController extends Controller
         $datas12 = Observation::orderByDesc('id')->get();
         $datas13 = Deviation::orderByDesc('id')->get();
         $datas14 = MarketComplaint::orderByDesc('id')->get();
+        $datas15 = OOS::orderByDesc('id')->get();
 
         //  dd($datas11);
 
@@ -368,6 +370,27 @@ class DashboardController extends Controller
                 "stage" => $data->status,
                 "date_open" => $data->create,
                 "date_close" => $data->updated_at,
+            ]);
+        }
+
+        foreach ($datas15 as $data) {
+            $data->create = Carbon::parse($data->created_at)->format('d-M-Y h:i A');
+            array_push($table, [
+                "id" => $data->id,
+                "parent" => $data->parent_record ? $data->parent_record : "-",
+                "record" => $data->record,
+                "division_id" => $data->division_id,
+                "type" => "OOS",
+                "parent_id" => $data->parent_id,
+                "parent_type" => $data->parent_type,
+                "short_description" => $data->description_gi ? $data->description_gi : "-",
+                "initiator_id" => $data->initiator_id,
+                "initiated_through" => $data->initiated_through_gi,
+                "intiation_date" => $data->intiation_date,
+                "stage" => $data->status,
+                "date_open" => $data->create,
+                "date_close" => $data->updated_at,
+                "due_date" => $data->due_date,
             ]);
         }
         // $table  = collect($table)->sortBy('record')->reverse()->toArray();
@@ -763,6 +786,13 @@ class DashboardController extends Controller
             $parent="deviationparentchildReport/". $data->id;
             $family="DeviationFamily/". $data->id;
 
+        }elseif ($type == "OOS") {
+            $data = OOS::find($id);
+            $single = "single_report/" .$data->id;
+            $audit = "audit_report/" . $data->id;
+            $parent="deviationparentchildReport/". $data->id;
+            $family="DeviationFamily/". $data->id;
+            
         } elseif ($type == "Observation") {
             $data = Observation::find($id);
             $single = "#";

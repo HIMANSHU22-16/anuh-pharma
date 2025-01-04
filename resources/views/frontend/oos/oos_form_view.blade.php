@@ -18,72 +18,72 @@
             ele: '#related_records, #hod'
         });
 
-        function openCity(evt, cityName) {
-            var i, cctabcontent, cctablinks;
-            cctabcontent = document.getElementsByClassName("cctabcontent");
-            for (i = 0; i < cctabcontent.length; i++) {
-                cctabcontent[i].style.display = "none";
-            }
-            cctablinks = document.getElementsByClassName("cctablinks");
-            for (i = 0; i < cctablinks.length; i++) {
-                cctablinks[i].className = cctablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
+        // function openCity(evt, cityName) {
+        //     var i, cctabcontent, cctablinks;
+        //     cctabcontent = document.getElementsByClassName("cctabcontent");
+        //     for (i = 0; i < cctabcontent.length; i++) {
+        //         cctabcontent[i].style.display = "none";
+        //     }
+        //     cctablinks = document.getElementsByClassName("cctablinks");
+        //     for (i = 0; i < cctablinks.length; i++) {
+        //         cctablinks[i].className = cctablinks[i].className.replace(" active", "");
+        //     }
+        //     document.getElementById(cityName).style.display = "block";
+        //     evt.currentTarget.className += " active";
 
-            // Find the index of the clicked tab button
-            const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
+        //     // Find the index of the clicked tab button
+        //     const index = Array.from(cctablinks).findIndex(button => button === evt.currentTarget);
 
-            // Update the currentStep to the index of the clicked tab
-            currentStep = index;
-        }
+        //     // Update the currentStep to the index of the clicked tab
+        //     currentStep = index;
+        // }
 
-        const saveButtons = document.querySelectorAll(".saveButton");
-        const nextButtons = document.querySelectorAll(".nextButton");
-        const form = document.getElementById("step-form");
-        const stepButtons = document.querySelectorAll(".cctablinks");
-        const steps = document.querySelectorAll(".cctabcontent");
-        let currentStep = 0;
+        // const saveButtons = document.querySelectorAll(".saveButton");
+        // const nextButtons = document.querySelectorAll(".nextButton");
+        // const form = document.getElementById("step-form");
+        // const stepButtons = document.querySelectorAll(".cctablinks");
+        // const steps = document.querySelectorAll(".cctabcontent");
+        // let currentStep = 0;
 
-        function nextStep() {
-            // Check if there is a next step
-            if (currentStep < steps.length - 1) {
-                // Hide current step
-                steps[currentStep].style.display = "none";
+        // function nextStep() {
+        //     // Check if there is a next step
+        //     if (currentStep < steps.length - 1) {
+        //         // Hide current step
+        //         steps[currentStep].style.display = "none";
 
-                // Show next step
-                steps[currentStep + 1].style.display = "block";
+        //         // Show next step
+        //         steps[currentStep + 1].style.display = "block";
 
-                // Add active class to next button
-                stepButtons[currentStep + 1].classList.add("active");
+        //         // Add active class to next button
+        //         stepButtons[currentStep + 1].classList.add("active");
 
-                // Remove active class from current button
-                stepButtons[currentStep].classList.remove("active");
+        //         // Remove active class from current button
+        //         stepButtons[currentStep].classList.remove("active");
 
-                // Update current step
-                currentStep++;
-            }
-        }
+        //         // Update current step
+        //         currentStep++;
+        //     }
+        // }
 
-        function previousStep() {
-            // Check if there is a previous step
-            if (currentStep > 0) {
-                // Hide current step
-                steps[currentStep].style.display = "none";
+        // function previousStep() {
+        //     // Check if there is a previous step
+        //     if (currentStep > 0) {
+        //         // Hide current step
+        //         steps[currentStep].style.display = "none";
 
-                // Show previous step
-                steps[currentStep - 1].style.display = "block";
+        //         // Show previous step
+        //         steps[currentStep - 1].style.display = "block";
 
-                // Add active class to previous button
-                stepButtons[currentStep - 1].classList.add("active");
+        //         // Add active class to previous button
+        //         stepButtons[currentStep - 1].classList.add("active");
 
-                // Remove active class from current button
-                stepButtons[currentStep].classList.remove("active");
+        //         // Remove active class from current button
+        //         stepButtons[currentStep].classList.remove("active");
 
-                // Update current step
-                currentStep--;
-            }
-        }
+        //         // Update current step
+        //         currentStep--;
+        //     }
+        // }
     </script>
 
     <!-- -----------------------------grid-1----------------------------script -->
@@ -142,11 +142,11 @@
                         // '<td><button type="text" class="removeRowBtn">Remove</button></td>' +
 
                     '</tr>';
-                    for (var i = 0; i < users.length; i++) {
-                        html += '<option value="' + users[i].id + '">' + users[i].name + '</option>';
-                    }
+                    // for (var i = 0; i < users.length; i++) {
+                    //     html += '<option value="' + users[i].id + '">' + users[i].name + '</option>';
+                    // }
 
-                    html += '</select></td>' +
+                    // html += '</select></td>' +
 
                         '</tr>';
 
@@ -364,10 +364,6 @@
         });
     </script>
 
-
-
-
-
     <div class="form-field-head">
         <!-- <div class="pr-id">
                 New Document
@@ -416,11 +412,19 @@
                 <button class="cctablinks" onclick="openCity(event, 'CCForm15')">Under Addendum Review</button>
                 <button class="cctablinks" onclick="openCity(event, 'CCForm16')">Under Addendum Verification</button> --}}
                 <button class="cctablinks" onclick="openCity(event, 'CCForm17')">Signature</button>
-
             </div>
+        </div>
+                
+        <script>
+            $(document).ready(function() {
+                <?php if ($data->stage == 20) : ?>
+                    $("#target :input").prop("disabled", true);
+                <?php endif; ?>
+            });
+        </script>
 
             <!-- General Information -->
-    <form action="{{ route('oosupdate', $data->id) }}" method="post" enctype="multipart/form-data">
+    <form id="target" action="{{ route('oosupdate', $data->id) }}" method="post" enctype="multipart/form-data">
      @csrf
         <div id="step-form">
             <div id="CCForm1" class="inner-block cctabcontent">
@@ -432,26 +436,24 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator"> OOS Number </label>
-                                <input type="number" disabled>
+                                <input disabled type="text" name="record"
+                                 value="{{ Helpers::getDivisionName($data->division_id) }}/OOS/{{ Helpers::year($data->created_at) }}/{{ $data->record }}">
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator Group"> Division Code </label>
-                                <select disabled>
-                                    <option>Enter Your Selection Here</option>
-                                    <option></option>
-                                    <option></option>
-                                </select>
+                                <input readonly type="text" name="division_code"
+                                value=" {{ Helpers::getDivisionName($data->division_id) }}">
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Initiator">Initiator <span class="text-danger"></span></label>
-                                {{-- <input type="hidden" name="initiator_id" value="{{ Auth::user()->id }}">
-                                <input disabled type="text" name="initiator" value="{{ Auth::user()->name }}"> --}}
+                                <input type="hidden" name="initiator_id" value="{{ Auth::user()->id }}">
+                                <input disabled type="text" name="initiator" value="{{ Auth::user()->name }}">
                             </div>
                         </div>
 
@@ -467,19 +469,19 @@
                             <div class="group-input">
                                 <label for="Initiator"> Due Date
                                 </label>
-
-                                <small class="text-primary">
-                                    Please mention expected date of completion
-                                </small>
-                                <input type="date" id="date" name="date-time">
-
+                                    <div class="calenderauditee">
+                                        <input type="text" id="due_date" readonly
+                                            placeholder="DD-MMM-YYYY" value="{{ $data->due_date }}"/>
+                                        <input type="hidden" name="due_date"  value="{{$data->due_date }}" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" class="hide-input"
+                                               oninput="handleDateInput(this, 'due_date')" />
+                                    </div>
                             </div>
                         </div>
 
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS Occurrence<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="date" value="{{$data->oos_occurrence_date}}" name="oos_occurrence_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -487,7 +489,7 @@
                         <div class="col-md-6 ">
                             <div class="group-input ">
                                 <label for="intiation-date"> Date Of OOS reporting<span class="text-danger"></span></label>
-                                <input type="text" value="{{ date('Y-m-d') }}" name="intiation_date">
+                                <input type="date" value="{{$data->oos_reporting_date}}" name="oos_reporting_date">
                                 <!-- <input readonly type="text" value="{{ date('d-M-Y') }}" name="intiation_date"> -->
                             </div>
                         </div>
@@ -645,32 +647,7 @@
                         </div> --}}
 
                         <div class="sub-head pt-3">Preliminary Information</div>
-                        <!-- <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Short Description ">Product / Material Name</label>
-
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input ">
-                                <label for="Short Description ">Market</label>
-
-                                <input type="text" name="num">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Initiator Group">Customer</label>
-                                <input type="text">
-                                {{-- <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option></option>
-                                    <option></option>
-                                </select> --}}
-                            </div>
-                        </div> -->
-
+                       
                         <!-- ---------------------------grid-1 -------------------------------- -->
                         <div class="group-input">
                             <label for="audit-agenda-grid">
@@ -689,13 +666,13 @@
                                         <tr>
                                             <th style="width: 4%">Row#</th>
                                             <th style="width: 8%"> Batch No*.</th>
-                                            <th style="width: 12%">AR No.</th>
+                                            <th style="width: 10%">AR No.</th>
                                             <th style="width: 10%">Stage</th>
                                             <th style="width: 12% pt-3">Reference Specification No.</th>
                                             <th style="width: 16% pt-2"> Test</th>
-                                            <th style="width: 8%">Results Obtained</th>
-                                            <th style="width: 8%">Specification limit</th>
-                                            <th style="width: 15%">Action</th>
+                                            <th style="width: 10%">Results Obtained</th>
+                                            <th style="width: 12%">Specification limit</th>
+                                            <th style="width: 8%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -843,18 +820,51 @@
                             </div>
                         </div> -->
 
+                        {{-- <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment5">
 
+                                        @if ($data->hod_attachment5)
+                                        @foreach ($data->hod_attachment5 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
 
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment5[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment5')" {{ $data->stage == 18 ? '' : 'readonly' }} multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
+                        
+
+                  </div>
                         <div class="button-block">
                             <button type="submit" class="saveButton">Save</button>
-                            <!-- <button type="button" class="backButton" onclick="previousStep()">Back</button> -->
                             <button type="button" class="nextButton" onclick="nextStep()">Next</button>
+
+                            <!-- <button type="button" class="nextButton" id="nextButton" onclick="nextStep()">Next</button> -->
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
 
             <!-- Preliminary Lab. Investigation -->
@@ -865,7 +875,7 @@
 
                     <div class="col-12">
 
-                        <label style="font-weight: bold; for="Audit Attachments">Phase IB Investigation Checklist</label>
+                        <label style="font-weight: bold;" for="Audit Attachments">Phase IB Investigation Checklist</label>
 
                             @php
                                 $IIB_inv_questions = array(
@@ -1090,7 +1100,7 @@
                                             <th style="width: 4%">Row#</th>
                                             <th style="width: 12%">Summary Of Previous OOS history</th>
                                             <th style="width: 12%">CAPA taken for OOS</th>
-                                            <th style="width: 12%">Action</th>
+                                            <!-- <th style="width: 12%">Action</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>         
@@ -1107,7 +1117,7 @@
                                                     name="details_stability[{{ $loop->index }}][capa_taken_for_oos]"
                                                     value="{{ $oogrid['capa_taken_for_oos'] }}"></td>
 
-                                            <td><button class="removeRowBtn">Remove</button>
+                                            <!-- <td><button class="removeRowBtn">Remove</button> -->
                                     @endforeach
                                     </tr>
                                     </tbody>
@@ -1261,18 +1271,50 @@
                             </div>
                         </div> --}}
 
+
+                        <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment2">
+
+                                        @if ($data->hod_attachment2)
+                                        @foreach ($data->hod_attachment2 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment2[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment2')"  multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                            <button type="button" id="ChangeNextButton" class="nextButton"
+                            <button type="button" id="nextButton" class="nextButton"
                                 onclick="nextStep()">Next</button>
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-
-            </div>
 
 
             <!-- Preliminary Lab Inv. Conclusion -->
@@ -1341,18 +1383,6 @@
                                     </textarea>
                             </div>
                         </div>
-                        {{-- <div class="col-lg-6">
-                            <div class="group-input">
-                                <label for="Audit Team">OOS Category-Root Cause Identified</label>
-                                <select>
-                                    <option>Enter Your Selection Here</option>
-                                    <option>Analyst Error</option>
-                                    <option>Instrument Error</option>
-                                    <option>Product/Material Related Error</option>
-                                    <option>Other Error</option>
-                                </select>
-                            </div>
-                        </div> --}}
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
@@ -1380,14 +1410,37 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <!-- <div class="col-lg-6">
                             <div class="group-input">
-                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation.</label>
+                                <label for="Reference Recores">Outcome Of Phase I(A) Investigation</label>
                                 <select multiple id="reference_record" name="outcome_phase_i_investigation" id="">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
                                     <option value="Phase I (B) Investigation">Phase I (B) Investigation</option>
                                     <option value="Phase II">Phase II</option>
+                                </select>
+                            </div>
+                        </div> -->
+
+
+
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="checklists">Outcome Of Phase I(A) Investigation</label>
+                            @php
+                                $ChecklistData = $data->outcome_phase_i_investigation;
+
+                                if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                    $selectedChecklist = explode(',', $ChecklistData[0]);
+                                } else {
+                                    $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                }
+                            @endphp
+                                <select multiple id="reference_record" name="outcome_phase_i_investigation[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Closure of OOS with CAPA" @if (in_array('Closure of OOS with CAPA', $selectedChecklist)) selected @endif>Closure of OOS with CAPA</option>
+                                    <option value="Phase I (B) Investigation" @if (in_array('Phase I (B) Investigation', $selectedChecklist)) selected @endif>Phase I (B) Investigation</option>
+                                    <option value="Phase II" @if (in_array('Phase II', $selectedChecklist)) selected @endif>Phase II</option>
                                 </select>
                             </div>
                         </div>
@@ -1440,6 +1493,49 @@
                                 </select>
                             </div>
                         </div>
+                        <br>
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">If applicable: Yes/No</label>
+                                <p style="font-size:0.9rem">
+                                    Approval of allocation for repeat analysis to other analyst since Analyst-1
+                                    <select name="approval_1" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_1 == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_1 == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>  <br>
+                                    is absent, hence repeat analysis to be performed by another analyst 
+                                    <select name="approval_2" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_2 == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_2 == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                    as Analyst-1.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Phase-I (B) test results:</label>
+                                <input type="text" name="phase_1_result" value="{{$data->phase_1_result}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Test Result</label>
+                                <input type="text" name="phase_1_test_result" value="{{$data->phase_1_test_result}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit" value="{{$data->phase_1_limit}}">
+                            </div>
+                        </div>
+
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
@@ -1466,28 +1562,84 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <!-- <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Reference Recores">Outcome Of Phase I(B) Investigation.</label>
-                                <select multiple id="reference_record1" name="outcome_phase_ib_investigation2[]">
+                                <select multiple name="outcome_phase_ib_investigation2[]" id="reference_record1">
                                     <option value="">--Select---</option>
                                     <option value="Closure of OOS with CAPA">Closure of OOS with CAPA</option>
                                     <option value="Phase II">Phase II</option>
                                 </select>
+
+                            </div>
+                        </div> -->
+
+                        <div class="col-lg-12">
+                            <div class="group-input">
+                                <label for="proposal_for_hypothesis_IB">Outcome Of Phase I(B) Investigation</label>
+                                @php
+                                $ChecklistData = $data->outcome_phase_ib_investigation2;
+
+                                if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                    $selectedChecklist = explode(',', $ChecklistData[0]);
+                                } else {
+                                    $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                }
+                                @endphp
+                                <select multiple id="reference_record002" name="outcome_phase_ib_investigation2[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Closure of OOS with CAPA" @if (in_array('Closure of OOS with CAPA', $selectedChecklist)) selected @endif>Closure of OOS with CAPA</option>
+                                    <option value="Phase II" @if (in_array('Phase II', $selectedChecklist)) selected @endif>Phase II</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
+
+                                </select>
                             </div>
                         </div>
 
+                        <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment3">
+
+                                        @if ($data->hod_attachment3)
+                                        @foreach ($data->hod_attachment3 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment3[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment3')" {{ $data->stage == 18 ? '' : 'readonly' }} multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                            <button type="button" id="ChangeNextButton" class="nextButton"
+                            <button type="button" id="" class="nextButton"
                                 onclick="nextStep()">Next</button>
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            
             <!-- Preliminary Lab Invst. Review--->
             <div id="CCForm4" class="inner-block cctabcontent">
                 <div class="inner-block-content">
@@ -1538,6 +1690,63 @@
 
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
+                                <label for="Description Deviation">Investigator</label>
+                                <textarea class="summernote" name="hypothesis_investigator_01" id="summernote-1">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">If applicable: Yes/No</label>
+                                <p style="font-size:0.9rem">
+                                    Approval of allocation for repeat analysis to other analyst since Analyst-1 
+                                    <select name="approval_two" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_two == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_two == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                    is absent, hence repeat analysis to be performed by another analyst 
+                                    <select name="approval_three" style="display: inline; width: auto;" id="">
+                                        <option value="">Select here</option>
+                                        <option value="yes" {{ $data->approval_three == 'yes' ? 'selected' : '' }}>Yes</option>
+                                        <option value="no" {{ $data->approval_three == 'no' ? 'selected' : '' }}>No</option>
+                                    </select>
+                                    as Analyst-1.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Phase-I (B) test results:</label>
+                                <input type="text" name="phase_1_result_01" value="{{$data->phase_1_result_01}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Test Result</label>
+                                <input type="text" name="phase_1_test_result_01" value="{{$data->phase_1_test_result_01}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Limits</label>
+                                <input type="text" name="phase_1_limit_01" value="{{$data->phase_1_limit_01}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
+                                <label for="Description Deviation">Conclusion</label>
+                                <input type="text" name="phase_1_conclusion_01" value="{{$data->phase_1_conclusion_01}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <div class="group-input">
                                 <label for="Description Deviation">Impact assessment/Risk assessment (If applicable)</label>
                                 <textarea class="summernote" name="impact_assessment_risk_phase2" id="summernote-1">
                                 {{$data->impact_assessment_risk_phase2}}
@@ -1548,7 +1757,7 @@
                         <div class="col-md-12 mb-4">
                             <div class="group-input">
                                 <label for="Description Deviation">Preventive action(if any)</label>
-                                <textarea class="summernote" name="preventive_action_phase2" id="summernote-1">
+                                <textarea class="summernote" name="preventive_action_phase2" id="summernote-1">{{$data->preventive_action_phase2}}
                                     </textarea>
                             </div>
                         </div>
@@ -1565,16 +1774,20 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Reference Records">Outcome Of Phase II Extended Laboratory Investigation</label>
-                                <select multiple id="reference_record2" name="outcome_phase_ii_investigation2[]" class="form-control">
-                                    <option value="">--Select---</option>
-                                    <option value="Closure of OOS with CAPA" 
-                                        {{ in_array('Closure of OOS with CAPA', $data->outcome_phase_ii_investigation2 ?? []) ? 'selected' : '' }}>
-                                        Closure of OOS with CAPA
-                                    </option>
-                                    <option value="Phase II" 
-                                        {{ in_array('Phase II', $data->outcome_phase_ii_investigation2 ?? []) ? 'selected' : '' }}>
-                                        Phase II (Manufacturing investigation)
-                                    </option>
+                                @php
+                                    $ChecklistData = $data->outcome_phase_ii_investigation2;
+
+                                    if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                        $selectedChecklist = explode(',', $ChecklistData[0]);
+                                    } else {
+                                        $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                    }
+                                @endphp
+                                <select multiple id="reference_record2" name="outcome_phase_ii_investigation2[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Closure of OOS with CAPA" @if (in_array('Closure of OOS with CAPA', $selectedChecklist)) selected @endif>Closure of OOS with CAPA</option>
+                                    <option value="Phase II" @if (in_array('Phase II', $selectedChecklist)) selected @endif>Phase II</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
                                 </select>
                             </div>
                         </div>
@@ -1661,18 +1874,51 @@
                             </div>
                         </div> -->
 
+                        <div class="col-12">
+                            <div class="group-input">
+                                <label for="Audit Attachments">Preliminary Attachment</label>
+                                <small class="text-primary">
+                                    Please Attach all relevant or supporting documents
+                                </small>
+                                <div class="file-attachment-field">
+                                    <div class="file-attachment-list" id="hod_attachment4">
+
+                                        @if ($data->hod_attachment4)
+                                        @foreach ($data->hod_attachment4 as $file)
+                                        <h6 type="button" class="file-container text-dark"
+                                            style="background-color: rgb(243, 242, 240);">
+                                            <b>{{ $file }}</b>
+                                            <a href="{{ asset('upload/' . $file) }}" target="_blank"><i
+                                                    class="fa fa-eye text-primary"
+                                                    style="font-size:20px; margin-right:-10px;"></i></a>
+                                            <a type="button" class="remove-file" data-file-name="{{ $file }}"><i
+                                                    class="fa-solid fa-circle-xmark" style="color:red; font-size:20px;"></i></a>
+                                        </h6>
+                                        @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="add-btn">
+                                        <div>Add</div>
+                                        <input type="file" id="myfile" name="hod_attachment4[]"
+                                            oninput="addMultipleFiles(this, 'hod_attachment4')" {{ $data->stage == 18 ? '' : 'readonly' }} multiple>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         <div class="button-block">
                             <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                             <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                            <button type="button" id="ChangeNextButton" class="nextButton"
+                            <button type="button" id="" class="nextButton"
                                 onclick="nextStep()">Next</button>
                             <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                     Exit </a> </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            
+        
         <!--Phase II Investigation -->
         <div id="CCForm5" class="inner-block cctabcontent">
             <div class="inner-block-content">
@@ -1683,7 +1929,7 @@
 
                     <div class="col-12">
 
-                        <label style="font-weight: bold; for="Audit Attachments">Phase IB Investigation Checklist</label>
+                        <label style="font-weight: bold;" for="Audit Attachments">Phase IB Investigation Checklist</label>
                         @php
                             $categories = [
                                 '1.0 PERSONNEL' => [
@@ -1731,38 +1977,42 @@
                                 </thead>
                                 <tbody>
                                     @if($oos_details)
-                                    @php $srNo = 1; @endphp
-                                    @foreach ($categories as $category => $questions)
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold; background-color: #f0f0f0;">{{ $category }}</td>
-                                        </tr>
-                                        @foreach ($questions as $index => $question)
-                                            @php
-                                                $questionNumber = $srNo . '.' . ($index + 1); // Generate question numbers like 1.1, 1.2, etc.
-                                            @endphp
+                                        @php
+                                            $srNo = 1;
+                                            
+                                            $storedData = is_string($oos_details->data) ? json_decode($oos_details->data, true) : $oos_details->data;
+                                        @endphp
+                                        @foreach ($categories as $category => $questions)
                                             <tr>
-                                                <td class="text-center">{{ $questionNumber }}</td>
-                                                <td>
-                                                    <input type="text" readonly name="questions[{{ $questionNumber }}][question]" value="{{ $question }}" style="border: none; background: none; width: 100%;">
-                                                </td>
-
-                                                <td>
-                                                    <select name="oos_detail[{{ $questionNumber }}][response]" style="padding: 5px; width: 100%; border: 1px solid black; background-color: #f0f0f0;">
-                                                        <option value="">Select</option>
-                                                        <option value="Yes" {{ $oos_details->oos_detail == 'Yes' ? 'selected' : '' }}>Yes</option>
-                                                        <option value="No" {{ $oos_details->oos_detail == 'No' ? 'selected' : '' }}>No</option>
-                                                        <option value="N/A" {{ $oos_details->oos_detail == 'N/A' ? 'selected' : '' }}>N/A</option>
-                                                    </select>
-
-                                                </td>
-                                                <td>
-                                                    
-                                                    <textarea name="oos_detail[{{ $questionNumber }}][remark]" style="border-radius: 7px; border: 1px solid black; width: 100%;"></textarea>
-                                                </td>
+                                                <td colspan="4" style="font-weight: bold; background-color: #f0f0f0;">{{ $category }}</td>
                                             </tr>
+                                            @foreach ($questions as $index => $question)
+                                                @php
+                                                    $questionNumber = $srNo . '.' . ($index + 1);
+                                                    $response = isset($storedData[$questionNumber]['response']) ? $storedData[$questionNumber]['response'] : '';
+                                                    $remark = isset($storedData[$questionNumber]['remark']) ? $storedData[$questionNumber]['remark'] : '';
+                                                @endphp
+                                                <tr>
+                                                    <td class="text-center">{{ $questionNumber }}</td>
+                                                    <td>
+                                                        <input type="text" readonly name="questions[{{ $questionNumber }}][question]" value="{{ $question }}" style="border: none; background: none; width: 100%;">
+                                                    </td>
+
+                                                    <td>
+                                                        <select name="oos_detail[{{ $questionNumber }}][response]" style="padding: 5px; width: 100%; border: 1px solid black; background-color: #f0f0f0;">
+                                                            <option value="">Select</option>
+                                                            <option value="Yes" {{ $response == 'Yes' ? 'selected' : '' }}>Yes</option>
+                                                            <option value="No" {{ $response == 'No' ? 'selected' : '' }}>No</option>
+                                                            <option value="N/A" {{ $response == 'N/A' ? 'selected' : '' }}>N/A</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <textarea name="oos_detail[{{ $questionNumber }}][remark]" style="border-radius: 7px; border: 1px solid black; width: 100%;">{{ $remark }}</textarea>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            @php $srNo++; @endphp
                                         @endforeach
-                                        @php $srNo++; @endphp
-                                    @endforeach
                                     @endif
                                 </tbody>
                             </table>
@@ -1811,12 +2061,22 @@
                         <div class="col-lg-6">
                             <div class="group-input">
                                 <label for="Reference Recores">Recommendation for Batch Disposition</label>
-                                <select multiple id="reference_record2" name="recommendation_for_batch[]">
-                                    <option value="">--Select---</option>
-                                    <option value="Reported OOS for closure">Reported OOS for closure</option>
-                                    <option value="Recommended for Phase III investigation">Recommended for Phase III investigation</option>
-                                    <option value="Batch is recommended for R&D investigation followed by reprocessing, application for in process/Finished product.">Batch is recommended for R&D investigation followed by reprocessing, application for in process/Finished product.</option>
-                                    <option value="Material Reprocessing Authorization form">Material Reprocessing Authorization form</option>
+                                @php
+                                    $ChecklistData = $data->recommendation_for_batch;
+
+                                    if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                        $selectedChecklist = explode(',', $ChecklistData[0]);
+                                    } else {
+                                        $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                    }
+                                @endphp
+                                <select multiple id="reference_record112" name="recommendation_for_batch[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Reported OOS for closure" @if (in_array('Reported OOS for closure', $selectedChecklist)) selected @endif>Reported OOS for closure</option>
+                                    <option value="Recommended for Phase III investigation" @if (in_array('Recommended for Phase III investigation', $selectedChecklist)) selected @endif>Recommended for Phase III investigation</option>
+                                    <option value="Batch is recommended for R&D investigation followed by reprocessing" @if (in_array('Batch is recommended for R&D investigation followed by reprocessing', $selectedChecklist)) selected @endif>Batch is recommended for R&D investigation followed by reprocessing</option>
+                                    <option value="Material Reprocessing Authorization form" @if (in_array('Material Reprocessing Authorization form', $selectedChecklist)) selected @endif>Material Reprocessing Authorization form</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
                                 </select>
                             </div>
                         </div>
@@ -1945,11 +2205,11 @@
                             </select>
                         </div>
                     </div>
-
+                </div>
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                        <button type="button" id="ChangeNextButton" class="nextButton"
+                        <button type="button" id="" class="nextButton"
                             onclick="nextStep()">Next</button>
                         <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                 Exit </a> </button>
@@ -2122,7 +2382,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Average of all six test results :</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="average_all_six_result[]" id="summernote-1">
+                            <textarea class="summernote" name="average_all_six_result" id="summernote-1">
                             {{$data->phase_iii_investigator}}
                                     </textarea>
                         </div>
@@ -2180,7 +2440,7 @@
                     <div class="col-md-12 mb-4">
                         <div class="group-input">
                             <label for="Description Deviation">Evaluation by Head Quality/Designee </label>
-                            <textarea class="summernote" name="phase_iii_evaluation[]" id="summernote-1">
+                            <textarea class="summernote" name="phase_iii_evaluation" id="summernote-1">
                                         {{$data->phase_iii_evaluation}}
                                     </textarea>   
                         </div>
@@ -2190,11 +2450,20 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">OutCome Of Phase III (additional) Investigation</label>
-                            <select multiple id="reference_outcome" name="phase_iii_investigation[]">
-                                <option value="">--Select---</option>
-                                <option value="Reported OOS for closure">Reported OOS for closure</option>
+                                @php
+                                    $ChecklistData = $data->phase_iii_investigation;
 
-                           </select>
+                                    if (is_array($ChecklistData) && array_key_exists('0', $ChecklistData) && is_string($ChecklistData[0]) && !empty($ChecklistData[0])) {
+                                        $selectedChecklist = explode(',', $ChecklistData[0]);
+                                    } else {
+                                        $selectedChecklist = is_array($ChecklistData) ? $ChecklistData : [];
+                                    }
+                                @endphp
+                                <select multiple id="reference_outcome" name="phase_iii_investigation[]">
+                                    {{-- <option value="">--Select---</option> --}}
+                                    <option value="Reported OOS for closure" @if (in_array('Reported OOS for closure', $selectedChecklist)) selected @endif>Reported OOS for closure</option>
+                                    <option value="Other" @if (in_array('Other', $selectedChecklist)) selected @endif>Other</option>
+                                </select>
                         </div>
                     </div>
                     <div class="sub-head">JUSTIFICATION FOR DELAY IN CLOSING (If Applicable- Yes/No) </div>
@@ -2226,7 +2495,7 @@
                             <textarea  type="text" class="" name="justification_text" value="" id="">{{$data->justification_text}}</textarea>
                         </div>
                     </div>
-
+                </div>
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
@@ -2238,7 +2507,7 @@
 
                 </div>
             </div>
-        </div>
+    
 
 
 
@@ -2253,7 +2522,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Review Comment</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2271,7 +2540,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Additional Test Reference.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2291,7 +2560,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Task Reference</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2309,7 +2578,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2341,7 +2610,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Conclusion Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2375,12 +2644,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <td><input disabled type="text" name="serial[]" value="1"></td>
-                                    <td><input type="text" name="Number[]"></td>
-                                    <td><input type="number" name="Name[]"></td>
-                                    <td><input type="text" name="Remarks[]"></td>
-                                    <td><input type="text" name="Name[]"></td>
-                                    <td><input type="text" name="Remarks[]"></td>
+                                    <td><input disabled type="text" name="serial" value="1"></td>
+                                    <td><input type="text" name="Number"></td>
+                                    <td><input type="number" name="Name"></td>
+                                    <td><input type="text" name="Remarks"></td>
+                                    <td><input type="text" name="Name"></td>
+                                    <td><input type="text" name="Remarks"></td>
 
 
 
@@ -2422,7 +2691,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justification for Averaging Results</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2457,7 +2726,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">CAPA Ref No.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2468,7 +2737,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justify if CAPA not Required ?</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2487,7 +2756,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Plan Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2498,7 +2767,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justification for Delay</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2512,7 +2781,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2545,7 +2814,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Conclusion Review Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2579,11 +2848,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <td><input disabled type="text" name="serial[]" value="1"></td>
+                                    <!-- <td><input disabled type="text" name="serial[]" value="1"></td>
                                     <td><input type="text" name="Number[]"></td>
                                     <td><input type="text" name="Name[]"></td>
                                     <td><input type="text" name="Remarks[]"></td>
-                                    <td><input type="text" name="Number[]"></td>
+                                    <td><input type="text" name="Number[]"></td> -->
 
 
 
@@ -2599,7 +2868,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Action Taken on Affec.batch</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2623,7 +2892,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">CAPA Refer.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2656,7 +2925,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Task Reference</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2679,7 +2948,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Risk Assessment Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2691,7 +2960,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justify if No Risk Assessment</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2705,7 +2974,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2746,7 +3015,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">CQ Review comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviatio" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2765,7 +3034,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Reference of CAPA</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2790,7 +3059,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Ref Action Plan</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -2807,7 +3076,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -2887,7 +3156,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Other Action (Specify)</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2905,7 +3174,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Other Parameters Results</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2916,7 +3185,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Trend of Previous Batches</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2925,7 +3194,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Stability Data</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2933,7 +3202,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Process Validation Data</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2941,7 +3210,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Method Validation </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -2949,7 +3218,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Any Market Complaints </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2959,7 +3228,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Statistical Evaluation </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2968,7 +3237,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Risk Analysis for Disposition </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2977,7 +3246,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Conclusion </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -2998,7 +3267,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Phase-III Inves. Reference</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3010,7 +3279,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Justify for Delay in Activity</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
 
@@ -3025,7 +3294,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3056,7 +3325,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Reason for Re-open</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -3071,7 +3340,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3106,7 +3375,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Reopen Approval Comments </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -3121,7 +3390,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3154,7 +3423,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Execution Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                                     </textarea>
                         </div>
                     </div>
@@ -3173,7 +3442,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Action Task Reference No.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3195,7 +3464,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Addi.Testing Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3216,7 +3485,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Investigation Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3238,7 +3507,7 @@
                     <div class="col-lg-6">
                         <div class="group-input">
                             <label for="Reference Recores">Hypo-Exp Ref.</label>
-                            <select multiple id="" name="PhaseIIQCReviewProposedBy[]" id="">
+                            <select multiple id="" name="PhaseIIQCReviewProposedBy" id="">
                                 <option value=""> Enter Your Selection Here</option>
                                 <option value=""></option>
                                 <option value=""></option>
@@ -3256,7 +3525,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3267,7 +3536,7 @@
                     <div class="button-block">
                         <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
                         <button type="button" class="backButton" onclick="previousStep()">Back</button>
-                        <button type="button" id="ChangeNextButton" class="nextButton"
+                        <button type="button" id="" class="nextButton"
                             onclick="nextStep()">Next</button>
                         <button type="button"> <a href="{{ url('rcms/qms-dashboard') }}" class="text-white">
                                 Exit </a> </button>
@@ -3290,7 +3559,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Addendum Review Comments</label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                     </textarea>
                         </div>
                     </div>
@@ -3305,7 +3574,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3341,7 +3610,7 @@
                         <div class="group-input">
                             <label for="Description Deviation">Verification Comments </label>
                             <!-- <div><small class="text-primary">Please insert "NA" in the data field if it does not require completion</small></div> -->
-                            <textarea class="summernote" name="Description_Deviation[]" id="summernote-1">
+                            <textarea class="summernote" name="Description_Deviation" id="summernote-1">
                     </textarea>
                         </div>
                     </div>
@@ -3356,7 +3625,7 @@
                                 <div class="file-attachment-list" id="file_attach"></div>
                                 <div class="add-btn">
                                     <div>Add</div>
-                                    <input type="file" id="myfile" name="file_attach[]"
+                                    <input type="file" id="myfile" name="file_attach"
                                         oninput="addMultipleFiles(this, 'file_attach')" multiple>
                                 </div>
                             </div>
@@ -3383,283 +3652,680 @@
 
         <div id="CCForm17" class="inner-block cctabcontent">
             <div class="inner-block-content">
-                <div class="sub-head">
-                    Activity Log
-                </div>
-                <div class="row">
+                    <div class="sub-head">Activity Log</div>
 
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Agenda">Preliminary Lab Inves. Done By</label>
-                            <div class="static"></div>
+                    {{-- <div class="d-flex align-item-end justify-content-end">
+                            <button style="margin-bottom:20px;" class="button_theme1"> <a
+                                    class="text-white"
+                                    href="{{ url('rcms/activityLog', $data->id) }}"> Print </a>
+                            </button>
+                    </div> --}}
+
+
+                    <div class="printable-content">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>Submitted By :</strong><br>
+                                            {{ $data->completed_by_pending_initial_assessment }}
+                                        </td>
+
+                                        <td>
+                                            <strong>Submitted On:</strong><br>
+                                            @php
+                                                $utcTime = $data->completed_on_pending_initial_assessment ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+
+                                        </td>           
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Submitted Comments :</strong><br>
+                                            {{ $data->comment_pending_initial_assessment}}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>HOD Primary Review Completed By :</strong><br>
+                                            {{ $data->completed_by_under_phaseI_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>HOD Primary Review Completed On:</strong><br>
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseI_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>HOD Review Complete Comment:</strong><br>
+                                            {{ $data->comment_under_phaseI_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>CQA/QA Head Primary Review Complete By :</strong><br>
+                                            {{ $data->completed_by_under_phaseIB_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>CQA/QA Head Primary Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseIB_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>CQA/QA Head Primary Review Complete Comments :</strong><br>
+                                            {{ $data->comment_under_phaseIB_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IA Investigation By :</strong><br>
+                                            {{ $data->completed_by_under_hypothesis }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IA Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_hypothesis ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IA Investigation Comments :</strong><br>
+                                            {{ $data->comment_under_hypothesis ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IA HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_under_phaseII_investigation}}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IA HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseII_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IA HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_under_phaseII_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IA QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_under_manufacturing_investigation_phaseIIA }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IA QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_manufacturing_investigation_phaseIIA ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IA QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_under_manufacturing_investigation_phaseIIA ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_under_phaseIIB_additional_lab_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseIIB_additional_lab_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_under_phaseIIB_additional_lab_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IB Investigation By :</strong><br>
+                                            {{ $data->completed_by_under_phaseIII_investigation }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IB Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_under_phaseIII_investigation ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IB Investigation Comments :</strong><br>
+                                            {{ $data->comment_under_phaseIII_investigation ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IB HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_approval_completed }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IB HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_approval_completed ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IB HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_approval_completed ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase IB CQA/QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_close_done }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase IB CQA/QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_close_done ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase IB CQA/QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_close_done ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>P-I B Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_assignable_cause }}
+                                        </td>
+                                        <td>
+                                            <strong>P-I B Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_assignable_cause ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>P-I B Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_under_assignable_cause ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A Investigation By :</strong><br>
+                                            {{ $data->completed_by_phase2_A }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_A ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A Investigation Comments :</strong><br>
+                                            {{ $data->comment_phase2_A ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_hod_review }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_hod_review ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_hod_review ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A CQA/QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_cqa_qa }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A CQA/QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_cqa_qa ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A CQA/QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_cqa_qa ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II A Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_phase2_assignable_cause_not }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II A Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_assignable_cause_not ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II A Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_phase2_assignable_cause_not ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B Investigation By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_hod_primary }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B Investigation On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_hod_primary ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B Investigation Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_hod_primary ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B HOD Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_hod_review }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B HOD Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_hod_review ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B HOD Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_hod_review ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B CQA/QA Review Complete By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_cqa_qa_review }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B CQA/QA Review Complete On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_cqa_qa_review ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B CQA/QA Review Complete Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_cqa_qa_review ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <strong>Phase II B Assignable Cause Not Found By :</strong><br>
+                                            {{ $data->completed_by_phase2_b_assignable_couse_not }}
+                                        </td>
+                                        <td>
+                                            <strong>Phase II B Assignable Cause Not Found On :</strong><br>
+
+                                            @php
+                                                $utcTime = $data->completed_on_phase2_b_assignable_couse_not ?? null;
+
+                                                if ($utcTime) {
+                                                    try {
+                                                        $istTime = \Carbon\Carbon::parse($utcTime, 'UTC')
+                                                            ->setTimezone('Asia/Kolkata')
+                                                            ->format('d-M-Y H:i:s T');
+                                                        echo $istTime;
+                                                    } catch (\Exception $e) {
+                                                        echo 'Invalid Date Format';
+                                                    }
+                                                } else {
+                                                    echo 'No Time Available';
+                                                }
+                                            @endphp
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>Phase II B Assignable Cause Not Found Comments :</strong><br>
+                                            {{ $data->comment_phase2_b_assignable_couse_not ?? 'Not Applicable' }}
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Agenda">Preliminary Lab Inves. Done On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
 
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Team">Pre. Lab Inv. Conclusion By</label>
-                            <div class="static"></div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Team">Pre. Lab Inv. Conclusion On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="group-input">
-                            <label for="Audit Comments"> Pre.Lab Invest. Review By </label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Pre.Lab Invest. Review On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Phase II Invest. Proposed By</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Phase II Invest. Proposed On</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Response Completed By"> Phase II QC Review Done By</label>
-                            <div class=" static"></div>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Response Completed On">Phase II QC Review Done On</label>
-                            <div class="date"></div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Additional Test Proposed By</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Additional Test Proposed On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">OOS Conclusion Complete By</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">OOS Conclusion Complete On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">CQ Review Done By</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">CQ Review Done On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Disposition Decision Done by</label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Audit Attachments">Disposition Decision Done On</label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Reopen Addendum Complete By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Reopen Addendum Complete on
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Approval Completed By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Reopen Addendum Complete on
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Execution Done By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Execution Done On
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Review Done By
-
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Addendum Review Done On
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Verification Review Done By
-                            </label>
-                            <div class=" static"></div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="Reference Recores">Verification Review Done On
-
-                            </label>
-                            <div class="date"></div>
-                        </div>
-                    </div>
-
-
-
-
-                    <!-- ====================================================================== -->
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="submitted by">Submitted By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="submitted on">Submitted On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="cancelled by">Cancelled By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="cancelled on">Cancelled On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="More information Required ? By">More information Required ? By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="More information Required ? On">More information Required ? On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="completed by">Completed By :</label>
-                            <div class="static"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="group-input">
-                            <label for="completed on">Completed On :</label>
-                            <div class="Date"></div>
-                        </div>
-                    </div>
-
-                </div>
 
                 <div class="button-block">
                     <button type="submit" id="ChangesaveButton" class="saveButton">Save</button>
@@ -3679,7 +4345,7 @@
 
     <script>
         VirtualSelect.init({
-            ele: '#reference_record, #reference_record2,#reference_record1, #reference_outcome, #notify_to'
+            ele: '#reference_record, #reference_record2, #reference_record1, #reference_record002,#reference_record112, #reference_outcome, #notify_to'
         });
 
         $('#summernote').summernote({
@@ -3745,5 +4411,34 @@
             document.getElementById(cityName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+
+
+        const saveButtons = document.querySelectorAll(".saveButton");
+        const nextButtons = document.querySelectorAll(".nextButton");
+        const form = document.getElementById("step-form");
+        const stepButtons = document.querySelectorAll(".cctablinks");
+        const steps = document.querySelectorAll(".cctabcontent");
+        let currentStep = 0;
+
+        window.nextStep = function nextStep() {
+                if (currentStep < steps.length - 1) {
+                    steps[currentStep].style.display = "none";
+                    steps[currentStep + 1].style.display = "block";
+                    stepButtons[currentStep + 1].classList.add("active");
+                    stepButtons[currentStep].classList.remove("active");
+                    currentStep++;
+                }
+            };
+
+            window.previousStep = function previousStep() {
+                if (currentStep > 0) {
+                    steps[currentStep].style.display = "none";
+                    steps[currentStep - 1].style.display = "block";
+                    stepButtons[currentStep - 1].classList.add("active");
+                    stepButtons[currentStep].classList.remove("active");
+                    currentStep--;
+                }
+            };
+
     </script>
 @endsection

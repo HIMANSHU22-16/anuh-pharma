@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('initiator_id')->nullable();
             $table->string('division_id')->nullable();
-            $table->string('record_number')->nullable();
+            $table->string('record')->nullable();
             $table->string('intiation_date')->nullable();
             $table->string('initiator')->nullable();
             $table->string('initiator_group')->nullable();
@@ -83,6 +83,8 @@ return new class extends Migration
              $table->string('hypo_exp_required_piii')->nullable();
              $table->longText('hypo_exp_reference_piii')->nullable();
              $table->longText('attachment_piii')->nullable();
+             $table->text('Form_type')->nullable();
+
             // Phase ii QC Review
              $table->longText('summary_of_exp_hyp_piiqcr')->nullable();
              $table->longText('summary_mfg_investigation_piiqcr')->nullable();
@@ -119,6 +121,10 @@ return new class extends Migration
              $table->longText('action_plan_ref_oosc')->nullable();
              $table->longText('justification_for_delay_oosc')->nullable();
              $table->longText('attachments_if_any_oosc')->nullable();
+
+             $table->date('oos_occurrence_date')->nullable();
+             $table->date('oos_reporting_date')->nullable();
+
             //  ashish
             $table->longtext('conclusion_review_comments_ocr')->nullable();
             $table->longtext('action_taken_on_affec_batch_ocr')->nullable();
@@ -184,7 +190,11 @@ return new class extends Migration
             $table->text('type')->nullable();
             $table->text('parent_record')->nullable();
             $table->text('Description_Deviation')->nullable();
+            $table->longtext('hod_attachment2')->nullable();
+            $table->longtext('hod_attachment3')->nullable();
+            $table->longtext('hod_attachment4')->nullable();
 
+            $table->longtext('hod_attachment5')->nullable();
             $table->text('Discussion_points')->nullable();
             $table->text('Remark_qc_investigator')->nullable();
             $table->text('preliminary_investigation_response')->nullable();
